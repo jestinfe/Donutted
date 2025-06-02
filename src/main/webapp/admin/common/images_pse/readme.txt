@@ -1,1 +1,0 @@
-경로: /mall_prj/src/main/webapp/admin/common/images_pse 예요
