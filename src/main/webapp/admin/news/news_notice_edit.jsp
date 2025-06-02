@@ -4,8 +4,6 @@
 <%@ include file="../common/external_file.jsp" %>
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
-<%@ include file="../common/login_check.jsp" %>
-
 <%
   String contextPath = request.getContextPath();
 
@@ -67,14 +65,14 @@ $(function(){
 	      return false;
 	   }
 	   // 변경된 내용이 있다면 submit 진행
-	   $('#writeFrm').attr('action', '<%= contextPath %>/admin/news_notice_edit_process.jsp');
+	   $('#writeFrm').attr('action', '<%= contextPath %>/admin/news/news_notice_edit_process.jsp');
 	   $("#writeFrm").submit();
    })
    
    $('#delete').click(function(){
 
 	   if (confirm("정말 삭제하시겠습니까?")) {
-		   $('#writeFrm').attr('action', '<%= contextPath %>/admin/news_notice_delete_process.jsp');
+		   $('#writeFrm').attr('action', '<%= contextPath %>/admin/news/news_notice_delete_process.jsp');
 		   $("#writeFrm").submit();
 		} else {alert("삭제가 취소되었습니다.");
 		    return;
@@ -88,7 +86,7 @@ $(function(){
 <body>
 <div class="main">
  <div id="writeWrap" style="width:800px;">
-    <form action="<%= contextPath %>/admin/news_notice_edit_process.jsp" method="post" id="writeFrm">
+    <form action="<%= contextPath %>/admin/news/news_notice_edit_process.jsp" method="post" id="writeFrm">
       <h3><strong>공지사항 수정</strong></h3>
 
 	 <!-- 반드시 board_id 전달 -->

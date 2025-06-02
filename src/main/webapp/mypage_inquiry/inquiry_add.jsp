@@ -1,14 +1,31 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="inquiry.InquiryService" %>
 
 <%
-Integer userId = (Integer) session.getAttribute("userId");
-if (userId == null) {
-  response.sendRedirect("Login_kmj/login.jsp");
-  return;
-}
-String userIdStr = String.valueOf(userId);  
+    Integer userId = (Integer) session.getAttribute("userId");
+    if (userId == null) {
+        response.sendRedirect("../UserLogin/login.jsp");
+        return;
+    }
+
+    // 하루 최대 2회 제한 로직
+    int todayCount = InquiryService.getInstance().getTodayInquiryCount(userId);
+    if (todayCount >= 2) {
 %>
+    <script>
+      alert("하루에 가능한 문의는 2번입니다.");
+      history.back();
+    </script>
+<%
+        return;
+    }
+
+    String userIdStr = String.valueOf(userId);
+%>
+
+
+
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -57,6 +74,17 @@ String userIdStr = String.valueOf(userId);
     .submit-btn:hover {
       background-color: #f18aa7;
     }
+     .btn-back {
+      margin-top: 30px;
+      background-color: #8b4513;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+    }
+    .btn-back:hover {
+      background-color: #f4a460;
+    }
   </style>
 </head>
 <body>
@@ -78,7 +106,10 @@ String userIdStr = String.valueOf(userId);
 
       <label for="content" class="form-label">내용</label>
       <textarea class="form-control" id="content" name="content" rows="8" required></textarea>
-
+<div class="text-center">
+	<button type="button" class="btn-back" onclick="location.href='my_inquiry.jsp'">목록으로</button>
+	
+    </div>
       <div class="text-end">
         <button type="submit" class="submit-btn">등록하기</button>
       </div>

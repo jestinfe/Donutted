@@ -2,8 +2,6 @@
 <%@ include file="../common/external_file.jsp" %>
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
-<%@ include file="../common/login_check.jsp" %>
-
 
 <!DOCTYPE html>
 <html>

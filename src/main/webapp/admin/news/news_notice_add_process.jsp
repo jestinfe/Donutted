@@ -1,7 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="news.NewsDAO, news.BoardDTO" %>
-<%@ include file="../common/login_check.jsp" %>
-
 
 <%
     request.setCharacterEncoding("UTF-8");
@@ -21,14 +19,14 @@
         return;
     }
 
-    // admin_id는 임시로 1 (로그인 구현되면 세션에서 가져오세요!)
-    String adminId = "admin";
+   
+    //String adminId = "admin";
 
     // DTO 생성 후 값 세팅
     BoardDTO bDTO = new BoardDTO();
     bDTO.setTitle(title);
     bDTO.setContent(content);
-    bDTO.setAdmin_id(adminId);
+    //bDTO.setAdmin_id(adminId);
 
     // DAO 호출 (공지사항 등록)
     NewsDAO dao = NewsDAO.getInstance();

@@ -4,6 +4,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
+  Integer loginUserId = (Integer) session.getAttribute("userId");
+  if (loginUserId == null) {
+%>
+  <script>
+    alert("로그인이 필요합니다.");
+    location.href = "../UserLogin/login.jsp";
+  </script>
+<%
+    return;
+  }
+
   String idParam = request.getParameter("inquiry_id");
   if (idParam == null) {
 %>
@@ -17,17 +28,18 @@
 
   int inquiryId = Integer.parseInt(idParam);
   InquiryDTO dto = InquiryService.getInstance().getInquiryById(inquiryId);
-  if (dto == null) {
+
+  if (dto == null || dto.getUserId() != loginUserId) {
 %>
   <script>
-    alert("해당 문의 내역이 존재하지 않습니다.");
+    alert("잘못된 접근입니다.");
     history.back();
   </script>
 <%
     return;
   }
 
-  request.setAttribute("dto", dto); // JSTL에서 출력할 수 있도록 설정
+  request.setAttribute("dto", dto);
 %>
 
 <!DOCTYPE html>
@@ -39,92 +51,145 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      padding: 40px;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
     }
+
+    .main-container {
+      max-width: 1280px;
+      margin: 60px auto;
+      display: flex;
+      gap: 30px;
+      padding: 0 20px;
+    }
+
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+    }
+
     .detail-box {
-      max-width: 700px;
-      margin: auto;
+      flex: 1;
+      background-color: #ffffff;
+      padding: 40px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
     }
-    .detail-box h4 {
-      margin-bottom: 30px;
+
+    h4 {
+      font-size: 22px;
       font-weight: bold;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #555;
+      padding-bottom: 10px;
+      color: #333;
     }
-    .detail-box .item {
-      margin-bottom: 20px;
+
+    .item {
+      margin-bottom: 25px;
     }
+
     .item label {
       font-weight: bold;
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
+      color: #444;
     }
-    .item .content-box {
-      padding: 15px;
+
+    .content-box {
+      padding: 14px 16px;
+      background-color: #f8f8f8;
       border: 1px solid #ccc;
-      border-radius: 5px;
-      background: #fafafa;
+      font-size: 15px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      border-radius: 6px;
     }
+
     .btn-back {
       margin-top: 30px;
-      background-color: #f3a7bb;
-      color: white;
+      padding: 10px 24px;
+      background-color: #555;
+      color: #fff;
       border: none;
-      padding: 10px 20px;
       font-weight: bold;
+      border-radius: 6px;
     }
+
     .btn-back:hover {
-      background-color: #f18aa7;
+      background-color: #333;
+    }
+
+    @media (max-width: 992px) {
+      .main-container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+      }
+
+      .detail-box {
+        margin-top: 20px;
+      }
     }
   </style>
 </head>
 <body>
-<!-- ✅ header.jsp 포함 -->
-<c:import url="/common/header.jsp" />
+  <!-- ✅ header -->
+  <c:import url="/common/header.jsp" />
 
-<div class="d-flex mt-5">
-  <!-- ✅ 사이드바 -->
-  <c:import url="/common/mypage_sidebar.jsp" />
-
-  <div class="detail-box">
-    <h4>1:1 문의 상세</h4>
-
-    <div class="item">
-      <label>제목</label>
-      <div class="content-box">${dto.title}</div>
+  <div style="display:flex; max-width:1280px; margin:auto; padding:60px 20px;">
+    <!-- ✅ 사이드바 - 바깥에서 직접 포함 -->
+    <div style="width:240px; flex-shrink:0;">
+      <c:import url="/common/mypage_sidebar.jsp" />
     </div>
 
-    <div class="item">
-      <label>내용</label>
-      <div class="content-box">${dto.content}</div>
-    </div>
+    <!-- ✅ 메인 컨텐츠 -->
+    <div style="flex:1; background:#fff; padding:40px; border:1px solid #ddd; border-radius:8px;">
+      <h4>1:1 문의 상세</h4>
 
-    <div class="item">
-      <label>작성일자</label>
-      <div class="content-box">
-        <fmt:formatDate value="${dto.createdAt}" pattern="yyyy-MM-dd HH:mm" />
+      <div class="item">
+        <label>제목</label>
+        <div class="content-box">${dto.title}</div>
       </div>
-    </div>
 
-    <div class="item">
-      <label>답변</label>
-      <div class="content-box">
-        <c:choose>
-          <c:when test="${not empty dto.replyContent}">
-            ${dto.replyContent}
-          </c:when>
-          <c:otherwise>
-            
-          </c:otherwise>
-        </c:choose>
+      <div class="item">
+        <label>내용</label>
+        <div class="content-box">${dto.content}</div>
       </div>
-    </div>
 
-    <div class="text-center">
-      <button class="btn-back" onclick="location.href='my_inquiry.jsp'">목록으로</button>
+      <div class="item">
+        <label>작성일자</label>
+        <div class="content-box">
+          <fmt:formatDate value="${dto.createdAt}" pattern="yyyy-MM-dd HH:mm" />
+        </div>
+      </div>
+
+      <div class="item">
+        <label>답변</label>
+        <div class="content-box">
+          <c:choose>
+            <c:when test="${not empty dto.replyContent}">
+              ${dto.replyContent}
+            </c:when>
+            <c:otherwise>
+              <span style="color: #888;">아직 답변이 등록되지 않았습니다.</span>
+            </c:otherwise>
+          </c:choose>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <button class="btn-back" onclick="location.href='my_inquiry.jsp'">목록으로</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- ✅ footer.jsp 포함 -->
-<c:import url="/common/footer.jsp" />
+  <!-- ✅ footer -->
+  <c:import url="/common/footer.jsp" />
 </body>
+
 </html>

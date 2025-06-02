@@ -214,7 +214,9 @@ public class NewsDAO {
     		selectAllBoard
     		.append("   select    board_id,title,thumbnail_url,detail_image_url,posted_at,viewCount   ")
     		.append("   from    board   ")
-    		.append("   WHERE type = ? ");
+    		.append("   WHERE type = ? ")
+    		.append("   order by board_id DESC ")
+    		;
     		
     		pstmt=con.prepareStatement(selectAllBoard.toString());
             //바인드 변수에 값 할당
@@ -393,7 +395,7 @@ public class NewsDAO {
         DbConnection db = DbConnection.getInstance();
         
         PreparedStatement pstmt=null;
-      Connection con=null;
+        Connection con=null;
       
         try {
            con=db.getDbConn();
@@ -413,5 +415,136 @@ public class NewsDAO {
         }
         return row;
     }//updateCount
+    
+    public List<BoardDTO> selectEventByKeyword(String keyword) throws SQLException {
+    	List<BoardDTO> list=new ArrayList<BoardDTO>();
+    	
+    	DbConnection db=DbConnection.getInstance();
+    	
+    	ResultSet rs=null;
+    	PreparedStatement pstmt=null;
+    	Connection con=null;
+    	
+    	try {
+    		con=db.getDbConn();
+    		
+    		String sql = "SELECT board_id,title,thumbnail_url,detail_image_url,posted_at,viewCount from board "
+    		           + "WHERE type = '이벤트' AND title LIKE '%' || ? || '%' "
+    		           + "ORDER BY board_id DESC";
+    		
+    		pstmt=con.prepareStatement(sql);
+            //바인드 변수에 값 할당
+    		pstmt.setString(1, keyword);
+    		rs=pstmt.executeQuery();
+    		
+    		 while (rs.next()) {
+    			BoardDTO bDTO = new BoardDTO();
+    			bDTO.setBoard_id(rs.getInt("board_id"));
+    			bDTO.setTitle(rs.getString("title"));
+    			bDTO.setThumbnail_url(rs.getString("thumbnail_url"));
+    			bDTO.setDetail_image_url(rs.getString("detail_image_url"));
+    			bDTO.setPosted_at(rs.getDate("posted_at"));
+    			bDTO.setViewCount(rs.getInt("viewCount"));
+    			
+    			list.add(bDTO);     
+    	                
+    		}//end while
+    		
+    	} finally {
+    		db.dbClose(rs, pstmt, con);
+    	}//end finally
+    	
+    	return list;
+    			
+    }//selectEventByKeyword
+    
+    //이벤트 게시글 이전 글 이동
+    public BoardDTO selectPrevEvent(int board_id) throws SQLException {
+    	      
+    	BoardDTO bDTO = null;
+    	       
+    	DbConnection db=DbConnection.getInstance();
 
-}
+		ResultSet rs=null;
+		PreparedStatement pstmt=null;
+		Connection con=null;
+    	       
+    	try {
+    	         
+    		con=db.getDbConn();
+    	          
+    	    StringBuilder selectPrevEvent=new StringBuilder();
+    	    selectPrevEvent
+    	    .append("   select    board_id,title   ")
+    	    .append("   from   (")
+    	    .append("   select    board_id,title   ")
+    	    .append("   from   board	")
+    	    .append("   where    board_id > ? AND type='이벤트'   ")
+    	    .append("	order by board_id ASC	")
+    	    .append("	)	")
+    	    .append("	where rowNum = 1")
+    	    ;
+    	          
+    	    pstmt=con.prepareStatement(selectPrevEvent.toString());
+    	    //바인드 변수에 값 할당
+    	    pstmt.setInt(1, board_id);
+    	    
+    	    rs=pstmt.executeQuery();
+    	      if (rs.next()) {
+    	         bDTO = new BoardDTO();
+    	         bDTO.setBoard_id(rs.getInt("board_id"));
+    	         bDTO.setTitle(rs.getString("title"));
+             }//end if
+    	          
+    	 } finally {
+    	    db.dbClose(rs, pstmt, con);
+    	 }//end finally
+    	 return bDTO;
+    }//selectPrevEvent
+    
+    //이벤트 게시글 다음 글 이동
+    public BoardDTO selectNextEvent(int board_id) throws SQLException {
+    	
+    	BoardDTO bDTO = null;
+    	
+    	DbConnection db=DbConnection.getInstance();
+    	
+    	ResultSet rs=null;
+    	PreparedStatement pstmt=null;
+    	Connection con=null;
+    	
+    	try {
+    		
+    		con=db.getDbConn();
+    		
+    		StringBuilder selectPrevEvent=new StringBuilder();
+    		selectPrevEvent
+    		.append("   select    board_id,title   ")
+    		.append("   from   (")
+    		.append("   select    board_id,title   ")
+    		.append("   from   board	")
+    		.append("   where    board_id < ? AND type='이벤트'   ")
+    		.append("	order by board_id DESC	")
+    		.append("	)	")
+    		.append("	where rowNum = 1")
+    		;
+    		
+    		pstmt=con.prepareStatement(selectPrevEvent.toString());
+    		//바인드 변수에 값 할당
+    		pstmt.setInt(1, board_id);
+    		
+    		rs=pstmt.executeQuery();
+    		if (rs.next()) {
+    			bDTO = new BoardDTO();
+    			bDTO.setBoard_id(rs.getInt("board_id"));
+    			bDTO.setTitle(rs.getString("title"));
+    		}//end if
+    		
+    	} finally {
+    		db.dbClose(rs, pstmt, con);
+    	}//end finally
+    	return bDTO;
+    }//selectNextEvent
+    
+
+}//class

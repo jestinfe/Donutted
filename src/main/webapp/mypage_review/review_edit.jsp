@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="review.*, order.*" %>
+<%@ include file="/common/external_file.jsp" %>
+
 <%
   request.setCharacterEncoding("UTF-8");
   int reviewId = Integer.parseInt(request.getParameter("review_id"));

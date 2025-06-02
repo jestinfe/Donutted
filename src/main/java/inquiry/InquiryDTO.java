@@ -20,5 +20,5 @@ public class InquiryDTO {
     private String replyContent;
     private Date repliedAt;
     private Integer adminId;
-
+    private String username;
 }

@@ -5,7 +5,6 @@
 <%@ page import="news.NewsDAO, news.BoardDTO" %>
 <%@ include file="../common/login_check.jsp" %>
 
-
 <%
 request.setCharacterEncoding("UTF-8");
 
@@ -16,7 +15,7 @@ String detailImageName = "";
 
 try {
     // 1. 저장 경로 설정
-    File saveDir = new File("C:/Users/user/git/mall_prj/mall_prj/src/main/webapp/admin/common/images_pse");
+   	File saveDir = new File("C:/Users/user/git/mall_prj/mall_prj/src/main/webapp/admin/common/images_pse");
     if (!saveDir.exists()) saveDir.mkdirs();
 
     // 2. 업로드 크기 제한 (600MB)
@@ -56,7 +55,7 @@ try {
         }
     }
 
-  	//제목 입력값 검증
+     //제목 입력값 검증
     if (title == null || title.trim().isEmpty()) {
     %>
     <script>
@@ -66,8 +65,8 @@ try {
     <%
         return;
     }
-  	
-  	//이미지 입력값 검증
+     
+     //이미지 입력값 검증
     if (thumbnailName == null || thumbnailName.trim().isEmpty() || detailImageName == null || detailImageName.trim().isEmpty()) {
     %>
     <script>
@@ -83,14 +82,14 @@ try {
     e.printStackTrace();
 }
     
-// admin_id는 임시로 1
-String adminId = "admin";
+
+//String adminId = "admin"; 
 
 // DTO에 값 세팅
 BoardDTO bDTO = new BoardDTO();
 bDTO.setTitle(title);
 bDTO.setContent(content); // content 추가해야 함
-bDTO.setAdmin_id(adminId);
+// bDTO.setAdmin_id(adminId);
 bDTO.setThumbnail_url(thumbnailName); // 서버 저장 파일명
 bDTO.setDetail_image_url(detailImageName); // 서버 저장 파일명
 

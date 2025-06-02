@@ -4,8 +4,6 @@
 <%@ include file="../common/external_file.jsp" %>
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
-<%@ include file="../common/login_check.jsp" %>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
@@ -64,14 +62,16 @@
   <!-- 검색 필터 -->
   <form class="row gx-2 gy-2 align-items-end mb-3" action="news_event_list.jsp" method="get">
     <input type="hidden" name="boardType" value="<%= boardType %>">
-    <div class="col-auto">
+    
+    <%-- <div class="col-auto">
       <select id="searchType" name="type" class="form-select" style="width: 120px;" onchange="placeholder()">
         <option value="title" <%= "title".equals(fieldText) ? "selected" : "" %>>제목</option>
         <option value="content" <%= "content".equals(fieldText) ? "selected" : "" %>>내용</option>
       </select>
-    </div>
+    </div> --%>
+    
     <div class="col-auto">
-      <input type="text" id="keywordInput" name="keyword" class="form-control" style="width: 240px;" placeholder="검색어를 입력해주세요." 
+      <input type="text" id="keywordInput" name="keyword" class="form-control" style="width: 240px;" placeholder="제목을 입력해주세요." 
       value="<%= keyword != null ? keyword : "" %>">
     </div>
     <div class="col-auto">

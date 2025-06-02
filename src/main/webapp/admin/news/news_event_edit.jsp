@@ -61,6 +61,7 @@
         }
       });
       
+      //수정하기
       $('#modify').click(function(){
       const originalTitle = "<%= board.getTitle().replaceAll("\"", "\\\"") %>";
       const currentTitle = $("#title").val().trim();
@@ -73,14 +74,16 @@
       }
    	   
    	   // 변경된 내용이 있다면 submit 진행
-   	   $('#writeFrm').attr('action', '<%= contextPath %>/admin/news_event_edit_process.jsp');
+   	   $('#writeFrm').attr('action', '<%= contextPath %>/admin/news/news_event_edit_process.jsp');
    	   $("#writeFrm").submit();
       })
       
       $('#delete').click(function(){
 
+    	  const board_id = <%= board.getBoard_id() %>;
    	   if (confirm("정말 삭제하시겠습니까?")) {
-   		   $('#writeFrm').attr('action', '<%= contextPath %>/admin/news_event_delete_process.jsp');
+   		   $('#writeFrm').attr('action', '<%= contextPath %>/admin/news/news_event_delete_process.jsp?board_id=' +board_id);
+   		   
    		   $("#writeFrm").submit();
    		} else {alert("삭제가 취소되었습니다.");
    		    return;
@@ -95,8 +98,8 @@
 <div class="container">
   <h3 class="mb-4">이벤트 수정</h3>
 
-  <form action="<%= contextPath %>/admin/news_event_edit_process.jsp" method="post" name="writeFrm" id="writeFrm" enctype="multipart/form-data" >
-    <input type="hidden" name="board_id" value="<%= board.getBoard_id() %>">
+  <form action="<%= contextPath %>/admin/news/news_event_edit_process.jsp" method="post" name="writeFrm" id="writeFrm" enctype="multipart/form-data" >
+	<input type="hidden" name="board_id" value="<%= board.getBoard_id() %>">
     <input type="hidden" name="imgName" value="<%= board.getThumbnail_url() %>">
 	<input type="hidden" name="detailImgName" value="<%= board.getDetail_image_url() %>">
     <div class="d-flex">
@@ -107,7 +110,7 @@
              id="img" class="preview-img mb-2" alt="썸네일 이미지">
         <br>
         <input type="button" value="썸네일 선택" id="btnImg" class="btn btn-info btn-sm" style="margin-left: 75px;"/>
-        <input type="hidden" name="imgName" id="imgName"/>
+        <!-- <input type="hidden" name="imgName" id="imgName"/> -->
         <input type="file" name="profileImg" id="profileImg" style="display:none"/>
       </div>
 

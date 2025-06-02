@@ -8,10 +8,10 @@
   <h4>My Page</h4>
   <ul>
     <li>
-      <a href="my_orders.jsp">My 쇼핑</a>
+      <a href="../mypage_order/my_orders.jsp">My 쇼핑</a>
       <ul class="submenu">
         <li class='<%= path.equals("my_orders.jsp") ? "active" : "" %>'>
-          <a href="my_orders.jsp">주문목록/배송조회</a>
+          <a href="../mypage_order/my_orders.jsp">주문목록/배송조회</a>
         </li>
         <li class='<%= path.equals("my_refunds.jsp") ? "active" : "" %>'>
           <a href="../mypage_refund/my_refunds.jsp">환불 내역</a>

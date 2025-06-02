@@ -82,7 +82,7 @@
             <button type="submit" class="btn btn-dark">검색</button>
         </div>
         <div class="col-auto">
-            <a href="news_notice_add.jsp?boardType=<%= boardType %>" class="btn btn-primary"><%= boardType %> 작성</a>
+            <a href="news_notice_add.jsp?boardType=<%= boardType %>" class="btn btn-primary"><%= boardType %>사항 작성</a>
         </div>
     </form>
 
@@ -110,7 +110,7 @@
                 </c:when>
                 <c:otherwise>
                     <tr>
-                        <td colspan="5" style="text-align: center;">등록된 <%= boardType %>가 없습니다.</td>
+                        <td colspan="5" style="text-align: center;">등록된 <%= boardType %>사항이 없습니다.</td>
                     </tr>
                 </c:otherwise>
             </c:choose>

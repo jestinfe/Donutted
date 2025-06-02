@@ -78,6 +78,7 @@ public class NewsService {
         }
         return bDTO;
     }
+    
     // 이벤트 게시글 상세보기
     public BoardDTO getOneEvent(int board_id) {
        BoardDTO bDTO=null;
@@ -182,6 +183,44 @@ public class NewsService {
             e.printStackTrace();
         }
     }//plusViewCount
+    
+    public List<BoardDTO> searchEventByKeyword(String keyword) {
+    	List<BoardDTO> list = new ArrayList<>();
+    	
+    	NewsDAO nDAO=NewsDAO.getInstance();
+    	try {
+    		list=nDAO.selectEventByKeyword(keyword);
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	return list;
+    }//searchEventByKeyword
+    
+ 	//이벤트 게시글 이전 글 이동
+    public BoardDTO getPrevEvent(int board_id) {
+       BoardDTO bDTO=null;
+       
+       NewsDAO nDAO=NewsDAO.getInstance();
+       try {
+          bDTO=nDAO.selectPrevEvent(board_id);
+       } catch (SQLException e) {
+          e.printStackTrace();
+       }
+       return bDTO;
+    }//getPrevEvent
+    
+    //이벤트 게시글 다음 글 이동
+    public BoardDTO getNextEvent(int board_id) {
+    	BoardDTO bDTO=null;
+    	
+    	NewsDAO nDAO=NewsDAO.getInstance();
+    	try {
+    		bDTO=nDAO.selectNextEvent(board_id);
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	return bDTO;
+    }//getNextEvent
     
   
 } // class

@@ -4,24 +4,39 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
-    request.setCharacterEncoding("UTF-8");
-    String boardIdStr = request.getParameter("board_id");
-    int boardId = 0;
-    if (boardIdStr != null && !boardIdStr.isEmpty()) {
+request.setCharacterEncoding("UTF-8");
+
+String boardIdStr = request.getParameter("board_id");
+int boardId = 0;
+
+try {
+    if (boardIdStr != null && !boardIdStr.trim().isEmpty()) {
         boardId = Integer.parseInt(boardIdStr);
+    } else {
+        response.sendRedirect("news_notice_main.jsp");
+        return;
     }
+} catch (NumberFormatException e) {
+    response.sendRedirect("news_notice_main.jsp");
+    return;
+}
 
-    // 조회수 증가 (세션으로 중복 방지)
-    String viewedKey = "viewed_" + boardId;
-    NewsService service = new NewsService();
-    if (session.getAttribute(viewedKey) == null) {
-        service.plusViewCount(boardId);
-        session.setAttribute(viewedKey, true);
-    }
+// 조회수 증가 (세션 중복 방지)
+NewsService service = new NewsService();
+Boolean cntFlag = (Boolean) session.getAttribute("cntFlag");
+if (cntFlag != null && cntFlag.booleanValue()) {   
+    service.plusViewCount(boardId);
+    session.setAttribute("cntFlag", false);
+}
 
-    // 데이터 조회
-    BoardDTO dto = service.getOneNotice(boardId);
-    request.setAttribute("dto", dto);
+// 데이터 조회
+BoardDTO dto = service.getOneNotice(boardId);
+if (dto == null) {
+    response.sendRedirect("news_notice_main.jsp");
+    return;
+}
+
+request.setAttribute("dto", dto);
 %>
 
 <!DOCTYPE html>
@@ -68,7 +83,7 @@
         ${dto.title}
         <div class="notice-meta">
             <br>
-            <fmt:formatDate value="${dto.posted_at}" pattern="yyyy-MM-dd HH:mm" />
+            <fmt:formatDate value="${dto.posted_at}" pattern="yyyy-MM-dd" />
             &nbsp;&nbsp; <i class="bi bi-eye"></i> ${dto.viewCount}
         </div>
     </div>

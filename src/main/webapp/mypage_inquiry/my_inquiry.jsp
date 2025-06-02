@@ -9,7 +9,7 @@ Integer userId = (Integer) session.getAttribute("userId");
 if (userId == null) {
     out.println("<script>");
     out.println("alert('로그인이 필요합니다.');");
-    out.println("location.href='Login_kmj/login.jsp';");
+    out.println("location.href='../UserLogin/login.jsp';");
     out.println("</script>");
     return;
 }
@@ -142,15 +142,20 @@ request.setAttribute("totalPages", totalPages);
 
     <!-- ✅ 본문 Q/A 내역 -->
     <div class="qna-wrapper">
-      <h5>나의 Q/A 내역 ( <c:out value="${totalCount}" /> 건 )</h5>
+<h5>
+  <strong>나의 Q/A 내역 ( <%= totalCount %> 건 )</strong>
+  <span style="color: #ff5c8a; font-size: 15px; margin-left: 10px;">* 하루에 가능한 문의는 2번입니다.</span>
+</h5>
+	
+	
 
       <table>
         <thead>
           <tr>
-            <th>NO.</th>
-            <th>SUBJECT</th>
-            <th>DATE</th>
-            <th>STATE</th>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성 날짜</th>
+            <th>답변 상태</th>
           </tr>
         </thead>
         <tbody>

@@ -3,12 +3,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     info=""%>
-    <%@ include file="../common/login_check.jsp" %>
-    
+<%@ include file="../common/login_check.jsp" %>
 
 <%
 request.setCharacterEncoding("UTF-8");
-
 int board_id = Integer.parseInt(request.getParameter("board_id"));
 
 BoardDTO bDTO = new BoardDTO();

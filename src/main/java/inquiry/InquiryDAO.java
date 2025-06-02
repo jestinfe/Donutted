@@ -13,14 +13,18 @@ import kr.co.sist.dao.DbConnection;
 //쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿쏴아릿
 public class InquiryDAO {
 	
-	  
+	private static final InquiryDAO instance = new InquiryDAO();
+
+	public static InquiryDAO getInstance() {
+	    return instance;
+	}
+
 	  
 	  
 	//1대1문의 insert
 	public void insertInquiry(InquiryDTO inDTO) throws SQLException {
-	    String sql = "INSERT INTO inquiry(inquiry_id, user_id, title, content, inquiry_status, created_at) " +
-	                 "VALUES (inquiry_seq.nextval, ?, ?, ?, ?, SYSDATE)";
-
+		String sql = "INSERT INTO inquiry(user_id, title, content, inquiry_status, created_at) " +
+	             "VALUES (?, ?, ?, ?, SYSDATE)";
 	    Connection con = null;
 	    PreparedStatement pstmt = null;
 
@@ -233,7 +237,150 @@ public class InquiryDAO {
 	    }
 	    return 0;
 	}
+	public int countTodayInquiriesByUser(int userId) throws SQLException {
+	    String sql = "SELECT COUNT(*) FROM inquiry WHERE user_id = ? AND TRUNC(created_at) = TRUNC(SYSDATE)";
+	    
+	    try (Connection con = DbConnection.getInstance().getDbConn();
+	         PreparedStatement pstmt = con.prepareStatement(sql)) {
+	        
+	        pstmt.setInt(1, userId);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            return rs.getInt(1);
+	        }
+	    }
 
-	
-	
+	    return 0;
+	}
+	public List<InquiryDTO> selectInquiriesWithFilter(String userId, String date, String status, int offset, int pageSize) throws SQLException {
+	    List<InquiryDTO> list = new ArrayList<>();
+
+	    StringBuilder sql = new StringBuilder("SELECT * FROM inquiry WHERE 1=1");
+	    List<Object> params = new ArrayList<>();
+
+	    if (userId != null && !userId.isEmpty()) {
+	        sql.append(" AND user_id = ?");
+	        params.add(Integer.parseInt(userId));
+	    }
+
+	    if (date != null && !date.isEmpty()) {
+	        sql.append(" AND TRUNC(created_at) = TO_DATE(?, 'YYYY-MM-DD')");
+	        params.add(date);
+	    }
+
+	    if (status != null && !status.isEmpty()) {
+	        if (status.equals("WAIT")) {
+	            sql.append(" AND (reply_content IS NULL OR TRIM(reply_content) = '')");
+	        } else if (status.equals("DONE")) {
+	            sql.append(" AND reply_content IS NOT NULL AND TRIM(reply_content) != ''");
+	        }
+	    }
+
+	    sql.append(" ORDER BY inquiry_id DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+
+	    params.add(offset);
+	    params.add(pageSize);
+
+	    try (Connection con = DbConnection.getInstance().getDbConn();
+	         PreparedStatement pstmt = con.prepareStatement(sql.toString())) {
+
+	        // 파라미터 바인딩
+	        for (int i = 0; i < params.size(); i++) {
+	            Object param = params.get(i);
+	            if (param instanceof Integer) {
+	                pstmt.setInt(i + 1, (Integer) param);
+	            } else {
+	                pstmt.setString(i + 1, param.toString());
+	            }
+	        }
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            while (rs.next()) {
+	                InquiryDTO dto = new InquiryDTO();
+	                dto.setInquiryId(rs.getInt("inquiry_id"));
+	                dto.setUserId(rs.getInt("user_id"));
+	                dto.setTitle(rs.getString("title"));
+	                dto.setContent(rs.getString("content"));
+	                dto.setReplyContent(rs.getString("reply_content"));
+	                dto.setCreatedAt(rs.getDate("created_at"));
+	                list.add(dto);
+	            }
+	        }
+
+	    }
+
+	    return list;
+	}
+
+	public int countInquiriesWithFilter(String userId, String date, String status) throws SQLException {
+	    StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM inquiry WHERE 1=1");
+	    List<Object> params = new ArrayList<>();
+
+	    if (userId != null && !userId.isEmpty()) {
+	        sql.append(" AND user_id = ?");
+	        params.add(Integer.parseInt(userId));
+	    }
+
+	    if (date != null && !date.isEmpty()) {
+	        sql.append(" AND TRUNC(created_at) = TO_DATE(?, 'YYYY-MM-DD')");
+	        params.add(date);
+	    }
+
+	    if (status != null && !status.isEmpty()) {
+	        if (status.equals("WAIT")) {
+	            sql.append(" AND (reply_content IS NULL OR TRIM(reply_content) = '')");
+	        } else if (status.equals("DONE")) {
+	            sql.append(" AND reply_content IS NOT NULL AND TRIM(reply_content) != ''");
+	        }
+	    }
+
+	    try (Connection con = DbConnection.getInstance().getDbConn();
+	         PreparedStatement pstmt = con.prepareStatement(sql.toString())) {
+
+	        for (int i = 0; i < params.size(); i++) {
+	            Object param = params.get(i);
+	            if (param instanceof Integer) {
+	                pstmt.setInt(i + 1, (Integer) param);
+	            } else {
+	                pstmt.setString(i + 1, param.toString());
+	            }
+	        }
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt(1);
+	            }
+	        }
+	    }
+
+	    return 0;
+	}
+
+	// InquiryDAO.java
+	public InquiryDTO selectById(int inquiryId) throws SQLException {
+	    String sql = "SELECT i.*, u.username FROM inquiry i JOIN users u ON i.user_id = u.user_id WHERE i.inquiry_id = ?";
+
+	    try (Connection conn = DbConnection.getInstance().getDbConn();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+	        pstmt.setInt(1, inquiryId);
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                InquiryDTO dto = new InquiryDTO();
+	                dto.setInquiryId(rs.getInt("inquiry_id"));
+	                dto.setUserId(rs.getInt("user_id"));
+	                dto.setTitle(rs.getString("title"));
+	                dto.setContent(rs.getString("content"));
+	                dto.setCreatedAt(rs.getTimestamp("created_at"));
+	                dto.setReplyContent(rs.getString("reply_content"));
+	                dto.setUsername(rs.getString("username")); // 추가된 부분
+	                return dto;
+	            }
+	        }
+	    }
+	    return null;
+	}
+
 }//class

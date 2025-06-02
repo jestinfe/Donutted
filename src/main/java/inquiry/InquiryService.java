@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
+
 
 public class InquiryService {
 
@@ -89,8 +91,35 @@ public class InquiryService {
 	    }
 	}
 
-	
-	
+	public int getTodayInquiryCount(int userId) {
+	    try {
+	        return InquiryDAO.getInstance().countTodayInquiriesByUser(userId);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return 0;
+	    }
+	}
+
+	public List<InquiryDTO> getPagedInquiriesWithFilter(int offset, int pageSize, String userId, String createdAt, String status) {
+	    try {
+	        return InquiryDAO.getInstance().selectInquiriesWithFilter(userId, createdAt, status, offset, pageSize);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return new ArrayList<>();
+	    }
+	}
+	public int getTotalInquiriesCountWithFilter(String userId, String createdAt, String status) {
+	    try {
+	        return InquiryDAO.getInstance().countInquiriesWithFilter(userId, createdAt, status);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return 0;
+	    }
+	}
+
+	public InquiryDTO getInquiryWithUsername(int inquiryId) throws SQLException {
+	    return InquiryDAO.getInstance().selectById(inquiryId);
+	}
 
 }
 	

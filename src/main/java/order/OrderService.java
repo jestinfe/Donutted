@@ -268,5 +268,19 @@ public class OrderService {
             return ""; // 복호화 실패 시 빈 문자열 반환
         }
     }
+    
+ // [사용자 마이페이지 전용] 특정 userId의 주문 목록을 RangeDTO로 페이징 조회
+    public List<OrderDTO> getOrdersByUserWithRange(int userId, RangeDTO range) {
+        try {
+            List<OrderDTO> allOrders = dao.getOrdersByUser(userId);
+            int fromIndex = Math.max(0, range.getStartNum() - 1);
+            int toIndex = Math.min(allOrders.size(), range.getEndNum());
+            return fromIndex < allOrders.size() ? allOrders.subList(fromIndex, toIndex) : new ArrayList<>();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
 
 }

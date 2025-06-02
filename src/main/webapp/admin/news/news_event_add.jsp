@@ -4,7 +4,6 @@
 <%@ include file="../common/sidebar.jsp" %>
 <%@ include file="../common/login_check.jsp" %>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,132 +17,44 @@
     .form-label { font-weight: bold; }
   </style>
   <script>
-    $(function(){
-      $("#btnImg").click(function(){
-        $("#profileImg").click();
-      });
-      
-      $("#profileImg").change(function(evt){
-        const file = evt.target.files[0];
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          $("#img").prop("src", e.target.result);
-        };
-        if (file) {
-          reader.readAsDataURL(file);
-          $("#imgName").val(file.name);
-        }
-        
-    	/* $("#profileImg").change(function(evt){
-    	  	  const file = evt.target.files[0];
-    	  	  if (!file) return;
+  $(function(){
+     // 썸네일 선택
+     $("#btnImg").click(function(){
+       $("#profileImg").click();
+     });
 
-    	  	  const ext = file.name.split(".").pop().toLowerCase();
-    	  	  const allowed = ["jpg", "gif", "png", "bmp"];
+     // 썸네일 미리보기
+     $("#profileImg").change(function(evt){
+       const file = evt.target.files[0];
+       if (file) {
+         const reader = new FileReader();
+         reader.onload = function(e) {
+           $("#img").prop("src", e.target.result);
+         };
+         reader.readAsDataURL(file);
+         $("#imgName").val(file.name);
+       }
+     });
 
-    	  	  if (!allowed.includes(ext)) {
-    	  	    alert("업로드 가능한 파일이 아닙니다.");
-    	  	    resetFileInput("profileImg"); // 선택 초기화
-    	  	    return;
-    	  	  }
+     // 상세설명 이미지 미리보기
+     $("#detailImageInput").change(function(evt){
+       const file = evt.target.files[0];
+       if (file) {
+         const reader = new FileReader();
+         reader.onload = function(e) {
+           $("#detailImgPreview").prop("src", e.target.result);
+         };
+         reader.readAsDataURL(file);
+         $("#DetailImgName").val(file.name);
+       }
+     });
 
-    	  	  const formData = new FormData();
-    	  	  formData.append("profileImg", file);
-    	});//change */
-        
-        
-    	 // AJAX 업로드
-        const formData = new FormData();
-        formData.append("thumbnail_img", file);
-        
-        $.ajax({
-            url: "news_event_add_process.jsp",
-            type: "post",
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: "json",
-            success: function (json) {
-              if (json.resultFlag) {
-                $("#" + hiddenInputId).val(json.fileName);
-              } else {
-                alert("업로드 실패: " + json.error);
-                $("#" + previewImgId).attr("src", defaultImgSrc);
-                $("#" + hiddenInputId).val("");
-                resetFileInput(fileInputId); // 에러 시 파일 선택 초기화
-              }
-            }
-          });
-        
-      });
-      
-      
-      // 상세설명 이미지 미리보기
-      $("#detailImageInput").change(function(evt){
-        const file = evt.target.files[0];
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          $("#detailImgPreview").prop("src", e.target.result);
-        };
-        if (file) {
-          reader.readAsDataURL(file);
-          $("#DetailImgName").val(file.name);
-        }
-        
-      // AJAX 업로드
-      const formData = new FormData();
-      formData.append("detail_img", file);
+     // 등록 버튼 클릭 → form submit
+     $("#btn").click(function(){
+       $("#frm").submit();
+     });
+   });
 
-      $.ajax({
-        url: "news_event_add_process.jsp",
-        type: "post",
-        data: formData,
-        processData: false,
-        contentType: false,
-        dataType: "json",
-        success: function (json) {
-          if (json.resultFlag) {
-            $("#" + hiddenInputId).val(json.fileName);
-          } else {
-            alert("업로드 실패: " + json.error);
-            $("#" + previewImgId).attr("src", defaultImgSrc);
-            $("#" + hiddenInputId).val("");
-            resetFileInput(fileInputId); // 에러 시 파일 선택 초기화
-          }
-        }
-      });//ajax
-        
-      });//상세설명
-      
-      $("#btn").click(function(){
-    		
-    		$("#frm").submit();
-  		
-  	});//click
-      
-  		/* var blockExt=["jpg","gif","png","bmp"];
-  		
-  		var blockFlag=false;
-  		
-  	  // 썸네일 이미지 확장자 확인
-  		var ext=$("#profileImg").val();
-  		
-  		var getExt= ext.substring(ext.lastIndexOf(".")+1);
-  		
-  		for (var i=0 ; i < blockExt.length ; i++ ) {
-  			if (blockExt[i] == getExt.toLowerCase()) {
-  				blockFlag=true;
-  				break;
-  			}//end if
-  		}//end for
-  		
-  		if (!blockFlag) {
-  			alert("업로드 가능한 파일이 아닙니다. jpg, gif, bmp, png만 가능합니다.");
-  			return;
-  		}//end if */
-  
-  	
-    });//ready
   </script>
 </head>
 <body>
@@ -168,12 +79,12 @@
       <div class="form-section">
       
        <!-- 메타 정보 테이블 (번호, 작성자, 작성일) -->
-	  <table class="table table-bordered mb-4" style="max-width: 900px;">
-	    <tr>
-	      <th style="width:120px;">작성일</th>
-	      <td><%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %></td>
-	    </tr>
-	  </table>
+     <table class="table table-bordered mb-4" style="max-width: 900px;">
+       <tr>
+         <th style="width:120px;">작성일</th>
+         <td><%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %></td>
+       </tr>
+     </table>
   
         <div class="form-group mb-3">
           <label for="title">이벤트 제목</label>

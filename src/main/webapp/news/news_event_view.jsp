@@ -4,8 +4,28 @@
 <%@ page import="news.BoardDTO, news.NewsService" %>
 <%
   int board_id = Integer.parseInt(request.getParameter("board_id"));
+  
   NewsService service = new NewsService();
+  
+  //이전 글, 다음 글로 이동
+  BoardDTO prev = service.getPrevEvent(board_id);
+  BoardDTO next = service.getNextEvent(board_id);
+  request.setAttribute("prev", prev);
+  request.setAttribute("next", next);
+  
+  //조회수 증가
+  Boolean cntFlag=(Boolean)session.getAttribute("cntFlag");
+  if (cntFlag != null && cntFlag.booleanValue()) {   
+    service.plusViewCount(board_id);
+    session.setAttribute("cntFlag", false);
+	}
+  
+  //게시글 정보 조회
   BoardDTO dto = service.getOneEvent(board_id); 
+  if (dto == null) {
+	    response.sendRedirect("news_event_main.jsp");
+	    return;
+	}
   request.setAttribute("event", dto); // "event"라는 이름으로 view에 전달
 %>
 <!DOCTYPE html>
@@ -21,6 +41,16 @@
     .event-img { display: block; margin: 0 auto; max-width: 100%; height: auto; }
     .event-content { padding: 30px 50px; font-size: 16px; color: #333; }
     .back-btn { display: flex; justify-content: center; margin: 30px 0; }
+    
+    .hover-row {
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  	}
+  	.hover-row:hover {
+    background-color: #f8f9fa; 
+    cursor: pointer;
+ 	}
   </style>
 </head>
 <body>
@@ -36,13 +66,17 @@
       <fmt:formatDate value="${event.posted_at}" pattern="yyyy-MM-dd" />
       &nbsp;&nbsp; <i class="bi bi-eye"></i> ${event.viewCount}
     </div>
-    <img src="${pageContext.request.contextPath}/common/images/news_images/${event.image_url}" 
-         class="card-img-top event-img" alt="이벤트 이미지">
+    <img src="${pageContext.request.contextPath}/admin/common/images_pse/${event.thumbnail_url}" 
+         class="card-img-top event-img" alt="이벤트 썸네일 이미지">
+    <img src="${pageContext.request.contextPath}/admin/common/images_pse/${event.detail_image_url}" 
+         class="card-img-top event-img" alt="이벤트 상세설명 이미지">
   </div>
   
+  
+  <!-- 이전 글, 다음 글로 이동 -->
   <div class="border-top mt-5 pt-4">
     <!-- 이전 글 -->
-    <div class="d-flex align-items-center py-2">
+    <div class="d-flex align-items-center py-2 hover-row">
       <i class="bi bi-chevron-up me-2 text-muted"></i>
       <c:choose>
         <c:when test="${not empty prev}">
@@ -57,7 +91,7 @@
     </div>
 
     <!-- 다음 글 -->
-    <div class="d-flex align-items-center py-2">
+    <div class="d-flex align-items-center py-2 hover-row">
       <i class="bi bi-chevron-down me-2 text-muted"></i>
       <c:choose>
         <c:when test="${not empty next}">

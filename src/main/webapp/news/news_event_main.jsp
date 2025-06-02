@@ -6,27 +6,32 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
-	request.setCharacterEncoding("UTF-8");
-	
-	String boardType = request.getParameter("type");   
+request.setCharacterEncoding("UTF-8");
 
-	if (boardType == null || boardType.isEmpty()) {
-        boardType = "이벤트"; // 기본값: 이벤트
-    }
-	
-	String fieldText = request.getParameter("type");
-	String keyword = request.getParameter("keyword");
-	
-	PseRangeDTO rDTO = new PseRangeDTO();
-	rDTO.setField(fieldText);
-	rDTO.setKeyword(keyword);
-	
-	request.setAttribute("fieldText", fieldText);
-	request.setAttribute("keyword", keyword);
-	
-    NewsService service = new NewsService();
-    List<BoardDTO> eventList = service.getAllEvent(boardType);
-    request.setAttribute("eventList", eventList);
+String boardType = request.getParameter("type");   
+
+if (boardType == null || boardType.isEmpty()) {
+     boardType = "이벤트"; // 기본값: 이벤트
+ }
+
+ NewsService service = new NewsService();
+
+String keyword = request.getParameter("keyword");
+
+
+List<BoardDTO> eventList;
+
+if (keyword != null && !keyword.trim().isEmpty()) {
+    eventList = service.searchEventByKeyword(keyword);  // 검색 메서드 호출
+} else {
+    eventList = service.getAllEvent(boardType);  // 전체 출력
+}
+
+
+ request.setAttribute("eventList", eventList);
+    
+    //조회수 증가
+    session.setAttribute("cntFlag", true);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -59,15 +64,17 @@
     <h2 style="font-size: 50px; font-weight: bold; margin-bottom: 80px;" class="text-center" >Event</h2>
     
     <!-- 검색 필터 -->
-  <form class="row g-2 mb-3 d-flex justify-content-end" action="board_notice_list.jsp" method="get">
-    <div class="col-md-1" style="min-width: 130px;">
+  <form class="row g-2 mb-3 d-flex justify-content-end" action="news_event_main.jsp" method="get">
+   
+    <%-- <div class="col-md-1" style="min-width: 130px;">
       <select class="form-select" name="type" id="searchType" onchange="placeholder()">
         <option value="title" <%= "title".equals(fieldText) ? "selected" : "" %>>제목</option>
       <!--   <option value="posted_at">날짜</option> -->
       </select>
-    </div>
+    </div> --%>
+    
     <div class="col-md-2" style="min-width: 270px;">
-      <input type="text" name="keyword" class="form-control" id="keywordInput" placeholder="검색어를 입력해주세요." value="<%= keyword != null ? keyword : "" %>">
+      <input type="text" name="keyword" class="form-control" id="keywordInput" placeholder="제목을 입력해주세요." value="<%= keyword != null ? keyword : "" %>">
     </div>
     <div class="col-md-1">
       <button type="submit" class="btn btn-dark" >검색</button>
@@ -87,6 +94,8 @@ function placeholder(){
 	    input.placeholder = "날짜를 입력해주세요.";
 	  }
 }
+
+
 </script>
        
     <!-- TODO: 실제 컨텐츠 작성 영역 -->
@@ -95,6 +104,8 @@ function placeholder(){
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 ">
 
    <!-- 등록된 카드 반복 영역 -->
+   <c:choose>
+   <c:when test="${not empty eventList}">
 <c:forEach var="event" items="${eventList}">
   <div class="col">
     <a href="news_event_view.jsp?board_id=${event.board_id}" class="text-decoration-none text-dark">
@@ -110,6 +121,13 @@ function placeholder(){
     </a>
   </div>
 </c:forEach>
+</c:when>
+<c:otherwise>
+            
+     <strong class="text-center">등록된 이벤트가 없습니다.</strong>
+            
+          </c:otherwise>
+   </c:choose>
 
   </div>
     

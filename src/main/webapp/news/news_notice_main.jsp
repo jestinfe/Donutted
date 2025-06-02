@@ -36,6 +36,8 @@
     request.setAttribute("totalPage", totalPage);
     request.setAttribute("fieldText", fieldText);
     request.setAttribute("keyword", keyword);
+    
+    session.setAttribute("cntFlag", true);
 %>
 
 <!DOCTYPE html>
