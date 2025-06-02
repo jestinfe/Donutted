@@ -1,0 +1,271 @@
+ <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:import url="../common/header.jsp" />
+
+<!DOCTYPE html>
+<html>
+<head>
+  <c:import url="http://localhost/mall_prj/common/external_file.jsp"/>
+  <meta charset="UTF-8">
+  <title>Welcome to Donutted!!</title>
+  
+  <style>
+  body {
+    font-family: 'Pretendard', '맑은 고딕', sans-serif;
+    background-color: #fffafc;
+  }
+
+  #container {
+    background-color: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    max-width: 800px;
+    margin: 40px auto;
+  }
+
+  h2 {
+    text-align: center;
+    color: #ff6fa1;
+    margin-bottom: 30px;
+    font-weight: bold;
+  }
+
+  table {
+    width: 100%;
+    border-spacing: 15px;
+  }
+
+  th {
+    text-align: left;
+    color: #ff6fa1;
+    font-weight: bold;
+    vertical-align: top;
+    padding-top: 10px;
+    width: 150px;
+  }
+
+  .inputBox {
+    border: 1px solid #ffb7d2;
+    border-radius: 10px;
+    padding: 10px;
+    outline: none;
+    transition: box-shadow 0.3s;
+  }
+
+  .inputBox:focus {
+    box-shadow: 0 0 5px #ffa2cb;
+  }
+
+  .btnBox, input[type="button"], input[type="reset"] {
+    background-color: #ffa2cb;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: bold;
+  }
+
+  .btnBox:hover, input[type="button"]:hover, input[type="reset"]:hover {
+    background-color: #ff87bb;
+  }
+
+  select, input[type="radio"], input[type="checkbox"] {
+    margin-top: 5px;
+    accent-color: #ffa2cb;
+  }
+
+  input[type="radio"] + label, input[type="checkbox"] + label {
+    margin-right: 10px;
+    font-weight: normal;
+  }
+
+  iframe {
+    border-radius: 15px;
+    margin-bottom: 30px;
+  }
+
+  #btnConfirm, #btnCancel {
+    width: 100px;
+    margin: 10px 5px;
+  }
+</style>
+
+  <script>
+    function findZipcode() {
+      new daum.Postcode({
+        oncomplete: function(data) {
+          var roadAddr = data.roadAddress;
+          var extraRoadAddr = '';
+          if (data.bname !== '' && /[\uAC00-\uD7A3]+[동|로|가]$/g.test(data.bname)) {
+            extraRoadAddr += data.bname;
+          }
+          if (data.buildingName !== '' && data.apartment === 'Y') {
+            extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+          }
+          if (extraRoadAddr !== '') {
+            extraRoadAddr = ' (' + extraRoadAddr + ')';
+          }
+          document.getElementById('zipcode').value = data.zonecode;
+          document.getElementById("addr").value = roadAddr;
+          document.getElementById("addr2").focus();
+        }
+      }).open();
+    }
+
+    $(function() {
+      let idChecked = false;
+
+      $('#chkID').click(function() {
+        var id = $('#id').val().trim();
+        if (!id) { alert("아이디를 입력하세요."); return; }
+        window.open('id_dup.jsp?id=' + encodeURIComponent(id), 'idChk', 'width=512,height=313');
+      });
+
+      $('#id').on('input', function() {
+        idChecked = false;
+        $(this).removeAttr('readonly');
+      });
+
+      $('#chkPass').blur(function() {
+        var pass = $('#pass').val();
+        var chkPass = $('#chkPass').val();
+        if (pass !== chkPass) {
+          alert('비밀번호가 일치하지 않습니다.');
+          $('#pass, #chkPass').val('').first().focus();
+        }
+      });
+
+      $('#btnZipcode').click(findZipcode);
+
+      $('#btnConfirm').click(function() {
+        const fields = [
+          { selector: '#id', label: '아이디' },
+          { selector: '#pass', label: '비밀번호' },
+          { selector: '[name="name"]', label: '이름' },
+          { selector: '[name="tel"]', label: '휴대폰' },
+          { selector: '[name="email"]', label: '이메일' },
+          { selector: '[name="domain"]', label: '도메인' },
+          { selector: '#zipcode', label: '우편번호' },
+          { selector: '#addr', label: '주소' }
+        ];
+
+        for (const field of fields) {
+          const val = $(field.selector).val();
+          if (!val || val.trim() === '') {
+            alert(`${field.label}는 필수 입력입니다.`);
+            $(field.selector).focus();
+            return;
+          }
+        }
+
+        if ($('[name="tel"]').val().replace(/\D/g, '').length < 11) {
+          alert('휴대폰 번호는 11자리 이상 입력해주세요.');
+          $('[name="tel"]').focus();
+          return;
+        }
+
+        $('#frm').submit();
+      });
+    });
+  </script>
+</head>
+<body>
+<main>
+  <div id="container">
+    <h2>회원가입</h2>
+    <iframe src="scrollbar.html" style="border: 0px; width: 100%; height: 200px"></iframe>
+
+    <form action="member_process.jsp" name="frm" id="frm" method="post">
+      <table>
+<tr>
+  <th>* 아이디</th>
+  <td>
+    <input type="text" name="id" id="id" class="inputBox" style="width:120px" maxlength="10" 
+    pattern="[A-Za-z]{1,10}" title="영문 10자까지 입력">
+    <input type="button" value="ID중복확인" class="btnBox" id="chkID">
+  </td>
+</tr>
+
+<tr>
+  <th>* 비밀번호</th>
+  <td>
+    <input type="password" id="pass" name="pass" class="inputBox" style="width:200px" 
+    maxlength="10" pattern="\d{1,10}" title="숫자 10자까지 입력">
+    비밀번호 확인
+    <input type="password" id="chkPass" name="chkPass" class="inputBox" style="width:200px" 
+    maxlength="10" pattern="\d{1,10}">
+  </td>
+</tr>
+        <tr>
+          <th>* 이름</th>
+          <td><input type="text" name="name" class="inputBox" 
+          maxlength="7" style="width:150px"></td>
+        </tr>
+<tr>
+  <th>생일</th>
+  <td><input type="text" name="birth" class="inputBox" 
+  maxlength="10" placeholder="1999-01-01"></td>
+</tr>
+
+<tr>
+  <th>* 휴대폰</th>
+  <td>
+    <input type="text" name="tel" class="inputBox" placeholder="010-1234-5678" 
+    maxlength="14" pattern="010-\d{4}-\d{4}" title="형식: 010-1234-5678">
+  </td>
+</tr>
+
+<tr>
+  <th>* 이메일</th>
+  <td>
+    <input type="text" name="email" class="inputBox" style="width:250px" 
+    maxlength="15" pattern="[A-Za-z]{1,10}" title="영문 10자까지 입력">@ 
+    <input type="text" name="domain" class="inputBox" list="domain" style="width:150px">
+    <datalist id="domain">
+      <option value="직접 입력">
+      <option value="naver.com">
+      <option value="gmail.com">
+      <option value="daum.net">
+      <option value="nate.com">
+      <option value="hotmail.com">
+    </datalist>
+  </td>
+</tr>
+        <tr>
+          <th>* 성별</th>
+          <td>
+            <input type="radio" name="gender" value="M" checked><label>남자</label>
+            <input type="radio" name="gender" value="F"><label>여자</label>
+          </td>
+        </tr>
+        <tr>
+          <th>* 우편번호</th>
+          <td>
+            <input type="text" name="zipcode" id="zipcode" readonly class="inputBox" style="width:60px">
+            <input type="button" value="우편번호검색" id="btnZipcode">
+          </td>
+        </tr>
+        <tr>
+          <th>* 주소</th>
+          <td>
+            <input type="text" name="addr" id="addr" readonly class="inputBox" style="width:500px"><br>
+            <input type="text" name="addr2" id="addr2" class="inputBox" 
+            style="width:500px" maxlength="20">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">
+            <input type="button" value="확인" id="btnConfirm">
+            <input type="reset" value="취소" id="btnCancel">
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</main>
+<c:import url="../common/footer.jsp" />
+</body>
+</html>
