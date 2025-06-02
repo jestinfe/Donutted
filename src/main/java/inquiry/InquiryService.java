@@ -29,13 +29,13 @@ public class InquiryService {
 	}
 	public InquiryDTO getInquiryById(int inquiryId) {
 	    try {
-	        InquiryDAO dao = new InquiryDAO();
-	        return dao.selectInquiryById(inquiryId);
+	        return InquiryDAO.getInstance().selectById(inquiryId);  // ← 조인된 메서드 사용
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return null;
 	    }
 	}
+
 	// 관리자 전체 조회
 	public List<InquiryDTO> getAllInquiries() throws SQLException {
 	    InquiryDAO dao = new InquiryDAO();

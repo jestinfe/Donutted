@@ -56,6 +56,16 @@
 <div class="main">
   <h4>1:1 문의 상세</h4>
 
+  <%
+    String loginId = (String) session.getAttribute("loginId");
+  %>
+ 
+
+  <div class="item">
+    <span class="label">작성자</span>
+    <div class="box">${dto.username}</div>
+  </div>
+
   <div class="item">
     <span class="label">제목</span>
     <div class="box">${dto.title}</div>
@@ -80,14 +90,16 @@
     </div>
 
     <div class="text-end mt-3">
-  <button type="submit" class="btn btn-save">답변 등록</button>
-  <a href="qna_list.jsp" class="btn btn-secondary">목록</a>
-  <a href="qna_delete.jsp?inquiry_id=${dto.inquiryId}"
-     onclick="return confirm('정말 삭제하시겠습니까?');"
-     class="btn btn-danger">삭제</a>
-</div>
+      <button type="submit" class="btn btn-save">답변 등록</button>
+      <a href="qna_list.jsp" class="btn btn-secondary">목록</a>
+      <a href="qna_delete.jsp?inquiry_id=${dto.inquiryId}"
+         onclick="return confirm('정말 삭제하시겠습니까?');"
+         class="btn btn-danger">삭제</a>
+    </div>
   </form>
+  
 </div>
+
 
 </body>
 </html>

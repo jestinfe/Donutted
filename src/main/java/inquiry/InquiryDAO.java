@@ -375,7 +375,7 @@ public class InquiryDAO {
 	                dto.setContent(rs.getString("content"));
 	                dto.setCreatedAt(rs.getTimestamp("created_at"));
 	                dto.setReplyContent(rs.getString("reply_content"));
-	                dto.setUsername(rs.getString("username")); // 추가된 부분
+	                dto.setUsername(rs.getString("username")); 
 	                return dto;
 	            }
 	        }
@@ -383,4 +383,6 @@ public class InquiryDAO {
 	    return null;
 	}
 
+	
+	
 }//class
