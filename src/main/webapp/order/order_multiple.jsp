@@ -31,18 +31,42 @@
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <style>
-    .orderDiv { display: flex; justify-content: space-between; gap: 30px; }
-    .divLeft, .divRight { width: 50%; }
-    .itemList { border: 1px solid #ddd; padding: 20px; border-radius: 16px; background-color: #fafafa; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .orderDiv { display: flex; justify-content: space-between; gap: 30px; overflow:visible;
+    border: 1px solid none}
+    .divLeft { min-width: 550px; margin-left: 20px; padding: 15px}
+    .divRight {min-width: 550px; box-shadow: 0 0px 4px rgba(0,0,0,0.4);
+    border-radius: 8px; padding: 15px;
+    min-height: 910px; 	height: 940px; margin-right: 70px; position: fixed; top: 40px; position: sticky; margin-top: 40px}
+    .itemList { border: 1px solid #ddd; padding: 20px; border-radius: 16px; background-color: #f2f2f2; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .itemImgDiv img { width: 140px; border-radius: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    .itemInfoTitle, .itemInfoPrice { display: flex; align-items: center; gap: 10px; margin-top: 15px; font-size: 16px; }
+    .itemInfoTitle1, .itemInfoPrice { display: flex; align-items: center; gap: 10px; margin-top: 15px; font-size: 16px; }
     .infoTitle { width: 80px; font-weight: bold; color: #555; }
     .infoInput input, .infoInput select { width: 100%; padding: 6px 10px; border: 1px solid #ccc; border-radius: 8px; }
-    table { width: 100%; margin-top: 20px; font-size: 15px; }
-    .cost { text-align: right; }
+    table { width: 100%; margin-top: 21px; font-size: 20px}
+    td {margin-bottom: 5px; height:40px; border: 1px solid none}
+    .cost { text-align: right; font-size: 21px; padding-right:15px}
     .orderBtnDiv { text-align: center; margin-top: 25px; }
-    .orderBtn { padding: 12px 40px; font-size: 17px; background-color: #ff69b4; color: white; border: none; border-radius: 8px; cursor: pointer; }
-    .checkBox2 { margin-top: 15px; font-size: 14px; color: #555; }
+    .orderBtn { font-size: 30px; background-color: #ff69b4; color: white; font-weight:bold; margin-bottom:8px;
+    border: none; border-radius: 8px; cursor: pointer; width: 75%; height: 80px}
+    .orderBtn:hover{ font-size: 30px; background-color: #812151; color: white; font-weight:bold; margin-bottom:8px;
+    border: none; border-radius: 8px; cursor: pointer; width: 75%; height: 80px; transition: background-color 0.2s ease-in-out;}
+    .checkBox2 { margin-top: 20px; font-size: 18px; color: #555; padding-left: 20px;
+    display: flex; justify-content: center; align-items: center}
+    
+    .singleItemDiv { border: 1px solid none; border-radius: 8px; background-color: white;
+    display: flex; height: 160px; box-shadow: 0 0px 4px rgba(0,0,0,0.4);}
+    .singleItemDiv > div {border:1px solid none; margin:10px}
+    .singleItemDiv > .itemImgDiv { width:140px; height: 140px}
+    .itemImgDiv > img {width: 100%; height: 100%}
+    .infoDiv {display: flex; min-width: 320px; flex-direction: column}
+    .infoDiv > div{display: flex; border:1px solid none}
+    .infoDiv > .itemInfoTitle1 {flex: 1; font-size:26px; font-weight: bold}
+    .itemInfoTitle2 {font-size:20px}
+    .infoDiv > .itemInfoPrice {flex: 2; font-size:22px; margin-bottom: 6px}
+    .orderInfo > div {margin-bottom: 3px}
+    .checkbox3 {margin-right: 15px; width: 15px; height: 15px}
+    
+    
   </style>
 </head>
 <body>
@@ -51,7 +75,8 @@
   <main class="container" style="min-height:600px; padding:60px 20px;">
     <h2 style="font-size:28px; font-weight:bold; margin-bottom:20px;">주문하기</h2>
     <form action="order_confirm.jsp" method="POST">
-      <div class="orderDiv">
+    
+      <div class="orderDiv" >
         <div class="divLeft">
           <h4>주문상품</h4>
           <div class="itemList">
@@ -66,20 +91,22 @@
                 <div class="itemImgDiv">
                   <img src="<c:url value='/admin/common/upload/${productImage}' />" />
                 </div>
-                <div class="itemInfoTitle">
-                  <div><%= p.getName() %></div>
-                  <div>수량:</div>
-                  <div><%= item.getQuantity() %>개</div>
+                <div class="infoDiv">
+	                <div class="itemInfoTitle1"><div><%= p.getName() %></div></div>
+	                 <div class="itemInfoTitle2"><div>수량:</div><div style="font-weight: bold; margin-left: 15px"><%= item.getQuantity() %>개</div></div>
+	                <div class="itemInfoPrice">
+	                  <div><fmt:formatNumber value="<%= item.getUnitPrice() %>" pattern="###,###" />원 × <%= item.getQuantity() %> =</div>
+	                  <div><b><fmt:formatNumber value="<%= itemTotal %>" pattern="###,###" />원</b></div>
+	                </div>
                 </div>
-                <div class="itemInfoPrice">
-                  <div><fmt:formatNumber value="<%= item.getUnitPrice() %>" pattern="###,###" />원 × <%= item.getQuantity() %> =</div>
-                  <div><b><fmt:formatNumber value="<%= itemTotal %>" pattern="###,###" />원</b></div>
-                </div>
+                
               </div>
             <% } %>
           </div>
-        </div>
-
+        </div><!-- divLeft -->
+        
+        
+		
         <div class="divRight">
           <h4>주문자 정보</h4>
 
@@ -108,7 +135,7 @@
 
             <div class="infoTitle">주소</div>
             <div class="infoInput">
-              <input type="text" name="addr1" id="addr" required placeholder="도로명 주소"><br>
+              <input type="text" name="addr1" id="addr" required placeholder="도로명 주소" style="margin-bottom: 5px"><br>
               <input type="text" name="addr2" id="addr2" placeholder="상세 주소">
             </div>
 
@@ -123,17 +150,17 @@
               </select>
               <input type="text" name="memo" id="memoInput" placeholder="요청사항 직접입력" style="margin-top:8px; display:none;">
             </div>
-          </div>
+          </div><!-- orderInfo -->
 
           <table>
-            <tr><td>상품금액</td><td class="cost"><fmt:formatNumber value="<%= totalPrice %>" pattern="###,###" /> 원</td></tr>
-            <tr><td>배송비</td><td class="cost">+ <fmt:formatNumber value="<%= deliveryCost %>" pattern="###,###" /> 원</td></tr>
-            <tr><td colspan="2"><hr></td></tr>
-            <tr><td><b>총 주문금액</b></td><td class="cost"><b><fmt:formatNumber value="<%= totalPrice + deliveryCost %>" pattern="###,###" /> 원</b></td></tr>
+            <tr><td style="padding-left: 15px">상품금액</td><td class="cost" ><fmt:formatNumber value="<%= totalPrice %>" pattern="###,###" /> 원</td></tr>
+            <tr><td style="padding-left: 15px">배송비</td><td class="cost">+ <fmt:formatNumber value="<%= deliveryCost %>" pattern="###,###" /> 원</td></tr>
+            <tr><td colspan="2" style="height:5px;"><hr></td></tr>
+            <tr><td style="padding-left: 15px"><b>총 주문금액</b></td><td class="cost"><b><fmt:formatNumber value="<%= totalPrice + deliveryCost %>" pattern="###,###" /> 원</b></td></tr>
           </table>
 
           <div class="checkBox2">
-            <input type="checkbox" required> 구매조건 확인 및 결제진행에 동의합니다.
+            <input class="checkbox3" type="checkbox" required> 구매조건 확인 및 결제진행에 동의합니다.
           </div>
 
           <input type="hidden" name="totalCost" value="<%= totalPrice + deliveryCost %>" />
@@ -143,8 +170,11 @@
           <div class="orderBtnDiv">
             <input type="submit" value="결제하기" class="orderBtn" />
           </div>
-        </div>
-      </div>
+          
+        </div><!-- divRight -->
+        
+        
+      </div><!-- orderDiv -->
     </form>
   </main>
 
