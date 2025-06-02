@@ -2,7 +2,7 @@
 <%
 String id = request.getParameter("id");
 if (id == null || id.trim().isEmpty()) {
-  response.sendRedirect("login.jsp"); // 비정상 접근 시 로그인 페이지로
+  response.sendRedirect("login.jsp");
   return;
 }
 %>
@@ -14,11 +14,11 @@ if (id == null || id.trim().isEmpty()) {
   <style>
     body { font-family: '맑은 고딕'; background: #f9f9f9; padding: 50px; }
     .box {
-      max-width: 400px; margin: 0 auto; padding: 20px;
+      max-width: 500px; margin: 0 auto; padding: 20px;
       background: #fff; border: 1px solid #ccc; border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    input, button { width: 100%; padding: 10px; margin: 10px 0; }
+    input, button { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box;}
     button { background: #f8a7bb; color: white; font-weight: bold; border: none; }
     button:hover { background: #f18aa7; }
   </style>
@@ -40,9 +40,9 @@ if (id == null || id.trim().isEmpty()) {
     document.getElementById("resetPwForm").addEventListener("submit", function(e) {
       e.preventDefault();
 
-      const form = e.target;
-      const formData = new FormData(form);
-      const params = new URLSearchParams(formData);
+      var form = e.target;
+      var formData = new FormData(form);
+      var params = new URLSearchParams(formData);
 
       fetch("reset_pw_ok.jsp", {
         method: "POST",
@@ -53,12 +53,14 @@ if (id == null || id.trim().isEmpty()) {
       })
       .then(res => res.text())
       .then(data => {
-        const result = data.trim().toUpperCase();
+        var result = data.trim().toUpperCase();
         if (result === "OK") {
           alert("비밀번호가 성공적으로 변경되었습니다.");
           location.href = "login.jsp";
         } else if (result === "MISMATCH") {
           alert("비밀번호가 서로 일치하지 않습니다.");
+        } else if (result === "SAME") {
+          alert("이전 비밀번호와 동일합니다.");
         } else {
           alert("비밀번호 변경에 실패했습니다. 다시 시도해주세요.");
         }
