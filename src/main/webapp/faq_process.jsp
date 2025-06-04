@@ -24,5 +24,6 @@ if (success) {
   history.back();
 </script>
 <%
-}
+}//end
 %>
+
