@@ -4,11 +4,12 @@
   request.setCharacterEncoding("UTF-8");
   String orderIdParam = request.getParameter("order_id");
   
+  if (session.getAttribute("userId") ==null ) {
+	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	  return;
+	}
+  
   Integer userId = (Integer) session.getAttribute("userId");
-  if (userId == null) {
-    out.print("<script>alert('로그인이 필요합니다.'); location.href='/login.jsp';</script>");
-    return;
-  }
 
   if (orderIdParam == null) {
     out.print("<script>alert('잘못된 접근입니다.'); history.back();</script>");

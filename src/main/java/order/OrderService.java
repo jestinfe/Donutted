@@ -165,9 +165,8 @@ public class OrderService {
             List<OrderDTO> all = dao.selectOrdersByRange(new RangeDTO(1, Integer.MAX_VALUE), null, searchDate, searchStatus);
             List<OrderDTO> filtered = new ArrayList<>();
             for (OrderDTO dto : all) {
-            	String decryptedName = safeDecrypt(dto.getUserName());
-            	dto.setUserName(decryptedName);
-
+                String decryptedName = safeDecrypt(dto.getUserName());
+                dto.setUserName(decryptedName);
 
                 boolean match = true;
                 if (searchName != null && !searchName.trim().isEmpty()) {
@@ -260,7 +259,7 @@ public class OrderService {
             return false;
         }
     }
-    
+
     private String safeDecrypt(String encryptedValue) {
         try {
             return CryptoUtil.isValidBase64(encryptedValue) ? CryptoUtil.decrypt(encryptedValue) : encryptedValue;
@@ -268,19 +267,18 @@ public class OrderService {
             return ""; // 복호화 실패 시 빈 문자열 반환
         }
     }
-    
- // [사용자 마이페이지 전용] 특정 userId의 주문 목록을 RangeDTO로 페이징 조회
+
+    // [사용자 마이페이지 전용] 특정 userId의 주문 목록을 RangeDTO로 페이징 조회 (리뷰 상태 포함)
     public List<OrderDTO> getOrdersByUserWithRange(int userId, RangeDTO range) {
         try {
-            List<OrderDTO> allOrders = dao.getOrdersByUser(userId);
-            int fromIndex = Math.max(0, range.getStartNum() - 1);
-            int toIndex = Math.min(allOrders.size(), range.getEndNum());
-            return fromIndex < allOrders.size() ? allOrders.subList(fromIndex, toIndex) : new ArrayList<>();
+            return dao.getOrdersByUserWithRange(userId, range);
         } catch (SQLException e) {
             e.printStackTrace();
             return new ArrayList<>();
         }
     }
 
-
+    public OrderDTO getItemsWithReviewStatusByOrder(int userId, int orderId) throws SQLException {
+        return dao.getItemsWithReviewStatusByOrder(userId, orderId);
+    }
 }

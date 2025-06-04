@@ -7,17 +7,21 @@
 
 <%
   request.setCharacterEncoding("UTF-8");
+
+if (session.getAttribute("userId") ==null ) {
+	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	  return;
+	}
+
   Integer userId = (Integer) session.getAttribute("userId");
   List<RefundDTO> refundList = new ArrayList<>();
 
-  if (session.getAttribute("userId") == null) {
-	    out.print("세션에 user_id가 null입니다.");
-	}
+
   
-  if (userId != null) {
-    RefundService service = new RefundService();
-    refundList = service.getUserRefunds(userId);
-  }
+
+   RefundService service = new RefundService();
+   refundList = service.getUserRefunds(userId);
+  
   request.setAttribute("refundList", refundList);
 %>
 
@@ -108,7 +112,7 @@
               <div style="display: flex; align-items: center; gap: 10px;">
                 <img src="${pageContext.request.contextPath}/admin/common/upload/${r.thumbnailUrl}" alt="${r.productName}" 
      style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px;" 
-     onerror="this.src='/images/no_image.png';"/>
+     onerror="이미지"/>
                 <span>${r.productName}</span>
               </div>
             </td>

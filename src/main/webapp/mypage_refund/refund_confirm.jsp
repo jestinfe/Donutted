@@ -2,6 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
   request.setCharacterEncoding("UTF-8");
+if (session.getAttribute("userId") ==null ) {
+	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	  return;
+	}
   String productName = request.getParameter("product_name");
   String productImage = request.getParameter("product_image");
   String reason = request.getParameter("reason");

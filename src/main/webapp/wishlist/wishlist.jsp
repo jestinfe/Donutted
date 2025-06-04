@@ -11,7 +11,7 @@ if(userId==null){
 	  %>
 	  	 <script>
 		    alert("로그인 후 이용해주세요.");
-	    	location.href = "login.jsp";
+	    	location.href = "../UserLogin/login.jsp";
 	  	</script>
 	  <% 
 	  	return;
@@ -185,7 +185,7 @@ window.onload = function () {
 
           <!-- 버튼 -->
           <div style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
-          <form action="addToCart.jsp" method="POST">
+          <form action="../cart/addToCart.jsp" method="POST">
             <input type="submit" value="장바구니 담기" class="goCartBtn"
                    style="margin-left: 10px; width: 100px; height: 30px; background: white; color: hotpink; border: 1px solid hotpink; border-radius: 4px; font-weight: bold;">
                       <input type="hidden" name="productId" value="${wish.productId}">
@@ -207,7 +207,7 @@ window.onload = function () {
 <form action="remove_wish.jsp" method="POST" id="wishForm">
 
 </form>
- 				<form action="addToCart.jsp" method="POST" id="addWishToCart"></form>
+ 				<form action="../cart/addToCart.jsp" method="POST" id="addWishToCart"></form>
 
 		<!-- 이미지 -->
 			

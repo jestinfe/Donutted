@@ -4,6 +4,10 @@
 
 <%
   request.setCharacterEncoding("UTF-8");
+if (session.getAttribute("userId") ==null ) {
+	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	  return;
+	}
   Integer userId = (Integer) session.getAttribute("user_id");
   int orderItemId = Integer.parseInt(request.getParameter("order_item_id"));
   String productName = request.getParameter("product_name");

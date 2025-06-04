@@ -22,13 +22,14 @@ WishService ws = new WishService();
 
 WishListDTO wlDTO = new WishListDTO();
 wlDTO.setProductId(productId);
+
 wlDTO.setUserId(userId);
 if(ws.existWishes(userId, productId)){
 ws.removeWishList(wlDTO, productId);
-response.sendRedirect("menu.jsp");
+response.sendRedirect("../product/menu.jsp");
 }else{
 ws.insertWish(wlDTO);
-response.sendRedirect("menu.jsp");
+response.sendRedirect("../product/menu.jsp");
 }
 %>
 <!-- <script> -->

@@ -1,84 +1,230 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="order.OrderService, order.OrderItemDTO" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ page import="order.*" %>
 <%
-    request.setCharacterEncoding("UTF-8");
-    int orderItemId = Integer.parseInt(request.getParameter("order_item_id"));
-
-    OrderService service = new OrderService();
-    OrderItemDTO item = service.getOrderItemDetail(orderItemId);
+  request.setCharacterEncoding("UTF-8");
+  int orderItemId = Integer.parseInt(request.getParameter("order_item_id"));
+  OrderItemDTO item = new OrderService().getOrderItemDetail(orderItemId);
 %>
-
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>리뷰 작성</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        .star-rating {
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: flex-end;
-            font-size: 24px;
-        }
+  <meta charset="UTF-8">
+  <title>리뷰 작성</title>
+  <style>
+    body {
+      font-family: 'Pretendard', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #fff;
+    }
 
-        .star-rating input[type="radio"] {
-            display: none;
-        }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      border: 1px solid #ddd;
+      padding: 20px;
+    }
 
-        .star-rating label {
-            color: #ccc;
-            cursor: pointer;
-        }
+    .product-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
 
-        .star-rating input[type="radio"]:checked ~ label {
-            color: gold;
-        }
+    .product-info {
+      display: flex;
+      align-items: center;
+    }
 
-        .star-rating label:hover,
-        .star-rating label:hover ~ label {
-            color: gold;
-        }
-    </style>
+    .product-img {
+      max-width: 35px;
+      max-height: 35px;
+      margin-right: 10px;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+
+    .product-text {
+      font-size: 1.1em;
+    }
+
+    .product-text p {
+      margin: 0;
+    }
+
+    .divider {
+      border-top: 1px solid #ccc;
+      margin: 20px 0;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 8px;
+      resize: vertical;
+    }
+
+    .char-counter {
+      text-align: right;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .file-label {
+      display: inline-flex;
+      width: 60px;
+      height: 60px;
+      border: 1px dashed #ccc;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .review-img {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+
+    .star-rating {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .star {
+      color: #ccc;
+    }
+
+    .star.selected {
+      color: gold;
+    }
+
+    .submit-btn {
+      background-color: pink;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+    }
+
+    .note {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .setPadBot {
+      padding-bottom: 20px
+    }
+
+    .image-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+  </style>
 </head>
-<body style="padding:20px;">
-
-<h4>리뷰 작성</h4>
-
-<div class="mb-3">
-    <img src="/mall_prj/admin/common/upload/<%= item.getThumbnailUrl() %>" alt="상품 이미지"
-         style="width:150px; height:150px; object-fit:cover; border-radius:8px;">
-    <p class="mt-2 fw-bold"><%= item.getProductName() %></p>
-</div>
-
-<form action="review_submit.jsp" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="order_item_id" value="<%= item.getOrderItemId() %>">
-
-    <div class="mb-3">
-        <label class="form-label">평점</label>
-        <div class="star-rating">
-            <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
-            <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
-            <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
-            <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
-            <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+<body>
+  <div class="container">
+    <!-- 상품 정보 -->
+    <header class="product-header">
+      <div class="product-info">
+        <img src="/mall_prj/admin/common/upload/<%= item.getThumbnailUrl() %>" alt="상품 이미지" class="product-img">
+        <div class="product-text">
+          <p><strong><%= item.getProductName() %></strong></p>
         </div>
-    </div>
+      </div>
+    </header>
 
-    <div class="mb-3">
-        <label for="content" class="form-label">리뷰 내용</label>
-        <textarea class="form-control" name="content" rows="4" required></textarea>
-    </div>
+    <div class="divider"></div>
 
-    <div class="mb-3">
-        <label for="image" class="form-label">이미지 첨부 (선택)</label>
-        <input type="file" class="form-control" name="image" accept="image/*">
-    </div>
+    <!-- 인사말 -->
+    <p style="font-size: 0.8em" class="setPadBot">고객님, 구매 상품은 어떠셨나요?</p>
 
-    <button type="submit" class="btn btn-success">제출</button>
-</form>
+    <!-- 작성 폼 -->
+    <form action="review_submit.jsp" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="order_item_id" value="<%= orderItemId %>">
+      <input type="hidden" name="rating" id="ratingInput" value="0">
 
+      <!-- 평점 -->
+      <div class="section setPadBot">
+        <label><strong>만족도</strong></label>
+        <div id="stars" class="star-rating">
+          <% for (int i = 1; i <= 5; i++) { %>
+            <span class="star" data-value="<%= i %>">★</span>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- 내용 -->
+      <div class="section setPadBot">
+        <label><strong>리뷰 작성란</strong></label>
+        <textarea name="content" rows="4" maxlength="200" required></textarea>
+        <div class="char-counter"><span id="charCount">0</span>/200</div>
+      </div>
+
+      <!-- 이미지 -->
+      <div class="section setPadBot">
+        <label><strong>사진 첨부</strong></label>
+        <p class="note">
+          사진은 한 장만 첨부할 수 있으며,<br>
+          상품과 상관없는 사진은 첨부된 리뷰는 통보 없이 삭제될 수 있습니다.
+        </p>
+        <div class="image-row">
+          <img class="review-img" id="previewImg" style="display: none;">
+          <label for="photo-input" class="file-label">+</label>
+          <input type="file" id="photo-input" name="image" accept="image/*" hidden>
+        </div>
+      </div>
+
+      <!-- 제출 -->
+      <div style="text-align: center; margin-top: 20px;">
+        <button type="submit" class="submit-btn">리뷰 작성하기</button>
+      </div>
+    </form>
+  </div>
+
+<script>
+  // 별점 선택
+  const stars = document.querySelectorAll('.star');
+  const ratingInput = document.getElementById('ratingInput');
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const value = star.getAttribute('data-value');
+      ratingInput.value = value;
+      stars.forEach(s => {
+        s.classList.toggle('selected', s.getAttribute('data-value') <= value);
+      });
+    });
+  });
+
+  // 글자 수 실시간 반영
+  const charCount = document.getElementById('charCount');
+  const textarea = document.querySelector('textarea');
+  textarea.addEventListener('input', () => {
+    charCount.textContent = textarea.value.length;
+  });
+
+  // 이미지 미리보기
+  const photoInput = document.getElementById("photo-input");
+  const previewImg = document.getElementById("previewImg");
+  previewImg.className = "review-img";
+  photoInput.addEventListener("change", () => {
+    const file = photoInput.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        previewImg.src = e.target.result;
+        previewImg.style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    } else {
+      previewImg.style.display = "none";
+    }
+  });
+</script>
 </body>
 </html>

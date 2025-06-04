@@ -43,11 +43,12 @@
 <c:import url="/common/mypage_sidebar.jsp" />
 <%
   request.setCharacterEncoding("UTF-8");
+if (session.getAttribute("userId") ==null ) {
+	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	  return;
+	}
   Integer userId = (Integer) session.getAttribute("userId");
-  if (userId == null) {
-    out.print("<script>alert('로그인이 필요합니다.'); location.href='/UserLogin/login.jsp';</script>");
-    return;
-  }
+
 %>
 <div class="orders-container">
   <h3>주문배송 조회</h3>

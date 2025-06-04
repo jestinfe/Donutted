@@ -1,8 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.oreilly.servlet.MultipartRequest, com.oreilly.servlet.multipart.DefaultFileRenamePolicy" %>
 <%@ page import="review.*" %>
-<%@ include file="/common/external_file.jsp" %>
-
 <%
   request.setCharacterEncoding("UTF-8");
   String savePath = application.getRealPath("/common/images/review");

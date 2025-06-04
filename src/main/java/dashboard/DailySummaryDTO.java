@@ -18,6 +18,7 @@ public class DailySummaryDTO {
     private int totalOrders;
     private int totalSales;
     private int orderCompleted ;
+    private int orderCanceled ;
     private int beforeShipping;
     private int shipping;
     private int shippingDone;
@@ -25,6 +26,13 @@ public class DailySummaryDTO {
     private int refundRequested;
     private int refundApproved;
     private int refundRejected;
+    
+    private int totalRefundAmount; // ✅ 새로 추가됨
+    
+    public int getNetSales() {
+        return totalSales - totalRefundAmount;
+    }
+
 
 
    

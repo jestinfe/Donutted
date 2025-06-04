@@ -48,14 +48,14 @@ if (productIds != null && productIds.length > 0) {
 				%>
 				<script>
 			alert("장바구니에 있는 항목들은 추가 하지 않았습니다. : <%=name%>");
-			location.href = "wishlist.jsp";				
+			location.href = "/mall_prj/wishlist/wishlist.jsp";				
 				</script>
 				<%
 		}else{
 			%>
 			<script>
 			alert("장바구니에 추가 하였습니다.");
-			location.href="wishlist.jsp";
+			location.href="/mall_prj/wishlist/wishlist.jsp";
 			</script>
 			<% 
 		}//end else;
@@ -68,7 +68,7 @@ if (productIds != null && productIds.length > 0) {
 			%>
 			<script>
 			alert("장바구니에 이미 있음");
-			location.href="wishlist.jsp";
+			location.href="/mall_prj/wishlist/wishlist.jsp";
 			</script>
 			<% 
 		}
@@ -79,7 +79,7 @@ if (productIds != null && productIds.length > 0) {
 		%>
 		<script>
 		alert("장바구니에 추가되었음");
-		location.href="wishlist.jsp";
+		location.href="/mall_prj/wishlist_wishlist.jsp";
 		</script>
 		
 		<%

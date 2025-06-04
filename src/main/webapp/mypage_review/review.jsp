@@ -28,11 +28,7 @@
 
   <style>
  
-.nav a {
-    font-size: 18px;
-    font-weight: 700;
-    color: #212121;
-  }
+
 a { text-decoration:none; color:inherit; }
   ul { list-style:none; }
     .container { max-width: 800px; margin: 50px auto; }
@@ -40,7 +36,7 @@ a { text-decoration:none; color:inherit; }
     .options li.active { background-color: #ffe6e6; }
     .starRed { color: #f42; }
     .starGrey { color: #ccc;  margin-left: 0; }
-    .stat-box { background: #f9f9f9; padding: 20px; border-radius: 10px; margin-top: 20px; }
+    .stat-box { background: #f9f9f9; padding: 20px; border-radius: 10px; margin-top: 20px; max-width: 700px; text-align: center; margin-left: auto; margin-right: auto;}
     .bar-row { display: flex; align-items: center; margin: 8px 0; }
     .bar-row span { width: 40px; }
     .bar { flex: 1; height: 10px; background: #ddd; border-radius: 5px; margin-left: 10px; }
@@ -50,72 +46,71 @@ a { text-decoration:none; color:inherit; }
     .star-shape { fill: lightgray; }
     .star-fill { fill: #f42; }
     .dropdown {
-  font-size: 14px;
-  text-align: left;
-  position: relative;
-  display: inline-block;
-  min-width: auto;
-  user-select: none;
-  cursor: pointer;
-}
+      font-size: 12px;
+      text-align: left;
+      position: relative;
+      width: 120px;
+      user-select: none;
+      cursor: pointer;
+    }
 
-.selected {
-  border: 1px solid #aaa;
-  border-radius: 5px;
-  padding: 8px 12px;
-  background: #fff;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
+    .selected {
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      padding: 12px;
+      background: #fff;
+    }
+    
+    .selected:hover {
+      border-color: black;
+    }
 
-.options {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
-  border: 1px solid #aaa;
-  z-index: 10;
-  border-radius: 5px;
-  max-height: 200px;
-  overflow-y: auto;
-  min-width: 100%;
-}
+    .options {
+      list-style: none;
+      padding-left: 0;
+      display: none;
+      position: absolute;
+      margin-top: 2px;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #aaa;
+      z-index: 10;
+      border-radius: 5px;
+      max-height: none;
+      overflow-y: visible;
+    }
 
-.options li {
-  padding: 8px 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  white-space: nowrap;
-}
+    .options li {
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
 
-.options li:hover {
-  background-color: #f1f1f1;
-}
+    .options li.active {
+      background-color: #f5f5f5;
+      font-weight: bold;
+    }
+    
+    .options li:hover {
+      background-color: #f0f0f0;
+    }
+
+	.starRed {
+	  color: #f42;
+	}
+	
+	.starGrey {
+	  color: #ccc;
+	}
   </style>
 
 
 
 <div class="review-container">
   <div class="container">
-    <!-- 드롭다운 -->
-    <div class="dropdown" id="ratingDropdown">
-      <div class="selected">전체 평점 보기 ▼</div>
-      <ul class="options">
-        <li class="active" data-value="0">전체 평점 보기</li>
-        <li data-value="5">최고<span class="starRed">★ ★ ★ ★ ★</span></li>
-        <li data-value="4">좋음<span class="starRed">★ ★ ★ ★</span><span class="starGrey">★</span></li>
-        <li data-value="3">보통<span class="starRed">★ ★ ★</span><span class="starGrey">★ ★</span></li>
-        <li data-value="2">별로<span class="starRed">★ ★</span><span class="starGrey">★ ★ ★</span></li>
-        <li data-value="1">나쁨<span class="starRed">★</span><span class="starGrey">★ ★ ★ ★</span></li>
-      </ul>
-    </div>
+
 
     <!-- 별점 통계 -->
     <div class="stat-box">
@@ -137,6 +132,21 @@ a { text-decoration:none; color:inherit; }
       <div class="bar-row"><span>2점</span><div class="bar"><div class="bar-fill" style="width:${review2percent}%"></div></div></div>
       <div class="bar-row"><span>1점</span><div class="bar"><div class="bar-fill" style="width:${review1percent}%"></div></div></div>
     </div>
+    
+	<!-- 드롭다운 위치 조정 -->
+	<div style="display: flex; justify-content: flex-end; padding-top: 30px;">
+	  <div class="dropdown" id="ratingDropdown">
+	    <div class="selected">전체 평점 보기</div>
+	    <ul class="options">
+	      <li class="active" data-value="0">전체 평점 보기 <span></span></li>
+	      <li data-value="5">최고 <span><span class="starRed">★★★★★</span></span></li>
+	      <li data-value="4">좋음 <span><span class="starRed">★★★★</span><span class="starGrey">★</span></span></li>
+	      <li data-value="3">보통 <span><span class="starRed">★★★</span><span class="starGrey">★★</span></span></li>
+	      <li data-value="2">별로 <span><span class="starRed">★★</span><span class="starGrey">★★★</span></span></li>
+	      <li data-value="1">나쁨 <span><span class="starRed">★</span><span class="starGrey">★★★★</span></span></li>
+	    </ul>
+	  </div>
+	</div>
 
     <!-- 리뷰 목록 (AJAX 대상) -->
     <div id="reviewListContainer" class="mt-4">
@@ -161,7 +171,7 @@ a { text-decoration:none; color:inherit; }
   options.addEventListener('click', (e) => {
     const li = e.target.closest('li');
     if (li) {
-      selected.innerHTML = li.innerHTML + " ▼";
+      selected.innerHTML = li.innerHTML;
       options.querySelectorAll('li').forEach(item => item.classList.remove('active'));
       li.classList.add('active');
       options.style.display = 'none';

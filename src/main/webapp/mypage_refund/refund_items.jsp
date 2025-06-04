@@ -6,6 +6,10 @@
  --%><%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="order.OrderService" %>
 <%
+if (session.getAttribute("userId") ==null ) {
+	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	  return;
+	}
   String orderIdStr = request.getParameter("order_id");
   int orderId = Integer.parseInt(orderIdStr);
 

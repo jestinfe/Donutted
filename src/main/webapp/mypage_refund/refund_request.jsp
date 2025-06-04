@@ -3,6 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
+if (session.getAttribute("userId") ==null ) {
+	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	  return;
+	}
   request.setCharacterEncoding("UTF-8");
   int orderItemId = Integer.parseInt(request.getParameter("order_item_id"));
 
@@ -80,7 +84,7 @@
 <body>
 
 <c:import url="/common/header.jsp" />
-<c:import url="/common/mypage_sidebar.jsp" />
+<c:import url="/common/mypage_sidebar.jsp" />s
 
 <div class="refund-container">
   <h3>환불 신청 - 사유 선택</h3>

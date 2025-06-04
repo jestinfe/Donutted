@@ -6,7 +6,7 @@
   request.setCharacterEncoding("UTF-8");
   Integer userId = (Integer) session.getAttribute("userId");
   if (userId == null) {
-    response.sendRedirect("/login.jsp");
+    response.sendRedirect("/mall_prj/UserLogin/login.jsp");
     return;
   }
   UserService service = new UserService();

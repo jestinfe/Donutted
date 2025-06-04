@@ -28,10 +28,10 @@
   Integer userIdObj = (Integer) session.getAttribute("userId");
   int userId = userIdObj;
 
-  if (orderItemParam == null || ratingParam == null || content == null || content.trim().isEmpty()) {
+  if (orderItemParam == null || ratingParam.equals("0") || content == null || content.trim().isEmpty()) {
 %>
   <script>
-    alert("입력값이 누락되었습니다.");
+    alert("만족도와 리뷰글은 필수 입력입니다.");
     history.back();
   </script>
 <%
@@ -58,7 +58,7 @@
 %>
     alert("리뷰가 등록되었습니다!");
     if (window.opener) {
-      window.opener.location.reload(); // 부모창 새로고침
+      window.opener.location.href = "http://localhost/mall_prj/mypage_order/my_orders.jsp";
       window.close(); // 팝업 닫기
     } else {
       location.href = "my_reviews.jsp";

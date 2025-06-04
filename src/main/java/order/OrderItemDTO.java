@@ -19,4 +19,11 @@ public class OrderItemDTO {
 	    private String thumbnailUrl;
 	    
 	    private Date createdAt;
+	    
+	    private boolean reviewed;
+	    
+
+public boolean isReviewed() {
+    return reviewed;
+}
 }

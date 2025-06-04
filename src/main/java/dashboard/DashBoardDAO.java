@@ -33,13 +33,15 @@ public class DashBoardDAO {
               d.stat_date,
               NVL(s.total_orders, 0) AS total_orders,
               NVL(s.total_sales, 0) AS total_sales,
-              NVL(s.order_completed, 0) AS order_completed,       -- ✅ 주문완료 항목 추가
+              NVL(s.order_canceled, 0) AS order_canceled,             -- ✅ 주문취소
+              NVL(s.order_completed, 0) AS order_completed,
               NVL(s.before_shipping, 0) AS before_shipping,
               NVL(s.shipping, 0) AS shipping,
               NVL(s.shipping_done, 0) AS shipping_done,
               NVL(s.refund_requested, 0) AS refund_requested,
               NVL(s.refund_approved, 0) AS refund_approved,
-              NVL(s.refund_rejected, 0) AS refund_rejected
+              NVL(s.refund_rejected, 0) AS refund_rejected,
+              NVL(s.total_refund_amount, 0) AS total_refund_amount     -- ✅ 환불금액
             FROM (
               SELECT TRUNC(SYSDATE) - LEVEL + 1 AS stat_date
               FROM dual
@@ -60,13 +62,15 @@ public class DashBoardDAO {
                 dto.setStatDate(rs.getDate("stat_date"));
                 dto.setTotalOrders(rs.getInt("total_orders"));
                 dto.setTotalSales(rs.getInt("total_sales"));
-                dto.setOrderCompleted(rs.getInt("order_completed"));     // ✅ 주문완료 값 세팅
+                dto.setOrderCanceled(rs.getInt("order_canceled"));                 // ✅ 추가
+                dto.setOrderCompleted(rs.getInt("order_completed"));
                 dto.setBeforeShipping(rs.getInt("before_shipping"));
                 dto.setShipping(rs.getInt("shipping"));
                 dto.setShippingDone(rs.getInt("shipping_done"));
                 dto.setRefundRequested(rs.getInt("refund_requested"));
                 dto.setRefundApproved(rs.getInt("refund_approved"));
                 dto.setRefundRejected(rs.getInt("refund_rejected"));
+                dto.setTotalRefundAmount(rs.getInt("total_refund_amount"));       // ✅ 추가
 
                 list.add(dto);
             }
@@ -75,6 +79,7 @@ public class DashBoardDAO {
         Collections.reverse(list);
         return list;
     }
+
 
 
     public Map<String, Integer> getWeeklyMonthlySummary() throws SQLException {

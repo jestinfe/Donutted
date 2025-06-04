@@ -121,44 +121,44 @@ public class OrderDAO {
 
     /** 4) 회원별 전체 주문 조회 (사용자) **/
     public List<OrderDTO> getOrdersByUser(int userId) throws SQLException {
-        List<OrderDTO> orders = new ArrayList<>();
+        List<OrderDTO> orderList = new ArrayList<>();
+
         String sql = """
             SELECT o.order_id, o.order_date, o.order_status, o.total_price,
-                   o.receiver_name, o.receiver_phone, o.receiver_email,
-                   o.receiver_zip, o.receiver_address1, o.receiver_address2, o.order_memo,
                    oi.order_item_id, oi.product_id, oi.quantity, oi.unit_price,
-                   p.name AS product_name, p.thumbnail_url
-              FROM orders o
-              JOIN order_item oi ON o.order_id = oi.order_id
-              JOIN product p ON oi.product_id = p.product_id
-             WHERE o.user_id = ?
-             ORDER BY o.order_date DESC, o.order_id DESC
+                   p.name AS product_name, p.thumbnail_url,
+                   CASE 
+                     WHEN EXISTS (
+                       SELECT 1 FROM review r WHERE r.order_item_id = oi.order_item_id
+                     ) THEN 1 ELSE 0 
+                   END AS reviewed
+            FROM orders o
+            JOIN order_item oi ON o.order_id = oi.order_id
+            JOIN product p ON oi.product_id = p.product_id
+            WHERE o.user_id = ?
+            ORDER BY o.order_date DESC, o.order_id DESC
         """;
 
         try (Connection con = db.getDbConn();
              PreparedStatement pstmt = con.prepareStatement(sql)) {
             pstmt.setInt(1, userId);
             try (ResultSet rs = pstmt.executeQuery()) {
-                Map<Integer, OrderDTO> map = new LinkedHashMap<>();
+                Map<Integer, OrderDTO> orderMap = new LinkedHashMap<>();
+
                 while (rs.next()) {
                     int orderId = rs.getInt("order_id");
-                    OrderDTO order = map.get(orderId);
+
+                    OrderDTO order = orderMap.get(orderId);
                     if (order == null) {
                         order = new OrderDTO();
                         order.setOrderId(orderId);
                         order.setOrderDate(rs.getDate("order_date"));
                         order.setOrderStatus(rs.getString("order_status"));
-                        order.setTotalPrice(rs.getDouble("total_price"));
-                        order.setReceiverName(rs.getString("receiver_name"));
-                        order.setReceiverPhone(rs.getString("receiver_phone"));
-                        order.setReceiverEmail(rs.getString("receiver_email"));
-                        order.setReceiverZip(rs.getString("receiver_zip"));
-                        order.setReceiverAddress1(rs.getString("receiver_address1"));
-                        order.setReceiverAddress2(rs.getString("receiver_address2"));
-                        order.setOrderMemo(rs.getString("order_memo"));
+                        order.setTotalPrice(rs.getInt("total_price"));
                         order.setItems(new ArrayList<>());
-                        map.put(orderId, order);
+                        orderMap.put(orderId, order);
                     }
+
                     OrderItemDTO item = new OrderItemDTO();
                     item.setOrderItemId(rs.getInt("order_item_id"));
                     item.setProductId(rs.getInt("product_id"));
@@ -166,13 +166,18 @@ public class OrderDAO {
                     item.setUnitPrice(rs.getInt("unit_price"));
                     item.setProductName(rs.getString("product_name"));
                     item.setThumbnailUrl(rs.getString("thumbnail_url"));
+                    item.setReviewed(rs.getInt("reviewed") == 1); // ✅ 핵심 라인
+
                     order.getItems().add(item);
                 }
-                orders.addAll(map.values());
+
+                orderList.addAll(orderMap.values());
             }
         }
-        return orders;
+
+        return orderList;
     }
+
 
     /** 5) 특정 주문 내 리뷰 가능 아이템 조회 **/
     public OrderDTO getReviewableItemsByOrder(int userId, int orderId) throws SQLException {
@@ -899,5 +904,138 @@ public class OrderDAO {
         }
     }
 
+
+        /**
+         *  ─────────────────────────────────────────────────────────────────
+         *  주문(orderId) 내 모든 order_item + “리뷰 여부(reviewed)”를 함께 조회
+         *  (주문 상태 O3(배송완료)인 것만, 사용자(userId) 검증 포함)
+         *  reviewed = true  ↔ review 테이블에 해당 order_item_id가 있으면
+         *  reviewed = false ↔ review 테이블에 없으면
+         *  ─────────────────────────────────────────────────────────────────
+         */
+        public OrderDTO getItemsWithReviewStatusByOrder(int userId, int orderId) throws SQLException {
+            OrderDTO order = null;
+            String sql = """
+                SELECT 
+                  oi.order_item_id,
+                  oi.order_id,
+                  oi.product_id,
+                  o.order_date,
+                  p.name               AS product_name,
+                  p.thumbnail_url      AS thumbnail_url,
+                  CASE 
+                    WHEN r.order_item_id IS NULL THEN 0 
+                    ELSE 1 
+                  END AS is_reviewed
+                FROM order_item oi
+                JOIN orders o ON oi.order_id = o.order_id
+                JOIN product p ON oi.product_id = p.product_id
+                LEFT JOIN review r ON oi.order_item_id = r.order_item_id
+                WHERE o.user_id = ?
+                  AND o.order_id = ?
+                  AND o.order_status = 'O4'
+                """;
+
+            try (Connection con = db.getDbConn();
+                 PreparedStatement pstmt = con.prepareStatement(sql)) {
+                pstmt.setInt(1, userId);
+                pstmt.setInt(2, orderId);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    List<OrderItemDTO> itemList = new ArrayList<>();
+                    while (rs.next()) {
+                        if (order == null) {
+                            order = new OrderDTO();
+                            order.setOrderId(rs.getInt("order_id"));
+                            order.setOrderDate(rs.getDate("order_date"));
+                            order.setItems(itemList);  // 빈 리스트 연결
+                        }
+                        OrderItemDTO item = new OrderItemDTO();
+                        item.setOrderItemId(rs.getInt("order_item_id"));
+                        item.setProductId(rs.getInt("product_id"));
+                        item.setProductName(rs.getString("product_name"));
+                        item.setThumbnailUrl(rs.getString("thumbnail_url"));
+                        // is_reviewed 컬럼이 0/1 형태로 넘어옴 → boolean으로 매핑
+                        item.setReviewed(rs.getInt("is_reviewed") == 1);
+                        itemList.add(item);
+                    }
+                }
+            }
+            return order;
+        }
+
+        public List<OrderDTO> getOrdersByUserWithRange(int userId, RangeDTO range) throws SQLException {
+            List<OrderDTO> orders = new ArrayList<>();
+
+            String sql = """
+                SELECT * FROM (
+                    SELECT inner_query.*, ROWNUM rnum FROM (
+                        SELECT o.order_id, o.user_id, o.order_date, o.order_status, o.total_price,
+                               o.receiver_name, o.receiver_phone, o.receiver_email,
+                               o.receiver_zip, o.receiver_address1, o.receiver_address2, o.order_memo,
+                               oi.order_item_id, oi.product_id, oi.quantity, oi.unit_price,
+                               p.name AS product_name, p.thumbnail_url,
+                               CASE WHEN r.order_item_id IS NOT NULL THEN 1 ELSE 0 END AS reviewed
+                        FROM orders o
+                        JOIN order_item oi ON o.order_id = oi.order_id
+                        JOIN product p ON oi.product_id = p.product_id
+                        LEFT JOIN review r ON oi.order_item_id = r.order_item_id
+                        WHERE o.user_id = ?
+                        ORDER BY o.order_date DESC
+                    ) inner_query
+                    WHERE ROWNUM <= ?
+                ) WHERE rnum >= ?
+            """;
+
+            try (Connection con = db.getDbConn();
+                 PreparedStatement pstmt = con.prepareStatement(sql)) {
+
+                pstmt.setInt(1, userId);
+                pstmt.setInt(2, range.getEndNum());
+                pstmt.setInt(3, range.getStartNum());
+
+                ResultSet rs = pstmt.executeQuery();
+
+                Map<Integer, OrderDTO> orderMap = new LinkedHashMap<>();
+
+                while (rs.next()) {
+                    int orderId = rs.getInt("order_id");
+                    OrderDTO order = orderMap.get(orderId);
+
+                    if (order == null) {
+                        order = new OrderDTO();
+                        order.setOrderId(orderId);
+                        order.setUserId(rs.getInt("user_id"));
+                        order.setOrderDate(rs.getDate("order_date"));
+                        order.setOrderStatus(rs.getString("order_status"));
+                        order.setTotalPrice(rs.getInt("total_price"));
+                        order.setReceiverName(rs.getString("receiver_name"));
+                        order.setReceiverPhone(rs.getString("receiver_phone"));
+                        order.setReceiverEmail(rs.getString("receiver_email"));
+                        order.setReceiverZip(rs.getString("receiver_zip"));
+                        order.setReceiverAddress1(rs.getString("receiver_address1"));
+                        order.setReceiverAddress2(rs.getString("receiver_address2"));
+                        order.setOrderMemo(rs.getString("order_memo"));
+                        order.setItems(new ArrayList<>());
+
+                        orderMap.put(orderId, order);
+                    }
+
+                    OrderItemDTO item = new OrderItemDTO();
+                    item.setOrderItemId(rs.getInt("order_item_id"));
+                    item.setProductId(rs.getInt("product_id"));
+                    item.setQuantity(rs.getInt("quantity"));
+                    item.setUnitPrice(rs.getInt("unit_price"));
+                    item.setProductName(rs.getString("product_name"));
+                    item.setThumbnailUrl(rs.getString("thumbnail_url"));
+                    item.setReviewed(rs.getInt("reviewed") == 1);
+
+                    order.getItems().add(item);
+                }
+
+                orders.addAll(orderMap.values());
+            }
+
+            return orders;
+        }
 
 }

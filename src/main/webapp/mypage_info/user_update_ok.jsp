@@ -5,7 +5,14 @@
 <%
   request.setCharacterEncoding("UTF-8");
 
+if (session.getAttribute("userId") ==null ) {
+  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+  return;
+}
+
   int userId = Integer.parseInt(request.getParameter("user_id"));
+  
+  
   String email = request.getParameter("email");
   String phone = request.getParameter("phone1") + "-" + request.getParameter("phone2") + "-" + request.getParameter("phone3");
   String zipcode = request.getParameter("zipcode");

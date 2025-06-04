@@ -7,7 +7,6 @@
 <%@ include file="../common/login_check.jsp" %>
 
 <%
- 
   String adminId = (String) session.getAttribute("adminId");
 
   DashBoardService service = new DashBoardService();
@@ -25,15 +24,9 @@
   for (int i = 0; i < summaryList.size(); i++) {
       DailySummaryDTO dto = summaryList.get(i);
       String label = dto.getStatDate().toString();
-      labels.append("'").append(label).append("'");
-      salesData.append(dto.getTotalSales());
-      ordersData.append(dto.getTotalOrders());
-
-      if (i < summaryList.size() - 1) {
-          labels.append(", ");
-          salesData.append(", ");
-          ordersData.append(", ");
-      }
+      labels.append("'").append(label).append("'").append(i < summaryList.size() - 1 ? ", " : "");
+      salesData.append(dto.getTotalSales()).append(i < summaryList.size() - 1 ? ", " : "");
+      ordersData.append(dto.getTotalOrders()).append(i < summaryList.size() - 1 ? ", " : "");
   }
 
   java.time.LocalDate today = java.time.LocalDate.now();
@@ -52,7 +45,7 @@
 <div class="main">
   <h3>📊 관리자 대시보드</h3>
 
-  <!-- 그래프 영역 -->
+  <!-- 📈 매출 및 구매건수 그래프 -->
   <canvas id="salesChart" height="100"></canvas>
   <script>
     const ctx = document.getElementById('salesChart').getContext('2d');
@@ -108,110 +101,101 @@
           }
         },
         plugins: {
-        	  tooltip: {
-        	    callbacks: {
-        	      title: function(context) {
-        	        return '📅 ' + context[0].label;
-        	      },
-        	      label: function(context) {
-        	    	  const label = context.dataset.label || '';
-        	    	  const value = context.raw ?? 0;
-
-        	    	  if (label === '매출액 (원)') {
-        	    	    return label + ': ₩' + Number(value).toLocaleString();
-        	    	  } else if (label === '구매건수') {
-        	    	    return label + ': ' + Number(value).toLocaleString() + '건';
-        	    	  } else {
-        	    	    return label + ': ' + value;
-        	    	  }
-        	    	}
-
-        	    }
-        	  }
-        	}
-
-
+          tooltip: {
+            callbacks: {
+              title: function(context) {
+                return '📅 ' + context[0].label;
+              },
+              label: function(context) {
+                const label = context.dataset.label || '';
+                const value = context.raw ?? 0;
+                return label === '매출액 (원)'
+                  ? label + ': ₩' + Number(value).toLocaleString()
+                  : label + ': ' + Number(value).toLocaleString() + '건';
+              }
+            }
+          }
+        }
       }
     });
   </script>
 
-  <!-- 주문 카드 -->
+  <!-- 📦 주문 건수 -->
   <h3 class="section-title mt-5">📦 주문 건수</h3>
   <div class="row">
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
       <div class="card-box bg-body-tertiary">
         <div class="card-value"><%= todayData.getTotalOrders() %>건</div>
         <div class="card-title">오늘</div>
       </div>
     </div>
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
       <div class="card-box bg-body-tertiary">
         <div class="card-value"><%= weeklyOrders %>건</div>
         <div class="card-title">이번 주</div>
       </div>
     </div>
-    <div class="col-md-4 mb-3">
+    <div class="col-md-3 mb-3">
       <div class="card-box bg-body-tertiary">
         <div class="card-value"><%= monthlyOrders %>건</div>
         <div class="card-title">이번 달</div>
       </div>
     </div>
+    <div class="col-md-3 mb-3">
+      <div class="card-box bg-danger-subtle text-dark">
+        <div class="card-value"><%= todayData.getOrderCanceled() %>건</div>
+        <div class="card-title">주문 취소</div>
+      </div>
+    </div>
   </div>
 
-  <!-- 매출 카드 -->
+  <!-- 💰 매출 -->
   <h3 class="section-title">💰 매출 현황</h3>
   <div class="row">
-    <div class="col-md-4 mb-3">
+    <div class="col-md-6 mb-3">
       <div class="card-box bg-success-subtle text-dark">
         <div class="card-value">₩<%= String.format("%,d", todayData.getTotalSales()) %></div>
-        <div class="card-title">오늘</div>
+        <div class="card-title">총매출 (오늘)</div>
       </div>
     </div>
-    <div class="col-md-4 mb-3">
-      <div class="card-box bg-success-subtle text-dark">
-        <div class="card-value">₩<%= String.format("%,d", weeklySales) %></div>
-        <div class="card-title">이번 주</div>
-      </div>
-    </div>
-    <div class="col-md-4 mb-3">
-      <div class="card-box bg-success-subtle text-dark">
-        <div class="card-value">₩<%= String.format("%,d", monthlySales) %></div>
-        <div class="card-title">이번 달</div>
+    <div class="col-md-6 mb-3">
+      <div class="card-box bg-info-subtle text-dark">
+        <div class="card-value">₩<%= String.format("%,d", todayData.getNetSales()) %></div>
+        <div class="card-title">순매출 (환불 차감)</div>
       </div>
     </div>
   </div>
 
-  <!-- 배송 현황 -->
-<h3 class="section-title">🚚 오늘 배송 현황</h3>
-<div class="row">
-  <div class="col-md-3 mb-3">
-    <div class="card-box bg-warning-subtle text-dark">
-      <div class="card-value"><%= todayData.getOrderCompleted() %>건</div>
-      <div class="card-title">주문 완료</div>
+  <!-- 🚚 배송 현황 -->
+  <h3 class="section-title">🚚 오늘 배송 현황</h3>
+  <div class="row">
+    <div class="col-md-3 mb-3">
+      <div class="card-box bg-warning-subtle text-dark">
+        <div class="card-value"><%= todayData.getOrderCompleted() %>건</div>
+        <div class="card-title">주문 완료</div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card-box bg-secondary-subtle text-dark">
+        <div class="card-value"><%= todayData.getBeforeShipping() %>건</div>
+        <div class="card-title">배송 준비 중</div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card-box bg-info-subtle text-dark">
+        <div class="card-value"><%= todayData.getShipping() %>건</div>
+        <div class="card-title">배송 중</div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card-box bg-primary-subtle text-dark">
+        <div class="card-value"><%= todayData.getShippingDone() %>건</div>
+        <div class="card-title">배송 완료</div>
+      </div>
     </div>
   </div>
-  <div class="col-md-3 mb-3">
-    <div class="card-box bg-secondary-subtle text-dark">
-      <div class="card-value"><%= todayData.getBeforeShipping() %>건</div>
-      <div class="card-title">배송 준비 중</div>
-    </div>
-  </div>
-  <div class="col-md-3 mb-3">
-    <div class="card-box bg-info-subtle text-dark">
-      <div class="card-value"><%= todayData.getShipping() %>건</div>
-      <div class="card-title">배송 중</div>
-    </div>
-  </div>
-  <div class="col-md-3 mb-3">
-    <div class="card-box bg-primary-subtle text-dark">
-      <div class="card-value"><%= todayData.getShippingDone() %>건</div>
-      <div class="card-title">배송 완료</div>
-    </div>
-  </div>
-</div>
 
-
-  <!-- 환불 현황 -->
+  <!-- 🔁 환불 현황 -->
   <h3 class="section-title">🔁 오늘 환불 현황</h3>
   <div class="row">
     <div class="col-md-3 mb-3">
