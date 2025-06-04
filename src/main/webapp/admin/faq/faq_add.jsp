@@ -4,7 +4,7 @@
 <%@ include file="../common/sidebar.jsp" %>
 <%@ include file="../common/login_check.jsp" %>
 
-
+<!-- 응~ -->
 <div class="main">
   <h3>FAQ (등록)</h3>
   <form action="faq_process.jsp" method="post" onsubmit="return validateForm()">
