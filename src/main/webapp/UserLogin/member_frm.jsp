@@ -9,9 +9,6 @@
   <meta charset="UTF-8">
   <title>Welcome to Donutted!!</title>
   
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  
   <style>
   body {
     font-family: 'Pretendard', '맑은 고딕', sans-serif;
@@ -95,7 +92,7 @@
     margin: 10px 5px;
   }
 </style>
-
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script>
     function findZipcode() {
       new daum.Postcode({
