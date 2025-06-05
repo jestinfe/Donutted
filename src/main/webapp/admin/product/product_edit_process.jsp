@@ -1,62 +1,59 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="com.oreilly.servlet.MultipartRequest" %>
-<%@ page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy" %>
-<%@ page import="java.io.File" %>
-<%@ page import="product.ProductDTO, product.ProductService" %>
+<%@ page import="java.io.File, java.util.*, com.oreilly.servlet.MultipartRequest, com.oreilly.servlet.multipart.DefaultFileRenamePolicy" %>
+<%@ page import="product.ProductDTO, product.ProductService, product.CategoryDTO, product.CategoryService" %>
+<%@ include file="../common/external_file.jsp" %>
+<%@ include file="../common/header.jsp" %>
+<%@ include file="../common/sidebar.jsp" %>
+<%@ include file="../common/login_check.jsp" %>
 
 <%
-  // ✅ 1. 실제 Git 프로젝트 내부에 있는 upload 경로 지정
-  File saveDir = new File("C:/Users/user/git/mall_prj/mall_prj/src/main/webapp/admin/common/upload");
-  if (!saveDir.exists()) {
-    saveDir.mkdirs();
-  }
+request.setCharacterEncoding("UTF-8");
+String savePath = "C:/dev/workspace/mall_prj/src/main/webapp/admin/common/images/products";
+int maxSize = 10 * 1024 * 1024;
+MultipartRequest mr = new MultipartRequest(request, savePath, maxSize, "UTF-8", new DefaultFileRenamePolicy());
 
-  int maxSize = 10 * 1024 * 1024;
+int productId = Integer.parseInt(mr.getParameter("product_id"));
+String name = mr.getParameter("name");
+int categoryId = Integer.parseInt(mr.getParameter("category_id"));
+int price = Integer.parseInt(mr.getParameter("price"));
+int stock = Integer.parseInt(mr.getParameter("stock"));
 
-  // ✅ 2. MultipartRequest로 파일과 폼 데이터 모두 처리
-  MultipartRequest mr = new MultipartRequest(
-    request,
-    saveDir.getAbsolutePath(),
-    maxSize,
-    "UTF-8",
-    new DefaultFileRenamePolicy()
-  );
+ProductService service = new ProductService();
+ProductDTO dto = service.getProductById(productId);
 
-  // ✅ 3. 기본 파라미터 추출
-  int productId = Integer.parseInt(mr.getParameter("product_id"));
-  String name = mr.getParameter("product_name");
-  int categoryId = Integer.parseInt(mr.getParameter("category_id"));
-  int price = Integer.parseInt(mr.getParameter("price"));
-  int stock = Integer.parseInt(mr.getParameter("stock"));
+dto.setName(name);
+dto.setCategoryId(categoryId);
+dto.setPrice(price);
+dto.setStock(stock);
 
-  // ✅ 4. 새 이미지 파일명 (없으면 null)
-  String uploadedMainImg = mr.getFilesystemName("main_img");
-  String uploadedDetailImg = mr.getFilesystemName("detail_img");
+String[] fields = {
+  "thumbnailImg", "detailImg", "thumbnailHover",
+  "productImg1", "productImg2", "productImg3", "productImg4",
+  "detailImg2", "detailImg3", "detailImg4"
+};
 
-  // ✅ 5. 기존 값은 hidden input으로부터 가져오기
-  String hiddenMainImg = mr.getParameter("thumdnailImg");
-  String hiddenDetailImg = mr.getParameter("detailImg");
+for (String field : fields) {
+    String fileParam = field + "File";
+    String deleteParam = "delete_" + field;
+    String fileName = mr.getFilesystemName(fileParam);
+    boolean delete = "true".equals(mr.getParameter(deleteParam));
 
-  // ✅ 6. 최종 저장할 이미지 결정
-  String finalMainImg = (uploadedMainImg != null) ? uploadedMainImg : hiddenMainImg;
-  String finalDetailImg = (uploadedDetailImg != null) ? uploadedDetailImg : hiddenDetailImg;
+    if (delete) {
+        ProductDTO.class.getMethod("set" + capitalize(field), String.class).invoke(dto, (String) null);
+    } else if (fileName != null) {
+        ProductDTO.class.getMethod("set" + capitalize(field), String.class).invoke(dto, fileName);
+    }
+}
 
-  // ✅ 7. DTO 구성 및 DB 수정
-  ProductDTO dto = new ProductDTO();
-  dto.setProductId(productId);
-  dto.setName(name);
-  dto.setCategoryId(categoryId);
-  dto.setPrice(price);
-  dto.setStock(stock);
-  dto.setThumbnailImg(finalMainImg);
-  dto.setDetailImg(finalDetailImg);
-
-  ProductService service = new ProductService();
-  service.modifyProduct(dto);
+boolean result = service.modifyProduct(dto);
 %>
-
-<!-- ✅ 8. 수정 완료 메시지 후 목록 페이지 이동 -->
 <script>
-  alert("✅ 상품이 성공적으로 수정되었습니다.");
-  location.href = "product_list.jsp"; // 필요시 menu.jsp 등으로 변경
+  alert("<%= result ? "상품이 수정되었습니다." : "수정에 실패했습니다." %>");
+  location.href = "product_list.jsp";
 </script>
+
+<%!
+  private String capitalize(String str) {
+    return str.substring(0,1).toUpperCase() + str.substring(1);
+  }
+%>

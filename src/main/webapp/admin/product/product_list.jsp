@@ -51,9 +51,10 @@
         <option value="asc" ${param.priceOrder == 'asc' ? 'selected' : ''}>낮은순</option>
       </select>
     </div>
-    <div class="col-md-3">
-      <button class="btn btn-dark w-100" type="submit">검색</button>
-    </div>
+    <div class="col-md-3 d-flex">
+    <button class="btn btn-dark w-50 me-2" type="submit">검색</button>
+    <a href="product_list.jsp" class="btn btn-outline-secondary w-50">초기화</a>
+  </div>
   </form>
 
   <!-- ✅ 상품 목록 테이블 -->
@@ -74,7 +75,8 @@
     <tr onclick="location.href='product_edit.jsp?product_id=${prd.productId}'" 
         style="cursor:pointer; ${prd.stock == 0 ? 'background-color: #f0f0f0; color: red;' : ''}">
       <td>${status.index + 1}</td>
-      <td><img src="${pageContext.request.contextPath}/admin/common/upload/${prd.thumbnailImg}" width="40"></td>
+      <td><img src="${pageContext.request.contextPath}/admin/common/images/products/${prd.thumbnailImg}" width="40"
+       onerror="this.onerror=null; this.src='<c:url value="/admin/common/images/default/error.png"/>';"></td>
       <td>${prd.name}</td>
       <td>${prd.redDate}</td>
       <td>${prd.modDate}</td>

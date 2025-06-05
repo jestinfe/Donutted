@@ -4,8 +4,15 @@
 
 
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Pretendard',sans-serif; background:#fff; color:#212121; }
+ * { margin:0; padding:0; box-sizing:border-box; }
+  /* body 스타일에서 margin 관련 속성을 제거하거나 0으로 명시 */
+  body { 
+    font-family:'Pretendard',sans-serif; 
+    background:#fff; 
+    color:#212121; 
+    margin: 0; /* 이 줄을 추가하여 혹시 모를 기본 마진 재설정을 막음 */
+    padding: 0; /* 이 줄을 추가하여 혹시 모를 기본 패딩 재설정을 막음 */
+  }
   a { text-decoration:none; color:inherit; }
   ul { list-style:none; }
   .container { width:100%; max-width:1280px; margin:0 auto; padding:0 20px; }
