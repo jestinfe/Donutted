@@ -1,9 +1,13 @@
+<%@page import="news.BoardDTO"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="../common/external_file.jsp" %>
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
 <%@ include file="../common/login_check.jsp" %>
-
+<%
+BoardDTO bDTO=new BoardDTO();
+request.setAttribute("bDTO", bDTO);
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,7 +71,7 @@
     <div class="d-flex">
       <!-- 왼쪽: 이미지 미리보기 -->
       <div>
-        <img src="${pageContext.request.contextPath}/admin/common/images_pse/default/no_img.png"
+        <img src="${pageContext.request.contextPath}/admin/common/images/default/no_img.png"
              id="img" class="preview-img mb-2" alt="썸네일 이미지">
         <br>
         <input type="button" value="썸네일 선택" id="btnImg" name="btnImg" class="btn btn-info btn-sm" style="margin-left: 75px;"/>
@@ -78,7 +82,7 @@
       <!-- 오른쪽: 입력 폼 -->
       <div class="form-section">
       
-       <!-- 메타 정보 테이블 (번호, 작성자, 작성일) -->
+       <!-- 정보 테이블  -->
      <table class="table table-bordered mb-4" style="max-width: 900px;">
        <tr>
          <th style="width:120px;">작성일</th>
@@ -94,7 +98,7 @@
         <div class="form-group mb-4">
           <label class="form-label">상세설명 이미지</label>
           <br>
-          <img src="${pageContext.request.contextPath}/admin/common/images_pse/default/no_img.png"
+          <img src="${pageContext.request.contextPath}/admin/common/images/default/no_img.png"
                id="detailImgPreview" class="preview-img mb-2" alt="상세 설명 이미지">
           <input type="hidden" name="DetailImgName" id="DetailImgName"/>
           <input type="file" name="eventImage" id="detailImageInput" class="form-control-file">
