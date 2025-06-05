@@ -5,15 +5,17 @@
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
 <%@ include file="../common/login_check.jsp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
-  String contextPath = request.getContextPath();
+  	String contextPath = request.getContextPath();
 
 	String paramId = request.getParameter("board_id");
-	
 	int boardId = Integer.parseInt(paramId);
+	
 	NewsService service = new NewsService();
 	BoardDTO board = service.getOneEvent(boardId);
+	
 	String profileImg = board.getThumbnail_url();
 	String eventImage = board.getDetail_image_url();
 	
@@ -85,9 +87,12 @@
    		   $('#writeFrm').attr('action', '<%= contextPath %>/admin/news/news_event_delete_process.jsp?board_id=' +board_id);
    		   
    		   $("#writeFrm").submit();
-   		} else {alert("삭제가 취소되었습니다.");
-   		    return;
-   	   }
+   		   
+   			} else {
+				alert("삭제가 취소되었습니다.");
+   		    
+				return;
+   	   		}
       });
    	   
     });//ready
@@ -106,8 +111,14 @@
     
       <!-- 왼쪽: 썸네일 이미지 미리보기 -->
       <div>
-        <img src="${pageContext.request.contextPath}/admin/common/images_pse/<%= profileImg %>"
-             id="img" class="preview-img mb-2" alt="썸네일 이미지">
+        <img src="${pageContext.request.contextPath}/admin/common/images/news/<%= profileImg %>"
+         id="img" class="preview-img mb-2" alt="썸네일 이미지"
+         onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/loading.jpg';">    
+    	 <%-- <img src="${pageContext.request.contextPath}/admin/common/images/default/loading.jpg"
+	     data-src="${pageContext.request.contextPath}/admin/common/images/news/<%= profileImg %>"
+	     id="img" class="preview-img mb-2" alt="썸네일 이미지"
+	     onload="this.src=this.getAttribute('data-src')"
+	     onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/error.png';"> --%>  
         <br>
         <input type="button" value="썸네일 선택" id="btnImg" class="btn btn-info btn-sm" style="margin-left: 75px;"/>
         <!-- <input type="hidden" name="imgName" id="imgName"/> -->
@@ -122,7 +133,7 @@
             <th style="width:100px;">번호</th>
             <td>${dto.board_id}</td>
             <th style="width:120px;">작성일</th>
-            <td><%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %></td>
+            <td>${dto.posted_at}</td>
             <th style="width:120px;">조회수</th>
             <td>${dto.viewCount}</td>
           </tr>
@@ -138,9 +149,14 @@
         <div class="form-group mb-4">
           <label class="form-label">상세설명 이미지</label>
           <br>
-          
-          <img src="${pageContext.request.contextPath}/admin/common/images_pse/<%= eventImage %>"
-               id="detailImgPreview" class="preview-img mb-2" alt="상세 설명 이미지">
+         	<img src="${pageContext.request.contextPath}/admin/common/images/news/<%= eventImage %>"
+            id="detailImgPreview" class="preview-img mb-2" alt="상세 설명 이미지"
+            onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/loading.jpg';">
+      		 <%-- <img src="${pageContext.request.contextPath}/admin/common/images/default/loading.jpg"
+		     data-src="${pageContext.request.contextPath}/admin/common/images/news/<%= eventImage %>"
+		     id="detailImgPreview" class="preview-img mb-2" alt="상세 설명 이미지"
+		     onload="this.src=this.getAttribute('data-src')"
+		     onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/error.png';">  --%>
           <input type="file" name="eventImage" id="detailImageInput" class="form-control-file">
         </div>
 

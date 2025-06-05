@@ -8,25 +8,35 @@
     String content = request.getParameter("summernote");
 	System.out.println(title);
 	System.out.println(content);
-    // 제목과 내용 입력값 검증
-    if (title == null || title.trim().isEmpty() || content == null || content.trim().isEmpty()) {
+	
+    // 제목 입력값 검증
+    if (title == null || title.trim().isEmpty()) {
 %>
 <script>
-    alert('제목과 내용을 모두 입력해주세요.');
+    alert('제목을 입력해주세요.');
     history.back();
 </script>
 <%
         return;
-    }
+    }//end if
+    
+    // 내용 입력값 검증
+    if (content == null || content.trim().isEmpty()) {
+%>
+<script>
+    alert('내용을 입력해주세요.');
+    history.back();
+</script>
+<%
+        return;
+    }//end if
 
    
-    //String adminId = "admin";
 
     // DTO 생성 후 값 세팅
     BoardDTO bDTO = new BoardDTO();
     bDTO.setTitle(title);
     bDTO.setContent(content);
-    //bDTO.setAdmin_id(adminId);
 
     // DAO 호출 (공지사항 등록)
     NewsDAO dao = NewsDAO.getInstance();

@@ -47,6 +47,14 @@ $(function(){
 
       <h3><strong>공지사항 작성</strong></h3>
 
+		<!-- 정보 테이블  -->
+	     <table class="table table-bordered mb-4" style="max-width: 900px;">
+	       <tr>
+	         <th style="width:120px;">작성일</th>
+	         <td><%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %></td>
+	       </tr>
+	     </table>
+
       <div class="form-group mb-3">
         <label for="title">제목</label>
         <input type="text" name="title" id="title" class="form-control" placeholder="제목을 입력해주세요.">

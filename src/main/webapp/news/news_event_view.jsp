@@ -66,10 +66,12 @@
       <fmt:formatDate value="${event.posted_at}" pattern="yyyy-MM-dd" />
       &nbsp;&nbsp; <i class="bi bi-eye"></i> ${event.viewCount}
     </div>
-    <img src="${pageContext.request.contextPath}/admin/common/images_pse/${event.thumbnail_url}" 
-         class="card-img-top event-img" alt="이벤트 썸네일 이미지">
-    <img src="${pageContext.request.contextPath}/admin/common/images_pse/${event.detail_image_url}" 
-         class="card-img-top event-img" alt="이벤트 상세설명 이미지">
+    <img src="${pageContext.request.contextPath}/admin/common/images/news/${event.thumbnail_url}" 
+         class="card-img-top event-img" alt="이벤트 썸네일 이미지"
+         onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/error.png';">
+    <img src="${pageContext.request.contextPath}/admin/common/images/news/${event.detail_image_url}" 
+         class="card-img-top event-img" alt="이벤트 상세설명 이미지"
+         onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/error.png';">
   </div>
   
   

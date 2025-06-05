@@ -133,7 +133,7 @@ public class NewsDAO {
               
                StringBuilder selectOneBoard=new StringBuilder();
                selectOneBoard
-               .append("   select    board_id,title,content,viewCount  ")
+               .append("   select    board_id,title,content,posted_at,viewCount  ")
                .append("   from    board   ")
                .append("   where    board_id=?   ");
                
@@ -146,6 +146,7 @@ public class NewsDAO {
                    bDTO.setBoard_id(rs.getInt("board_id"));
                    bDTO.setTitle(rs.getString("title"));
                    bDTO.setContent(rs.getString("content"));
+                   bDTO.setPosted_at(rs.getDate("posted_at"));
                    bDTO.setViewCount(rs.getInt("viewCount"));
                    }//end if
            

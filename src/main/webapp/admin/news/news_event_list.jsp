@@ -54,13 +54,25 @@
 <head>
   <meta charset="UTF-8">
   <title><%= boardType %> 목록</title>
+<script>
+$(function(){
+	$('#searchFrm').on('submit', function(e) {
+	  const keyword = $('#keywordInput').val().trim();
+
+	  if (keyword == null || keyword.trim() == "") {
+	      alert('검색어를 입력해주세요.');
+	      e.preventDefault(); // 제출 중단
+	  }//end if
+	});
+});//ready
+</script>
 </head>
 
 <div class="main">
   <h3><%= boardType %> 목록</h3>
 
   <!-- 검색 필터 -->
-  <form class="row gx-2 gy-2 align-items-end mb-3" action="news_event_list.jsp" method="get">
+  <form id="searchFrm" class="row gx-2 gy-2 align-items-end mb-3" action="news_event_list.jsp" method="get">
     <input type="hidden" name="boardType" value="<%= boardType %>">
     
     <%-- <div class="col-auto">
@@ -75,7 +87,10 @@
       value="<%= keyword != null ? keyword : "" %>">
     </div>
     <div class="col-auto">
-      <button type="submit" class="btn btn-dark">검색</button>
+      <button type="submit" id="searchBtn" class="btn btn-dark">검색</button>
+    </div>
+    <div class="col-auto">
+      <a href="news_event_list.jsp" class="btn btn-secondary">초기화</a>
     </div>
     <div class="col-auto">
       <a href="news_event_add.jsp?boardType=<%= boardType %>" class="btn btn-primary">이벤트 작성</a>

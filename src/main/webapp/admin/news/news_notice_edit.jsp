@@ -8,10 +8,12 @@
   String contextPath = request.getContextPath();
 
   String paramId = request.getParameter("board_id");
-
   int boardId = Integer.parseInt(paramId);
+  
   NewsService service = new NewsService();
   BoardDTO board = service.getOneNotice(boardId);
+  
+  request.setAttribute("dto", board);
 %>
 
 <!DOCTYPE html>
@@ -91,6 +93,18 @@ $(function(){
 
 	 <!-- 반드시 board_id 전달 -->
   <input type="hidden" name="board_id" value="<%= board.getBoard_id() %>">
+
+ <!-- 메타 정보 테이블 -->
+        <table class="table table-bordered mb-4" style="max-width: 900px;">
+          <tr>
+            <th style="width:100px;">번호</th>
+            <td>${dto.board_id}</td>
+            <th style="width:120px;">작성일</th>
+            <td>${dto.posted_at}</td>
+            <th style="width:120px;">조회수</th>
+            <td>${dto.viewCount}</td>
+          </tr>
+        </table>
 
       <div class="form-group mb-3">
         <label for="title">제목</label>

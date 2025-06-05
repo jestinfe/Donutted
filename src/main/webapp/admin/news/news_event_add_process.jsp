@@ -15,7 +15,7 @@ String detailImageName = "";
 
 try {
     // 1. 저장 경로 설정
-   	File saveDir = new File("C:/Users/user/git/mall_prj/mall_prj/src/main/webapp/admin/common/images_pse");
+   	File saveDir = new File("C:/dev/workspace/mall_prj/src/main/webapp/admin/common/images/news");
     if (!saveDir.exists()) saveDir.mkdirs();
 
     // 2. 업로드 크기 제한 (600MB)
@@ -66,11 +66,22 @@ try {
         return;
     }
      
-     //이미지 입력값 검증
-    if (thumbnailName == null || thumbnailName.trim().isEmpty() || detailImageName == null || detailImageName.trim().isEmpty()) {
+     //썸네일 이미지 입력값 검증
+    if (thumbnailName == null || thumbnailName.trim().isEmpty()) {
     %>
     <script>
-    alert('이미지를 등록해주세요.');
+    alert('썸네일 이미지를 등록해주세요.');
+    history.back();
+    </script>
+    <%
+        return;
+    }
+     
+     //상세설명 이미지 입력값 검증
+    if (detailImageName == null || detailImageName.trim().isEmpty()) {
+    %>
+    <script>
+    alert('상세설명 이미지를 등록해주세요.');
     history.back();
     </script>
     <%
@@ -83,13 +94,11 @@ try {
 }
     
 
-//String adminId = "admin"; 
 
 // DTO에 값 세팅
 BoardDTO bDTO = new BoardDTO();
 bDTO.setTitle(title);
 bDTO.setContent(content); // content 추가해야 함
-// bDTO.setAdmin_id(adminId);
 bDTO.setThumbnail_url(thumbnailName); // 서버 저장 파일명
 bDTO.setDetail_image_url(detailImageName); // 서버 저장 파일명
 
