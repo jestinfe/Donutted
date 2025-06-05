@@ -9,6 +9,9 @@
   <meta charset="UTF-8">
   <title>Welcome to Donutted!!</title>
   
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  
   <style>
   body {
     font-family: 'Pretendard', '맑은 고딕', sans-serif;
@@ -92,85 +95,145 @@
     margin: 10px 5px;
   }
 </style>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  <script>
-    function findZipcode() {
-      new daum.Postcode({
-        oncomplete: function(data) {
-          var roadAddr = data.roadAddress;
-          var extraRoadAddr = '';
-          if (data.bname !== '' && /[\uAC00-\uD7A3]+[동|로|가]$/g.test(data.bname)) {
-            extraRoadAddr += data.bname;
-          }
-          if (data.buildingName !== '' && data.apartment === 'Y') {
-            extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-          }
-          if (extraRoadAddr !== '') {
-            extraRoadAddr = ' (' + extraRoadAddr + ')';
-          }
-          document.getElementById('zipcode').value = data.zonecode;
-          document.getElementById("addr").value = roadAddr;
-          document.getElementById("addr2").focus();
+
+<script>
+  function findZipcode() {
+    new daum.Postcode({
+      oncomplete: function(data) {
+        var roadAddr = data.roadAddress;
+        var extraRoadAddr = '';
+        if (data.bname !== '' && /[\uAC00-\uD7A3]+[동|로|가]$/g.test(data.bname)) {
+          extraRoadAddr += data.bname;
         }
-      }).open();
+        if (data.buildingName !== '' && data.apartment === 'Y') {
+          extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+        }
+        if (extraRoadAddr !== '') {
+          extraRoadAddr = ' (' + extraRoadAddr + ')';
+        }
+        document.getElementById('zipcode').value = data.zonecode;
+        document.getElementById("addr").value = roadAddr;
+        document.getElementById("addr2").focus();
+      }
+    }).open();
+  }
+
+  var idChecked = false;
+
+  function chkID() {
+    const id = $('#id').val().trim();
+
+    if (!id) {
+      alert("아이디를 입력하세요.");
+      return;
     }
 
-    $(function() {
-      let idChecked = false;
+    const idPattern = /^[A-Za-z]{1,10}$/;
+    if (!idPattern.test(id)) {
+      alert("아이디는 영문자만 사용하며, 최대 10자까지 가능합니다.");
+      return;
+    }
 
-      $('#chkID').click(function() {
-        var id = $('#id').val().trim();
-        if (!id) { alert("아이디를 입력하세요."); return; }
-        window.open('id_dup.jsp?id=' + encodeURIComponent(id), 'idChk', 'width=512,height=313');
-      });
+    window.open('id_dup.jsp?id=' + encodeURIComponent(id), 'idChk', 'width=512,height=313');
+  }
 
-      $('#id').on('input', function() {
-        idChecked = false;
-        $(this).removeAttr('readonly');
-      });
+  $(function() {
+    $('#chkID').click(chkID);
 
-      $('#chkPass').blur(function() {
-        var pass = $('#pass').val();
-        var chkPass = $('#chkPass').val();
-        if (pass !== chkPass) {
-          alert('비밀번호가 일치하지 않습니다.');
-          $('#pass, #chkPass').val('').first().focus();
-        }
-      });
+    $('#id').on('input', function() {
+      idChecked = false;
+      $(this).removeAttr('readonly');
+    });
 
-      $('#btnZipcode').click(findZipcode);
+    $('#chkPass').blur(function() {
+      var pass = $('#pass').val();
+      var chkPass = $('#chkPass').val();
+      if (pass !== chkPass) {
+        alert('비밀번호가 일치하지 않습니다.');
+        $('#pass, #chkPass').val('').first().focus();
+      }
+    });
 
-      $('#btnConfirm').click(function() {
-        const fields = [
-          { selector: '#id', label: '아이디' },
-          { selector: '#pass', label: '비밀번호' },
-          { selector: '[name="name"]', label: '이름' },
-          { selector: '[name="tel"]', label: '휴대폰' },
-          { selector: '[name="email"]', label: '이메일' },
-          { selector: '[name="domain"]', label: '도메인' },
-          { selector: '#zipcode', label: '우편번호' },
-          { selector: '#addr', label: '주소' }
-        ];
+    $('#btnZipcode').click(findZipcode);
 
-        for (const field of fields) {
-          const val = $(field.selector).val();
-          if (!val || val.trim() === '') {
-            alert(`${field.label}는 필수 입력입니다.`);
-            $(field.selector).focus();
-            return;
-          }
-        }
+    $('#btnConfirm').click(function() {
+      const fields = [
+        { selector: '#id', label: '아이디' },
+        { selector: '#pass', label: '비밀번호' },
+        { selector: '#chkPass', label: '비밀번호 확인' },
+        { selector: '[name="name"]', label: '이름' },
+        { selector: '[name="birth"]', label: '생일' },
+        { selector: '[name="tel"]', label: '휴대폰' },
+        { selector: '[name="email"]', label: '이메일' },
+        { selector: '[name="domain"]', label: '도메인' },
+        { selector: '#zipcode', label: '우편번호' },
+        { selector: '#addr', label: '주소' }
+      ];
 
-        if ($('[name="tel"]').val().replace(/\D/g, '').length < 11) {
-          alert('휴대폰 번호는 11자리 이상 입력해주세요.');
-          $('[name="tel"]').focus();
+      for (const field of fields) {
+        const val = $(field.selector).val();
+        if (!val || val.trim() === '') {
+          alert(`${field.label}는 필수 입력입니다.`);
+          $(field.selector).focus();
           return;
         }
+      }
 
-        $('#frm').submit();
-      });
+      if (!idChecked) {
+        alert("아이디 중복확인을 해주세요.");
+        return;
+      }
+
+      const birth = $('[name="birth"]').val().trim();
+      const birthRegex = /^\d{4}-\d{2}-\d{2}$/;
+      if (birth && birthRegex.test(birth)) {
+        const birthYear = parseInt(birth.split('-')[0]);
+        if (birthYear < 1920 || birthYear > 2025) {
+          alert('생년월일은 1920년부터 2025년 사이여야 합니다.');
+          $('[name="birth"]').focus();
+          return;
+        }
+      } else if (birth) {
+        alert('생년월일은 YYYY-MM-DD 형식으로 입력해주세요.');
+        $('[name="birth"]').focus();
+        return;
+      }
+
+      const tel = $('[name="tel"]').val().trim();
+      const telPattern = /^010-\d{4}-\d{4}$/;
+      if (!telPattern.test(tel)) {
+        alert('휴대폰 번호는 010-1234-5678 형식으로 입력해주세요.');
+        $('[name="tel"]').focus();
+        return;
+      }
+      if (tel.replace(/\D/g, '').length < 11) {
+        alert('휴대폰 번호는 숫자 11자리가 필요합니다.');
+        $('[name="tel"]').focus();
+        return;
+      }
+
+      const email = $('[name="email"]').val().trim();
+      const emailRegex = /^[A-Za-z0-9]+$/;
+      if (!emailRegex.test(email)) {
+        alert('이메일 아이디는 영문자와 숫자만 입력 가능합니다.');
+        $('[name="email"]').focus();
+        return;
+      }
+
+      const domain = $('[name="domain"]').val().trim();
+      const domainRegex = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!domainRegex.test(domain)) {
+        alert('도메인은 올바른 형식(예: naver.com)으로 입력해주세요.');
+        $('[name="domain"]').focus();
+        return;
+      }
+
+      $('#frm').submit();
     });
-  </script>
+  });
+</script>
+
+
 </head>
 <body>
 <main>
@@ -183,8 +246,9 @@
 <tr>
   <th>* 아이디</th>
   <td>
-    <input type="text" name="id" id="id" class="inputBox" style="width:120px" maxlength="10" 
-    pattern="[A-Za-z]{1,10}" title="영문 10자까지 입력">
+    <input type="text" name="id" id="id" class="inputBox" style="width:120px" maxlength="10"
+  pattern="[A-Za-z]{1,10}" title="영문 10자까지 입력">
+
     <input type="button" value="ID중복확인" class="btnBox" id="chkID">
   </td>
 </tr>
@@ -214,7 +278,7 @@
   <th>* 휴대폰</th>
   <td>
     <input type="text" name="tel" class="inputBox" placeholder="010-1234-5678" 
-    maxlength="14" pattern="010-\d{4}-\d{4}" title="형식: 010-1234-5678">
+    maxlength="14" title="형식: 010-1234-5678">
   </td>
 </tr>
 
@@ -222,7 +286,7 @@
   <th>* 이메일</th>
   <td>
     <input type="text" name="email" class="inputBox" style="width:250px" 
-    maxlength="15" pattern="[A-Za-z]{1,10}" title="영문 10자까지 입력">@ 
+    maxlength="15">@ 
     <input type="text" name="domain" class="inputBox" list="domain" style="width:150px">
     <datalist id="domain">
       <option value="직접 입력">

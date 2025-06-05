@@ -70,7 +70,7 @@ pageContext.setAttribute("addResult", result);
   <c:when test="${addResult}">
     <div class="center-text">
       <h2>회원가입을 축하드립니다.</h2>
-      <img src="../common/images/member_success.png" alt="회원가입 성공" class="result-img" />
+      <img src="images/member_success.png" alt="회원가입 성공" class="result-img" />
       <p style="font-size: 20px;">
         <strong><c:out value="${userName}"/></strong> 님, 환영합니다!
       </p>
@@ -84,7 +84,7 @@ pageContext.setAttribute("addResult", result);
   <c:otherwise>
     <div class="center-text">
       <h2 style="color:red;">회원가입이 정상적으로 이루어지지 않았습니다.</h2>
-      <img src="../common/images/member_fail.png" alt="회원가입 실패" class="result-img"/>
+      <img src="images/member_fail.png" alt="회원가입 실패" class="result-img"/>
       <h3>잠시 후 다시 시도해주세요.</h3>
       <a href="http://localhost/mall_prj/index.jsp" class="btn"  
          style="background-color: #f8a7bb; color: white; border: none; font-weight: bold;">메인화면</a>

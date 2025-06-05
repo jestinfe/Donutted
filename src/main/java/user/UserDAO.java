@@ -81,6 +81,8 @@ public class UserDAO {
         }
     }
 
+    
+    
 
     public int withdrawUser(int userId, String encryptedEmail, String updatedUsername) throws SQLException {
         DbConnection db = DbConnection.getInstance();
@@ -125,7 +127,7 @@ public class UserDAO {
                .append(range.getField()).append(" LIKE ? ");
         }
 
-        // 🔽 정렬 기준 적용
+        // 정렬 기준 적용
         sql.append(" ORDER BY created_at ");
         if ("asc".equalsIgnoreCase(range.getSort())) {
             sql.append("ASC ");
@@ -259,7 +261,7 @@ public class UserDAO {
                 return rs.next();
             }
         }
-    }
+    }  
     
     public int insertUser(UserDTO dto) throws SQLException {
         String sql = "INSERT INTO users (username, password, email, name, birthdate, gender, phone, zipcode, address1, address2, user_status, created_at) "
@@ -296,6 +298,7 @@ public class UserDAO {
         }
     }
 
+
     public String findUsernameByNameAndPhone(String name, String phone) throws SQLException {
         String sql = "SELECT username FROM users WHERE name = ? AND phone = ?";
         try (
@@ -309,7 +312,7 @@ public class UserDAO {
             }
         }
     }
-
+    
     public boolean isValidUserForPasswordReset(String username, String email, String phone) throws SQLException {
         String sql = "SELECT user_id FROM users WHERE username = ? AND email = ? AND phone = ?";
         try (
@@ -324,7 +327,21 @@ public class UserDAO {
             }
         }
     }
-
+    public String getPasswordById(String username) throws SQLException {
+        String sql = "SELECT password FROM users WHERE username = ?";
+        try (
+            Connection con = db.getDbConn();
+            PreparedStatement pstmt = con.prepareStatement(sql)
+        ) {
+            pstmt.setString(1, username);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("password");
+                }
+            }
+        }
+        return null;
+    }
     public boolean resetPassword(String username, String newPassword) throws SQLException {
         String sql = "UPDATE users SET password = ? WHERE username = ?";
         try (
