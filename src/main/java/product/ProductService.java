@@ -74,15 +74,5 @@ public class ProductService {
         return flag;
     }
 
-    // 6. 상품 삭제
-    public boolean removeProduct(int productId) {
-        boolean flag = false;
-        try {
-            int result = dao.deleteProduct(productId);
-            flag = result == 1;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return flag;
-    }
+   
 }

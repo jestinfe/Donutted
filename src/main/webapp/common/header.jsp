@@ -118,7 +118,7 @@
   <div class="header-wrapper">
     <div class="logo">
       <a href="http://localhost/mall_prj/index.jsp">
-        <img src="http://localhost/mall_prj/common/images/logo.png" alt="Logo">
+        <img src="http://localhost/mall_prj/admin/common/images/core/logo.png" alt="Logo">
       </a>
     </div>
 

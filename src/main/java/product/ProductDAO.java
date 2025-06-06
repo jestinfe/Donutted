@@ -113,27 +113,8 @@ public class ProductDAO {
 	
 	
 	
-	public int deleteProduct(int productId) throws SQLException {
-		int result = 0;
-		DbConnection db = DbConnection.getInstance();
-		Connection con = null;
-		PreparedStatement pstmt = null;
-
-		try {
-			con = db.getDbConn();
-			StringBuilder deleteProduct = new StringBuilder();
-			deleteProduct
-			.append("	delete from product	")
-			.append("	where product_id = ?	");
-			pstmt = con.prepareStatement(deleteProduct.toString());
-			pstmt.setInt(1, productId);
-
-			result = pstmt.executeUpdate();
-		} finally {
-			db.dbClose(null, pstmt, con);
-		}//end finally
-		return result;
-	}//deleteProduct
+	
+	
 	
 	public List<ProductDTO> selectAllProducts(String sort) throws SQLException {
 	    List<ProductDTO> list = new ArrayList<>();

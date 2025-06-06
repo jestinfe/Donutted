@@ -3,7 +3,7 @@
     info="외부파일"%>
     
     <!-- favicon 설정 -->
-<link rel="shortcut icon" href="http://localhost/mall_prj/common/images/favicon.ico"/>
+<link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
 <!--  bootstrap CDN -->
 <link rel="stylesheet" type="text/css"
 href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">

@@ -82,37 +82,36 @@ String[] labels = {
   "상세 이미지 2", "상세 이미지 3", "상세 이미지 4"
 };
 for (int i = 0; i < fields.length; i++) {
-  String field = fields[i];
-  String label = labels[i];
-  String value = (String) ProductDTO.class.getMethod("get" + field.substring(0,1).toUpperCase() + field.substring(1)).invoke(product);
-  boolean hasImage = (value != null && !value.trim().isEmpty());
-%>
-  <div class="mb-3">
-    <label class="form-label"><%= label %></label><br>
-    <img id="preview_<%= field %>" 
+	  String field = fields[i];
+	  String label = labels[i];
+	  String value = (String) ProductDTO.class.getMethod("get" + field.substring(0,1).toUpperCase() + field.substring(1)).invoke(product);
+	  boolean hasImage = (value != null && !value.trim().isEmpty() && !value.equalsIgnoreCase("null"));
+	%>
+	  <div class="mb-3">
+	    <label class="form-label"><%= label %></label><br>
+
+	   <img id="preview_<%= field %>" 
      src="<%= hasImage ? (contextPath + "/admin/common/images/products/" + value) : "" %>" 
      width="100" class="mb-2"
      style="<%= hasImage ? "" : "display:none;" %>"
      onerror="this.onerror=null; this.src='<%= contextPath %>/admin/common/images/default/error.png';">
 
 
-    <% if (!hasImage) { %>
-      <span class="text-muted">이미지 없음</span><br>
-    <% } %>
+	    <span id="noimg_<%= field %>" class="text-muted" style="<%= hasImage ? "display:none;" : "" %>">이미지 없음</span><br>
 
-    <% if (i >= 2 && hasImage) { %>
-      <div class="form-check mt-2">
-        <input class="form-check-input" type="checkbox" name="delete_<%= field %>" value="true" id="delete_<%= field %>">
-        <label class="form-check-label" for="delete_<%= field %>">기존 이미지 삭제</label>
-      </div>
-    <% } %>
+	    <% if (i >= 2 && hasImage) { %>
+	      <div class="form-check mt-2">
+	        <input class="form-check-input" type="checkbox" name="delete_<%= field %>" value="true" id="delete_<%= field %>">
+	        <label class="form-check-label" for="delete_<%= field %>">기존 이미지 삭제</label>
+	      </div>
+	    <% } %>
 
-    <input type="file" name="<%= field %>File" id="<%= field %>File" class="form-control d-none" accept="image/*"
-           onchange="previewImage(this, 'preview_<%= field %>')">
-    <button type="button" class="btn btn-outline-primary btn-sm mt-2"
-            onclick="document.getElementById('<%= field %>File').click();">이미지 선택</button>
-  </div>
-<% } %>
+	    <input type="file" name="<%= field %>File" id="<%= field %>File" class="form-control d-none" accept="image/*"
+	           onchange="previewImage(this, 'preview_<%= field %>')">
+	    <button type="button" class="btn btn-outline-primary btn-sm mt-2"
+	            onclick="document.getElementById('<%= field %>File').click();">이미지 선택</button>
+	  </div>
+	<% } %>
 
     <div class="text-end">
       <button class="btn btn-success me-2" type="submit">수정 완료</button>
@@ -130,6 +129,9 @@ function previewImage(input, previewId) {
     const img = document.getElementById(previewId);
     img.src = e.target.result;
     img.style.display = "inline-block";
+
+    const span = document.getElementById("noimg_" + previewId.replace("preview_", ""));
+    if (span) span.style.display = "none";
   };
   reader.readAsDataURL(file);
 }
