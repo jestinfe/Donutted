@@ -28,9 +28,10 @@ public class DailySummaryDTO {
     private int refundRejected;
     
     private int totalRefundAmount; // ✅ 새로 추가됨
+    private int canceledAmount;
     
     public int getNetSales() {
-        return totalSales - totalRefundAmount;
+        return totalSales - totalRefundAmount - canceledAmount;
     }
 
 

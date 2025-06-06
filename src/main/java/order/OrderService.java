@@ -281,4 +281,46 @@ public class OrderService {
     public OrderDTO getItemsWithReviewStatusByOrder(int userId, int orderId) throws SQLException {
         return dao.getItemsWithReviewStatusByOrder(userId, orderId);
     }
+    
+    /** 장바구니 총 금액 계산 */
+ // ✅ 두 개의 파라미터: cartId, userId
+    public int calculateCartTotal(int cartId, int userId) {
+        int total = 0;
+        try {
+            List<CartItemDTO> items = cDAO.selectAllCartItem(cartId);
+            for (CartItemDTO item : items) {
+                total += item.getPrice() * item.getQuantity();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    
+    public int calculateSingleTotal(int unitPrice, int quantity) {
+        return unitPrice * quantity;
+    }
+    
+    public boolean isOrderOwnedByUser(int orderId, int userId) {
+        OrderDAO dao = OrderDAO.getInstance();
+        try {
+            return dao.isOrderOwnedByUser(orderId, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean isOrderItemOwnedByUser(int orderItemId, int userId) {
+        OrderDAO dao = OrderDAO.getInstance();
+        try {
+            return dao.isOrderItemOwnedByUser(orderItemId, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }

@@ -6,6 +6,11 @@
 <%
     request.setCharacterEncoding("UTF-8");
 
+	if (session.getAttribute("userId") == null) {
+	    response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	    return;
+	}
+
     // 필수 파라미터 검증
     String userId = request.getParameter("userId");
     String name = request.getParameter("name");

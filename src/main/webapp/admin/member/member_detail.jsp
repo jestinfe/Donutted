@@ -6,7 +6,9 @@
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
 <%@ include file="../common/login_check.jsp" %>
-
+<head>
+  <title>회원관리 - 상세조회</title>
+</head>
 <%
 int userId = Integer.parseInt(request.getParameter("user_id"));
 UserService service = new UserService();
@@ -273,58 +275,72 @@ UserDTO user = service.getUserById(userId);
     <!-- 회원 정보 카드 -->
     <div class="info-card">
       <h2 class="section-title">기본 정보</h2>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">이름</label>
-          <input type="text" readonly class="form-input" value="<%= user.getName() %>">
-        </div>
-        <div class="form-group">
-          <label class="form-label">아이디</label>
-          <input type="text" readonly class="form-input" value="<%= user.getUsername() %>">
-        </div>
-      </div>
+     <!-- 이름 / 아이디 -->
+<div class="form-row">
+  <div class="form-group">
+    <label class="form-label">이름</label>
+    <input type="text" readonly class="form-input" value="<%= user.getName() %>">
+  </div>
+  <div class="form-group">
+    <label class="form-label">아이디</label>
+    <input type="text" readonly class="form-input" value="<%= user.getUsername() %>">
+  </div>
+</div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">이메일</label>
-          <input type="email" readonly class="form-input" value="<%= user.getEmail() %>">
-        </div>
-        <div class="form-group">
-          <label class="form-label">휴대전화</label>
-          <input type="tel" readonly class="form-input" value="<%= user.getPhone() %>">
-        </div>
+<!-- 생년월일 / 성별 -->
+<div class="form-row">
+ <div class="form-group">
+    <label class="form-label">성별</label>
+    <div class="gender-group">
+      <div class="radio-wrapper">
+        <input class="radio-input" type="radio" name="gender" <%= "M".equals(user.getGender()) ? "checked" : "" %> disabled>
+        <label class="radio-label">남성</label>
       </div>
+      <div class="radio-wrapper">
+        <input class="radio-input" type="radio" name="gender" <%= "F".equals(user.getGender()) ? "checked" : "" %> disabled>
+        <label class="radio-label">여성</label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="form-label">생년월일</label>
+    <input type="date" readonly class="form-input" value="<%= user.getBirthdate() != null ? user.getBirthdate().toString() : "" %>">
+  </div>
+ 
+</div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">생년월일</label>
-          <input type="date" readonly class="form-input" value="<%= user.getBirthdate() != null ? user.getBirthdate().toString() : "" %>">
-        </div>
-        <div class="form-group">
-          <label class="form-label">성별</label>
-          <div class="gender-group">
-            <div class="radio-wrapper">
-              <input class="radio-input" type="radio" name="gender" <%= "M".equals(user.getGender()) ? "checked" : "" %> disabled>
-              <label class="radio-label">남성</label>
-            </div>
-            <div class="radio-wrapper">
-              <input class="radio-input" type="radio" name="gender" <%= "F".equals(user.getGender()) ? "checked" : "" %> disabled>
-              <label class="radio-label">여성</label>
-            </div>
-          </div>
-        </div>
-      </div>
+<!-- 가입일자 / 이메일 -->
+<div class="form-row">
+  <div class="form-group">
+    <label class="form-label">가입일자</label>
+    <input type="text" readonly class="form-input" value="<%= user.getCreatedAt() != null ? user.getCreatedAt().toString().substring(0, 10) : "" %>">
+  </div>
+  <div class="form-group">
+    <label class="form-label">이메일</label>
+    <input type="email" readonly class="form-input" value="<%= user.getEmail() %>">
+  </div>
+</div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">우편번호</label>
-          <input type="text" readonly class="form-input" value="<%= user.getZipcode() != null ? user.getZipcode() : "" %>">
-        </div>
-        <div class="form-group">
-          <label class="form-label">주소</label>
-          <input type="text" readonly class="form-input" value="<%= user.getAddress1() != null ? user.getAddress1() : "" %> <%= user.getAddress2() != null ? user.getAddress2() : "" %>">
-        </div>
-      </div>
+<!-- 휴대전화 / 우편번호 -->
+<div class="form-row">
+  <div class="form-group">
+    <label class="form-label">휴대전화</label>
+    <input type="tel" readonly class="form-input" value="<%= user.getPhone() %>">
+  </div>
+  <div class="form-group">
+    <label class="form-label">우편번호</label>
+    <input type="text" readonly class="form-input" value="<%= user.getZipcode() != null ? user.getZipcode() : "" %>">
+  </div>
+</div>
+
+<!-- 주소 -->
+<div class="form-row">
+  <div class="form-group address-group">
+    <label class="form-label">주소</label>
+    <input type="text" readonly class="form-input" value="<%= user.getAddress1() != null ? user.getAddress1() : "" %> <%= user.getAddress2() != null ? user.getAddress2() : "" %>">
+  </div>
+</div>
+
     </div>
 
     <!-- 버튼 영역 -->

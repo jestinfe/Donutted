@@ -8,6 +8,11 @@ response.setHeader("Pragma", "no-cache");
 response.setDateHeader("Expires", 0);
 request.setCharacterEncoding("UTF-8");
 
+if (session.getAttribute("userId") == null) {
+    response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+    return;
+}
+
 // 중복 주문 방지
 Boolean alreadyOrdered = (Boolean) session.getAttribute("alreadyOrdered");
 if (alreadyOrdered != null && alreadyOrdered) {

@@ -8,12 +8,22 @@
   session.removeAttribute("alreadyOrdered");
 
   Integer userId = (Integer) session.getAttribute("userId");
+  if (userId == null) {
+    response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+    return;
+  }
+
   OrderService service = new OrderService();
 
   // 가장 최근 주문 가져오기
-  OrderDTO latestOrder = service.getOrdersByUser(userId).get(0); // 최신이 맨 앞이라는 전제
+  OrderDTO latestOrder = service.getOrdersByUser(userId).get(0); // 최신 주문이 맨 앞이라는 전제
   int orderId = latestOrder.getOrderId();
   java.util.List<order.OrderItemDTO> itemList = service.getOrderItems(orderId);
+
+  // 총합은 DB에 저장된 값 기준으로 (배송비 포함)
+  double totalPriceFromDB = latestOrder.getTotalPrice();   // DB에 저장된 총액 (배송비 포함)
+  int deliveryCost = 3000;                              // 정액 배송비
+  double productTotal = totalPriceFromDB - deliveryCost;   // 상품 가격 총합
 %>
 
 <div class="container mt-5">
@@ -29,16 +39,14 @@
         <tr>
           <th>상품명</th>
           <th>수량</th>
-          <th>가격</th>
+          <th>단가</th>
           <th>합계</th>
         </tr>
       </thead>
       <tbody>
         <%
-          int total = 0;
           for (OrderItemDTO item : itemList) {
             int subtotal = item.getQuantity() * item.getUnitPrice();
-            total += subtotal;
         %>
         <tr>
           <td><%= item.getProductName() %></td>
@@ -50,8 +58,18 @@
       </tbody>
       <tfoot class="table-light">
         <tr>
-          <th colspan="3">총 주문 금액</th>
-          <th><fmt:formatNumber value="<%= total %>" type="number"/> 원</th>
+          <th colspan="3">상품 총액</th>
+          <th><fmt:formatNumber value="<%= productTotal %>" type="number"/> 원</th>
+        </tr>
+        <tr>
+          <th colspan="3">배송비</th>
+          <th><fmt:formatNumber value="<%= deliveryCost %>" type="number"/> 원</th>
+        </tr>
+        <tr>
+          <th colspan="3" class="table-success">총 결제 금액</th>
+          <th class="table-success">
+            <fmt:formatNumber value="<%= totalPriceFromDB %>" type="number"/> 원
+          </th>
         </tr>
       </tfoot>
     </table>

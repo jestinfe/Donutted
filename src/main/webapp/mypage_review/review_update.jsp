@@ -3,6 +3,10 @@
 <%@ page import="review.*" %>
 <%
   request.setCharacterEncoding("UTF-8");
+if (session.getAttribute("userId") ==null ) {
+	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	  return;
+	}
   String savePath = application.getRealPath("/common/images/review");
 
   int maxSize = 10 * 1024 * 1024;

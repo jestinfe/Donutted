@@ -9,7 +9,9 @@
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
 <%@ include file="../common/login_check.jsp" %>
-
+<head>
+  <title>주문관리 - 상세조회</title>
+</head>
 <%
     String orderIdParam = request.getParameter("order_id");
     int orderId = 0;

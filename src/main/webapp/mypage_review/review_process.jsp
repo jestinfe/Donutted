@@ -4,6 +4,10 @@
 <%@ page import="review.*, java.util.*" %>
 
 <%
+if (session.getAttribute("userId") ==null ) {
+	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	  return;
+	}
   int productId = Integer.parseInt(request.getParameter("productId"));
   String ratingParam = request.getParameter("rating");
   int rating = 0;

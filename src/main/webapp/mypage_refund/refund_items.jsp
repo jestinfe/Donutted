@@ -1,26 +1,34 @@
-<%@page import="java.util.ArrayList"%>
-<%@page import="order.OrderItemDTO"%>
-<%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%-- <%@ page import="order.OrderItemDTO, order.OrderService" %>
- --%><%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="order.OrderService" %>
+<%@ page import="order.OrderItemDTO, order.OrderService, java.util.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <%
-if (session.getAttribute("userId") ==null ) {
-	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-	  return;
-	}
-  String orderIdStr = request.getParameter("order_id");
-  int orderId = Integer.parseInt(orderIdStr);
+request.setCharacterEncoding("UTF-8");
 
-  OrderService orderService = new OrderService();
-  List<OrderItemDTO> refundables = orderService.getRefundableItemsByOrderId(orderId);
+Integer userId = (Integer) session.getAttribute("userId");
+if (userId == null) {
+    response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+    return;
+}
 
-  request.setAttribute("refundables", refundables);
+String orderIdStr = request.getParameter("order_id");
+if (orderIdStr == null) {
+    out.print("<script>alert('잘못된 접근입니다.'); history.back();</script>");
+    return;
+}
+
+int orderId = Integer.parseInt(orderIdStr);
+OrderService service = new OrderService();
+
+// ✅ 주문 소유자 확인
+if (!service.isOrderOwnedByUser(orderId, userId)) {
+    out.print("<script>alert('권한이 없습니다.'); history.back();</script>");
+    return;
+}
+
+List<OrderItemDTO> refundables = service.getRefundableItemsByOrderId(orderId);
+request.setAttribute("refundables", refundables);
 %>
-
-
-
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -33,23 +41,34 @@ if (session.getAttribute("userId") ==null ) {
     body {
       font-family: 'Pretendard', sans-serif;
       background: #fffefc;
+      margin: 0;
     }
+
+    .content-wrapper {
+      margin-left: 240px;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .refund-container {
+      width: 100%;
+      max-width: 1000px;
+    }
+
     h3 {
       font-weight: 700;
       margin-bottom: 20px;
       border-left: 5px solid #ef84a5;
       padding-left: 10px;
     }
-    .refund-container {
-      margin-left: 260px;
-      max-width: 1000px;
-      padding: 40px 20px;
-    }
+
     .product-list {
       display: flex;
       flex-wrap: wrap;
       gap: 30px;
     }
+
     .product-item {
       width: 180px;
       background: #ffffff;
@@ -60,10 +79,12 @@ if (session.getAttribute("userId") ==null ) {
       box-shadow: 0 2px 10px rgba(0,0,0,0.04);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+
     .product-item:hover {
       transform: translateY(-5px);
       box-shadow: 0 8px 16px rgba(0,0,0,0.08);
     }
+
     .product-item img {
       width: 100%;
       height: 140px;
@@ -71,13 +92,15 @@ if (session.getAttribute("userId") ==null ) {
       border-radius: 8px;
       margin-bottom: 10px;
     }
+
     .product-name {
       font-size: 15px;
       font-weight: 500;
       margin-bottom: 8px;
       color: #333;
     }
-    .product-item .btn {
+
+    .product-item form .btn {
       background-color: #ef84a5;
       border: none;
       font-size: 14px;
@@ -86,45 +109,69 @@ if (session.getAttribute("userId") ==null ) {
       border-radius: 6px;
       color: #fff;
     }
+
     .order-info {
       font-size: 16px;
       font-weight: 500;
       margin-bottom: 30px;
     }
+
+    @media (max-width: 768px) {
+      .content-wrapper {
+        margin-left: 0;
+        padding: 20px;
+      }
+
+      .refund-container {
+        max-width: 100%;
+      }
+
+      .product-list {
+        justify-content: center;
+      }
+
+      .product-item {
+        width: 45%;
+      }
+    }
   </style>
 </head>
 <body>
 
-<!-- 헤더 -->
 <c:import url="/common/header.jsp" />
 <c:import url="/common/mypage_sidebar.jsp" />
 
-<div class="refund-container">
-  <h3>환불 신청 - 상품 선택</h3>
-  <p class="order-info">환불 가능한 상품을 선택하세요.</p>
+<div class="content-wrapper">
+  <div class="refund-container">
+    <h3>환불 신청 - 상품 선택</h3>
+    <p class="order-info">환불 가능한 상품을 선택하세요.</p>
 
-  <div class="product-list">
-    <c:choose>
-      <c:when test="${not empty refundables}">
-        <c:forEach var="item" items="${refundables}">
-  <div class="product-item">
-    <img src="<c:url value='/admin/common/upload/${item.thumbnailUrl}' />"
-         alt="${item.productName}"
-         onerror="this.src='/images/no_image.png';" />
-    <div class="product-name">${item.productName}</div>
-    <a href="refund_request.jsp?order_item_id=${item.orderItemId}&product_name=${item.productName}&product_image=${item.thumbnailUrl}" class="btn btn-sm">환불 신청</a>
-  </div>
-</c:forEach>
-
-      </c:when>
-      <c:otherwise>
-        <p>환불 가능한 상품이 없습니다.</p>
-      </c:otherwise>
-    </c:choose>
+    <div class="product-list">
+      <c:choose>
+        <c:when test="${not empty refundables}">
+          <c:forEach var="item" items="${refundables}">
+            <div class="product-item">
+              <img src="<c:url value='/admin/common/upload/${item.thumbnailUrl}' />"
+                   alt="${item.productName}"
+                   onerror="this.src='/images/no_image.png';" />
+              <div class="product-name">${item.productName}</div>
+              <form method="post" action="refund_request.jsp">
+                <input type="hidden" name="order_item_id" value="${item.orderItemId}" />
+                <input type="hidden" name="product_name" value="${item.productName}" />
+                <input type="hidden" name="product_image" value="${item.thumbnailUrl}" />
+                <button type="submit" class="btn btn-sm">환불 신청</button>
+              </form>
+            </div>
+          </c:forEach>
+        </c:when>
+        <c:otherwise>
+          <p>환불 가능한 상품이 없습니다.</p>
+        </c:otherwise>
+      </c:choose>
+    </div>
   </div>
 </div>
 
-<!-- 푸터 -->
 <c:import url="/common/footer.jsp" />
 </body>
 </html>

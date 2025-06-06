@@ -119,12 +119,16 @@ html, body {
 <body>
 
 <%
+if (session.getAttribute("userId") ==null ) {
+	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	  return;
+	}
 request.setCharacterEncoding("UTF-8");
 Integer userId = (Integer) session.getAttribute("userId");
 List<ReviewDTO> reviews = new ArrayList<>();
 Map<Integer, OrderItemDTO> itemMap = new HashMap<>();
 
-if (userId != null) {
+
 	ReviewService reviewService = new ReviewService();
 	reviews = reviewService.getUserReviews(userId);
 
@@ -133,7 +137,7 @@ if (userId != null) {
 		OrderItemDTO item = orderService.getOrderItemDetail(review.getOrderItemId());
 		itemMap.put(review.getOrderItemId(), item);
 	}
-}
+
 %>
 
 <%@ include file="../common/header.jsp"%>

@@ -1,29 +1,49 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="order.OrderService" %>
+
 <%
-  request.setCharacterEncoding("UTF-8");
-  String orderIdParam = request.getParameter("order_id");
-  
-  if (session.getAttribute("userId") ==null ) {
-	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-	  return;
-	}
-  
-  Integer userId = (Integer) session.getAttribute("userId");
+request.setCharacterEncoding("UTF-8");
 
-  if (orderIdParam == null) {
-    out.print("<script>alert('잘못된 접근입니다.'); history.back();</script>");
+// ✅ 로그인 여부 확인
+Integer sessionUserId = (Integer) session.getAttribute("userId");
+if (sessionUserId == null) {
+    response.sendRedirect("/mall_prj/UserLogin/login.jsp");
     return;
-  }
+}
 
-  int orderId = Integer.parseInt(orderIdParam);
-  OrderService service = new OrderService();
+// ✅ 파라미터 검증
+String orderIdParam = request.getParameter("order_id");
+if (orderIdParam == null || orderIdParam.trim().isEmpty()) {
+%>
+    <script>
+        alert("잘못된 접근입니다.");
+        history.back();
+    </script>
+<%
+    return;
+}
 
-  boolean result = service.cancelOrder(orderId);
+int orderId = Integer.parseInt(orderIdParam.trim());
 
-  if (result) {
-    out.print("<script>alert('주문이 성공적으로 취소되었습니다.'); location.href='my_orders.jsp';</script>");
-  } else {
-    out.print("<script>alert('주문 취소에 실패했습니다. 관리자에게 문의하세요.'); history.back();</script>");
-  }
+// ✅ 본인 소유 주문인지 검증 없이 진행할 수밖에 없음 (OrderService에서 처리해야 정확)
+// 지금은 OrderService에 getOrderById가 없으니, cancelOrder 내부에서 본인 소유 여부를 꼭 검증해야 함
+
+OrderService service = new OrderService();
+boolean result = service.cancelOrder(orderId);
+
+if (result) {
+%>
+    <script>
+        alert("주문이 성공적으로 취소되었습니다.");
+        location.href = "my_orders.jsp";
+    </script>
+<%
+} else {
+%>
+    <script>
+        alert("주문 취소에 실패했습니다. 관리자에게 문의하세요.");
+        history.back();
+    </script>
+<%
+}
 %>

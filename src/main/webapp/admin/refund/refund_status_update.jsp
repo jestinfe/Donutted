@@ -8,6 +8,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
+if (!"POST".equalsIgnoreCase(request.getMethod())) {
+    response.sendRedirect("refund_list.jsp?error=invalid_method");
+    return;
+  }
+
   request.setCharacterEncoding("UTF-8");
   String refundIdStr = request.getParameter("refund_id");
   String newStatus = request.getParameter("status");

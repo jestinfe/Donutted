@@ -9,7 +9,7 @@
     request.setCharacterEncoding("UTF-8");
 
 	if(session.getAttribute("userId") == null){
-		response.sendRedirect("../UserLogin/login.jsp");
+		response.sendRedirect("/mall_prj/UserLogin/login.jsp");
 		return;
 	}
     int productId = Integer.parseInt(request.getParameter("productId"));

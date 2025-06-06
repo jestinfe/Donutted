@@ -2,6 +2,10 @@
 <%@ page import="order.*" %>
 <%
   request.setCharacterEncoding("UTF-8");
+if (session.getAttribute("userId") ==null ) {
+	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	  return;
+	}
   int orderItemId = Integer.parseInt(request.getParameter("order_item_id"));
   OrderItemDTO item = new OrderService().getOrderItemDetail(orderItemId);
 %>

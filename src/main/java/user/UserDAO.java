@@ -22,6 +22,10 @@ public class UserDAO {
     }
 
     public UserDTO selectById(int userId) throws SQLException {
+    	if (userId <= 0) {
+            System.err.println("Invalid userId: " + userId);
+            return null;
+        }
         UserDTO dto = null;
         DbConnection db = DbConnection.getInstance();
 

@@ -37,7 +37,7 @@
     <a href="../dashboard/dashboard.jsp" style="color: inherit; text-decoration: none;">관리자 페이지</a>
   </h4>
   <div>
-    <a href="../index.jsp" class="shop-btn">🛍 쇼핑몰 이동</a>
+    <a href="/mall_prj/index.jsp" class="shop-btn">🛍 쇼핑몰 이동</a>
     <a href="../login/admin_logout.jsp">로그아웃</a>
   </div>
 </div>

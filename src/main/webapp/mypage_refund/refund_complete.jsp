@@ -1,28 +1,36 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="refund.RefundService, refund.RefundDTO" %>
+<%@ page import="refund.RefundService, refund.RefundDTO, order.OrderService, order.OrderItemDTO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
   request.setCharacterEncoding("UTF-8");
-if (session.getAttribute("userId") ==null ) {
-	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-	  return;
-	}
-  Integer userId = (Integer) session.getAttribute("user_id");
+
+  if (session.getAttribute("userId") == null) {
+      response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+      return;
+  }
+
+  Integer userId = (Integer) session.getAttribute("userId");
   int orderItemId = Integer.parseInt(request.getParameter("order_item_id"));
+
+  OrderService orderService = new OrderService();
+  if (!orderService.isOrderItemOwnedByUser(orderItemId, userId)) {
+      out.print("<script>alert('잘못된 접근입니다.'); history.back();</script>");
+      return;
+  }
+
   String productName = request.getParameter("product_name");
   String productImage = request.getParameter("product_image");
   String reason = request.getParameter("reason");
 
-  // 환불 등록
   RefundDTO dto = new RefundDTO();
   dto.setOrderItemId(orderItemId);
   dto.setRefundStatus("RS1"); // 환불 신청
-  dto.setRefundReason(reason); // DTO에 필드가 있다면 저장 가능
+  dto.setRefundReason(reason);
 
-  RefundService service = new RefundService();
-  service.applyRefund(dto);
-  
+  RefundService refundService = new RefundService();
+  refundService.applyRefund(dto);
+
   String reasonText = "";
   switch (reason) {
     case "RR1": reasonText = "상품이 마음에 들지 않음"; break;
@@ -45,18 +53,65 @@ if (session.getAttribute("userId") ==null ) {
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: 'Pretendard', sans-serif; background-color: #fffefc; }
-    .complete-container { margin-left: 260px; max-width: 700px; padding: 60px 20px; text-align: center; }
-    .complete-box {
-      background: #fff; border: 1px solid #eee; border-radius: 12px;
-      padding: 40px 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background-color: #fffefc;
+      margin: 0;
     }
-    .complete-box h3 { color: #ef84a5; font-weight: bold; margin-bottom: 20px; }
-    .complete-box p { font-size: 16px; margin-bottom: 10px; }
+
+    .content-wrapper {
+      margin-left: 240px;
+      padding: 60px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .complete-container {
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+    }
+
+    .complete-box {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 40px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .complete-box h3 {
+      color: #ef84a5;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .complete-box p {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
     .btn-home {
-      margin-top: 30px; background-color: #ef84a5; border: none;
-      padding: 10px 30px; color: white; font-weight: bold;
-      border-radius: 6px; text-decoration: none;
+      margin-top: 30px;
+      background-color: #ef84a5;
+      border: none;
+      padding: 10px 30px;
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    @media (max-width: 768px) {
+      .content-wrapper {
+        margin-left: 0;
+        padding: 40px 16px;
+      }
+
+      .complete-container {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
@@ -65,14 +120,16 @@ if (session.getAttribute("userId") ==null ) {
 <c:import url="/common/header.jsp" />
 <c:import url="/common/mypage_sidebar.jsp" />
 
-<div class="complete-container">
-  <div class="complete-box">
-    <h3>환불 신청이 완료되었습니다</h3>
-    <p><strong>상품:</strong> <%= productName %></p>
-    <p><strong>주문상품번호:</strong> <%= orderItemId %></p>
-    <p><strong>사유:</strong> <%= reasonText %></p>
-    <p class="text-muted">관리자 확인 후 2~3일 내 환불이 처리됩니다.<br>환불 진행 상황은 마이페이지에서 확인해주세요.</p>
-    <a href="my_refunds.jsp" class="btn-home">환불 내역 보기</a>
+<div class="content-wrapper">
+  <div class="complete-container">
+    <div class="complete-box">
+      <h3>환불 신청이 완료되었습니다</h3>
+      <p><strong>상품명:</strong> <%= productName %></p>
+      <p><strong>주문상품번호:</strong> <%= orderItemId %></p>
+      <p><strong>사유:</strong> <%= reasonText %></p>
+      <p class="text-muted">관리자 확인 후 2~3일 내 환불이 처리됩니다.<br>환불 진행 상황은 마이페이지에서 확인해주세요.</p>
+      <a href="my_refunds.jsp" class="btn-home">환불 내역 보기</a>
+    </div>
   </div>
 </div>
 

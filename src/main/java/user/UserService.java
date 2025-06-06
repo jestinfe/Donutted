@@ -21,6 +21,10 @@ public class UserService {
     }
 
     public UserDTO getUserById(int userId) {
+    	 if (userId <= 0) {
+    	        System.err.println("UserService: Invalid userId = " + userId);
+    	        return null;
+    	    }
         try {
             UserDTO dto = userDAO.selectById(userId);
             if (dto != null) {
@@ -29,7 +33,10 @@ public class UserService {
                 dto.setPhone(safeDecrypt(dto.getPhone()));
                 dto.setAddress1(safeDecrypt(dto.getAddress1()));
                 dto.setAddress2(safeDecrypt(dto.getAddress2()));
+            }else {
+                System.out.println("No user found for userId = " + userId);
             }
+            
             return dto;
         } catch (Exception e) {
             e.printStackTrace();

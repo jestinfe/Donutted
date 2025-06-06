@@ -183,29 +183,36 @@ public class RefundDAO {
     public List<RefundDTO> searchRefunds(String userId, String status, String fromDate, String toDate) throws SQLException {
         List<RefundDTO> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT r.*, p.name AS product_name, u.user_id, sc.description AS refund_reason_text ")
-           .append("FROM refund r ")
-           .append("JOIN order_item oi ON r.order_item_id = oi.order_item_id ")
-           .append("JOIN product p ON oi.product_id = p.product_id ")
-           .append("JOIN orders o ON oi.order_id = o.order_id ")
-           .append("JOIN users u ON o.user_id = u.user_id ")
-           .append("LEFT JOIN status_code sc ON r.refund_reason = sc.code AND sc.category = 'REFUND_REASON' ")
-           .append("WHERE 1=1 ");
+        sql.append("""
+            SELECT r.refund_id, r.order_item_id, r.requested_at, r.processed_at,
+                   r.refund_status, r.refund_reason,
+                   oi.quantity, oi.unit_price,
+                   p.name AS product_name,
+                   u.user_id,
+                   sc.description AS refund_reason_text
+              FROM refund r
+              JOIN order_item oi ON r.order_item_id = oi.order_item_id
+              JOIN product p ON oi.product_id = p.product_id
+              JOIN orders o ON oi.order_id = o.order_id
+              JOIN users u ON o.user_id = u.user_id
+              LEFT JOIN status_code sc ON r.refund_reason = sc.code AND sc.category = 'REFUND_REASON'
+             WHERE 1=1
+        """);
 
         if (userId != null && !userId.trim().isEmpty()) {
-            sql.append("AND u.user_id = ? ");
+            sql.append(" AND u.user_id = ? ");
         }
         if (status != null && !status.trim().isEmpty()) {
-            sql.append("AND r.refund_status = ? ");
+            sql.append(" AND r.refund_status = ? ");
         }
         if (fromDate != null && !fromDate.trim().isEmpty()) {
-            sql.append("AND r.requested_at >= TO_DATE(?, 'YYYY-MM-DD') ");
+            sql.append(" AND r.requested_at >= TO_DATE(?, 'YYYY-MM-DD') ");
         }
         if (toDate != null && !toDate.trim().isEmpty()) {
-            sql.append("AND r.requested_at <= TO_DATE(?, 'YYYY-MM-DD') ");
+            sql.append(" AND r.requested_at <= TO_DATE(?, 'YYYY-MM-DD') ");
         }
 
-        sql.append("ORDER BY r.requested_at DESC");
+        sql.append(" ORDER BY r.requested_at DESC ");
 
         try (
             Connection con = db.getDbConn();
@@ -234,15 +241,18 @@ public class RefundDAO {
                 dto.setProcessedAt(rs.getDate("processed_at"));
                 dto.setRefundStatus(rs.getString("refund_status"));
                 dto.setRefundReason(rs.getString("refund_reason"));
-                dto.setRefundReasonText(rs.getString("refund_reason_text")); // ✅ DB에서 직접 읽음
+                dto.setRefundReasonText(rs.getString("refund_reason_text"));
                 dto.setProductName(rs.getString("product_name"));
                 dto.setUserId(rs.getInt("user_id"));
+                dto.setQuantity(rs.getInt("quantity"));           // ✅ 수량
+                dto.setUnitPrice(rs.getDouble("unit_price"));     // ✅ 단가
                 list.add(dto);
             }
         }
 
         return list;
     }
+
 
 
     // 환불 사유 설명을 코드로부터 조회 (간단히 switch문으로도 가능)
@@ -313,14 +323,21 @@ public class RefundDAO {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * FROM ( ");
         sql.append("  SELECT rownum rnum, a.* FROM ( ");
-        sql.append("    SELECT r.*, p.name AS product_name, u.user_id, sc.description AS refund_reason_text ");
-        sql.append("    FROM refund r ");
-        sql.append("    JOIN order_item oi ON r.order_item_id = oi.order_item_id ");
-        sql.append("    JOIN product p ON oi.product_id = p.product_id ");
-        sql.append("    JOIN orders o ON oi.order_id = o.order_id ");
-        sql.append("    JOIN users u ON o.user_id = u.user_id ");
-        sql.append("    LEFT JOIN status_code sc ON r.refund_reason = sc.code AND sc.category = 'REFUND_REASON' ");
-        sql.append("    WHERE 1=1 ");
+        sql.append("""
+            SELECT r.refund_id, r.order_item_id, r.requested_at, r.processed_at,
+                   r.refund_status, r.refund_reason,
+                   oi.quantity, oi.unit_price,
+                   p.name AS product_name,
+                   u.user_id,
+                   sc.description AS refund_reason_text
+              FROM refund r
+              JOIN order_item oi ON r.order_item_id = oi.order_item_id
+              JOIN product p ON oi.product_id = p.product_id
+              JOIN orders o ON oi.order_id = o.order_id
+              JOIN users u ON o.user_id = u.user_id
+              LEFT JOIN status_code sc ON r.refund_reason = sc.code AND sc.category = 'REFUND_REASON'
+             WHERE 1=1
+        """);
 
         if (userId != null && !userId.trim().isEmpty()) {
             sql.append("AND u.user_id = ? ");
@@ -373,12 +390,15 @@ public class RefundDAO {
                 dto.setRefundReasonText(rs.getString("refund_reason_text"));
                 dto.setProductName(rs.getString("product_name"));
                 dto.setUserId(rs.getInt("user_id"));
+                dto.setQuantity(rs.getInt("quantity"));           // ✅ 누락되어 있던 필드
+                dto.setUnitPrice(rs.getDouble("unit_price"));     // ✅ 누락되어 있던 필드
                 list.add(dto);
             }
         }
 
         return list;
     }
+
 
     
 }

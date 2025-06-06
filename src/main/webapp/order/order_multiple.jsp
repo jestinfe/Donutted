@@ -10,6 +10,10 @@
   session.removeAttribute("alreadyOrdered");
 
   Integer userId = (Integer) session.getAttribute("userId");
+  if (userId == null) {
+	    response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	    return;
+	}
   int cartId = Integer.parseInt(request.getParameter("cartId"));
 
   OrderService os = new OrderService();

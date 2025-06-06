@@ -10,7 +10,10 @@ public class RefundService {
 
     /** ✅ 관리자: 환불 상태 변경 */
     public int changeRefundStatus(int refundId, String newStatus) throws SQLException {
-        return dao.updateRefundStatus(refundId, newStatus);
+    	if (refundId <= 0 || newStatus == null || newStatus.trim().isEmpty()) {
+            throw new IllegalArgumentException("환불 ID 또는 상태값이 유효하지 않습니다.");
+        }
+    	return dao.updateRefundStatus(refundId, newStatus);
     }
 
     /** ✅ 관리자: 전체 환불 목록 조회 */

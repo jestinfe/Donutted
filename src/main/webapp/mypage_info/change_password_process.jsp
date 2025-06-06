@@ -1,6 +1,5 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/plain; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="user.UserService, user.UserDTO" %>
-<%@ page import="javax.servlet.http.*, javax.servlet.*" %>
 
 <%
 request.setCharacterEncoding("UTF-8");
@@ -8,7 +7,7 @@ request.setCharacterEncoding("UTF-8");
 // 세션에서 로그인된 사용자 ID 가져오기
 Integer userId = (Integer) session.getAttribute("userId");
 if (userId == null) {
-    response.sendRedirect("/login.jsp");
+    out.print("unauthorized");
     return;
 }
 
@@ -17,58 +16,38 @@ String currentPassword = request.getParameter("currentPassword");
 String newPassword = request.getParameter("newPassword");
 String confirmPassword = request.getParameter("confirmPassword");
 
+// 입력값 유효성 검사
 if (currentPassword == null || newPassword == null || confirmPassword == null || !newPassword.equals(confirmPassword)) {
-%>
-  <script>
-    alert("입력값이 올바르지 않거나 새 비밀번호가 일치하지 않습니다.");
-    history.back();
-  </script>
-<%
-  return;
+    out.print("invalid_input");
+    return;
 }
 
-UserService service = new UserService();
-UserDTO user = service.getUserById(userId); // ★ 한 번만 호출해서 재사용
+// 현재 비밀번호와 새 비밀번호가 동일한지 확인
+if (currentPassword.equals(newPassword)) {
+    out.print("same_as_current");
+    return;
+}
 
+// 사용자 정보 조회
+UserService service = new UserService();
+UserDTO user = service.getUserById(userId);
 if (user == null) {
-%>
-  <script>
-    alert("사용자 정보를 찾을 수 없습니다.");
-    history.back();
-  </script>
-<%
-  return;
+    out.print("user_not_found");
+    return;
 }
 
 // 현재 비밀번호 검증
 boolean validUser = service.isValidLogin(user.getUsername(), currentPassword);
-
 if (!validUser) {
-%>
-  <script>
-    alert("현재 비밀번호가 올바르지 않습니다.");
-    history.back();
-  </script>
-<%
-  return;
+    out.print("invalid_password");
+    return;
 }
 
-// 비밀번호 업데이트 시도
+// 비밀번호 업데이트
 boolean result = service.resetPassword(user.getUsername(), newPassword);
-
 if (result) {
-%>
-  <script>
-    alert("비밀번호가 성공적으로 변경되었습니다.");
-    location.href = "my_page.jsp";
-  </script>
-<%
+    out.print("success");
 } else {
-%>
-  <script>
-    alert("비밀번호 변경 중 오류가 발생했습니다.");
-    history.back();
-  </script>
-<%
+    out.print("fail");
 }
 %>

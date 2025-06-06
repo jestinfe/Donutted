@@ -6,8 +6,12 @@
 <%@ include file="../common/sidebar.jsp" %>
 <%@ include file="../common/login_check.jsp" %>
 
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<head>
+  <title>환불 관리</title>
+</head>
 
 <%
   String userId = request.getParameter("user_id");
@@ -24,7 +28,7 @@
   int startNum = (currentPage - 1) * pageScale + 1;
   int endNum = startNum + pageScale - 1;
 
- RangeDTO range = new RangeDTO(startNum, endNum);
+  RangeDTO range = new RangeDTO(startNum, endNum);
   range.setCurrentPage(currentPage);
   range.setField("user_id");
   range.setKeyword(userId);
@@ -53,10 +57,10 @@ function confirmRefund(form) {
 </script>
 
 <div class="main">
-  <h3>주문관리 - 환불</h3>
+  <h3 class="mb-4">주문관리 - 환불</h3>
 
   <!-- 검색 필터 -->
-  <form class="row g-2 mb-3" method="get">
+  <form class="row g-2 mb-4" method="get">
     <input type="hidden" name="currentPage" value="1" />
     <div class="col-md-2">
       <input type="text" name="user_id" class="form-control" value="<%= userId != null ? userId : "" %>" placeholder="주문자 ID">
@@ -92,6 +96,7 @@ function confirmRefund(form) {
         <th>상품명</th>
         <th>신청일자</th>
         <th>환불사유</th>
+        <th>금액</th> <!-- ✅ 추가 -->
         <th>상태</th>
         <th>처리</th>
       </tr>
@@ -105,6 +110,9 @@ function confirmRefund(form) {
           <td>${r.productName}</td>
           <td><fmt:formatDate value="${r.requestedAt}" pattern="yyyy-MM-dd" /></td>
           <td>${r.refundReasonText}</td>
+          <td>
+            <fmt:formatNumber value="${r.quantity * r.unitPrice}" type="number" />원
+          </td> <!-- ✅ 금액 출력 -->
           <td>
             <c:choose>
               <c:when test="${r.refundStatus eq 'RS1'}">환불 요청 중</c:when>

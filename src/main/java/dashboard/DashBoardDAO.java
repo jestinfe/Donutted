@@ -33,7 +33,7 @@ public class DashBoardDAO {
               d.stat_date,
               NVL(s.total_orders, 0) AS total_orders,
               NVL(s.total_sales, 0) AS total_sales,
-              NVL(s.order_canceled, 0) AS order_canceled,             -- ✅ 주문취소
+              NVL(s.order_canceled, 0) AS order_canceled,
               NVL(s.order_completed, 0) AS order_completed,
               NVL(s.before_shipping, 0) AS before_shipping,
               NVL(s.shipping, 0) AS shipping,
@@ -41,7 +41,8 @@ public class DashBoardDAO {
               NVL(s.refund_requested, 0) AS refund_requested,
               NVL(s.refund_approved, 0) AS refund_approved,
               NVL(s.refund_rejected, 0) AS refund_rejected,
-              NVL(s.total_refund_amount, 0) AS total_refund_amount     -- ✅ 환불금액
+              NVL(s.total_refund_amount, 0) AS total_refund_amount,
+              NVL(s.canceled_amount, 0) AS canceled_amount        -- ✅ 주문취소 금액 추가
             FROM (
               SELECT TRUNC(SYSDATE) - LEVEL + 1 AS stat_date
               FROM dual
@@ -62,7 +63,7 @@ public class DashBoardDAO {
                 dto.setStatDate(rs.getDate("stat_date"));
                 dto.setTotalOrders(rs.getInt("total_orders"));
                 dto.setTotalSales(rs.getInt("total_sales"));
-                dto.setOrderCanceled(rs.getInt("order_canceled"));                 // ✅ 추가
+                dto.setOrderCanceled(rs.getInt("order_canceled"));
                 dto.setOrderCompleted(rs.getInt("order_completed"));
                 dto.setBeforeShipping(rs.getInt("before_shipping"));
                 dto.setShipping(rs.getInt("shipping"));
@@ -70,15 +71,17 @@ public class DashBoardDAO {
                 dto.setRefundRequested(rs.getInt("refund_requested"));
                 dto.setRefundApproved(rs.getInt("refund_approved"));
                 dto.setRefundRejected(rs.getInt("refund_rejected"));
-                dto.setTotalRefundAmount(rs.getInt("total_refund_amount"));       // ✅ 추가
+                dto.setTotalRefundAmount(rs.getInt("total_refund_amount"));
+                dto.setCanceledAmount(rs.getInt("canceled_amount"));  // ✅ 추가
 
                 list.add(dto);
             }
         }
 
-        Collections.reverse(list);
+        Collections.reverse(list); // 최근 날짜가 뒤로 가게 정렬
         return list;
     }
+
 
 
 

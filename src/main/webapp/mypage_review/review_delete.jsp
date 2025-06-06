@@ -1,6 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="review.*" %>
 <%
+
+if (session.getAttribute("userId") ==null ) {
+	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	  return;
+	}
   int reviewId = Integer.parseInt(request.getParameter("review_id"));
   int result = new ReviewService().deleteReview(reviewId);
 %>

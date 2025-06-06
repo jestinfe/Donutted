@@ -9,7 +9,9 @@
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
 <%@ include file="../common/login_check.jsp" %>
-
+<head>
+  <title>주문관리 - 주문목록</title>
+</head>
 
 <%
     String searchName = request.getParameter("searchName");

@@ -8,7 +8,9 @@
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
 <%@ include file="../common/login_check.jsp" %>
-
+<head>
+  <title>회원관리 - 회원목록</title>
+</head>
 <%
   String includeWithdraw = request.getParameter("includeWithdraw");
   String searchField = request.getParameter("searchField");

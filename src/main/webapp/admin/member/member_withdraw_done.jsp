@@ -3,7 +3,9 @@
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
 <%@ include file="../common/login_check.jsp" %>
-
+<head>
+  <title>회원관리 - 회원탈퇴</title>
+</head>
 
 <div class="main d-flex justify-content-center align-items-center" style="height: 80vh;">
   <div class="text-center">

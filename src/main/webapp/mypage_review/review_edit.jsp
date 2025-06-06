@@ -2,6 +2,10 @@
 <%@ page import="review.*, order.*" %>
 <%
   request.setCharacterEncoding("UTF-8");
+if (session.getAttribute("userId") ==null ) {
+	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+	  return;
+	}
   int reviewId = Integer.parseInt(request.getParameter("review_id"));
   ReviewService reviewService = new ReviewService();
   ReviewDTO review = reviewService.getReviewById(reviewId);

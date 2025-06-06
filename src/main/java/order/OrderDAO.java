@@ -1038,4 +1038,45 @@ public class OrderDAO {
             return orders;
         }
 
+        public boolean isOrderOwnedByUser(int orderId, int userId) throws SQLException {
+            String sql = "SELECT COUNT(*) FROM orders WHERE order_id = ? AND user_id = ?";
+            
+            try (Connection conn = db.getDbConn();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setInt(1, orderId);
+                pstmt.setInt(2, userId);
+
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getInt(1) > 0;
+                    }
+                }
+            }
+
+            return false;
+        }
+        
+        public boolean isOrderItemOwnedByUser(int orderItemId, int userId) throws SQLException {
+            String sql = """
+                SELECT COUNT(*)
+                  FROM order_item oi
+                  JOIN orders o ON oi.order_id = o.order_id
+                 WHERE oi.order_item_id = ? AND o.user_id = ?
+            """;
+
+            try (Connection conn = db.getDbConn();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, orderItemId);
+                pstmt.setInt(2, userId);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getInt(1) > 0;
+                    }
+                }
+            }
+            return false;
+        }
+
+
 }

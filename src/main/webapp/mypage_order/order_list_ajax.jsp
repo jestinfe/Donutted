@@ -49,38 +49,43 @@
         <div class="product-list">
           <c:forEach var="item" items="${order.items}">
             <div class="product-item" style="width: 110px; text-align: center; font-size: 14px; min-height: 180px; display: flex; flex-direction: column; justify-content: space-between;">
-              <img src="<c:url value='/admin/common/upload/${item.thumbnailUrl}' />" alt="상품 이미지"
+              <img src="<c:url value='/admin/common//images/upload/${item.thumbnailUrl}' />" alt="상품 이미지"
                    style="width:100px; height:100px; border-radius:10px; object-fit:cover; box-shadow:0 2px 6px rgba(0,0,0,0.08);" />
               <div>${item.productName}</div>
               <div style="margin-top: 8px; min-height: 30px;">
-			  <c:choose>
-			    <c:when test="${item.reviewed}">
-			      <span class="text-success small">작성 완료</span>
-			    </c:when>
-			    <c:when test="${order.orderStatus eq 'O4'}">
-			      <a href="javascript:void(0);" 
-  					 onclick="window.open('../mypage_review/write_review_form.jsp?order_item_id=${item.orderItemId}', 
-                        'reviewPopup', 
-                        'width=600,height=700,scrollbars=yes');" 
-   					class="btn-review btn-sm">리뷰 작성</a>
-			    </c:when>
-			  </c:choose>
-			</div>
-
+                <c:choose>
+                  <c:when test="${item.reviewed}">
+                    <span class="text-success small">작성 완료</span>
+                  </c:when>
+                  <c:when test="${order.orderStatus eq 'O4'}">
+                    <a href="javascript:void(0);"
+                       onclick="window.open('../mypage_review/write_review_form.jsp?order_item_id=${item.orderItemId}',
+                       'reviewPopup', 'width=600,height=700,scrollbars=yes');"
+                       class="btn-review btn-sm">리뷰 작성</a>
+                  </c:when>
+                </c:choose>
+              </div>
             </div>
           </c:forEach>
         </div>
 
         <div class="text-end">
           <c:if test="${order.orderStatus eq 'O4'}">
-            <a href="../mypage_refund/refund_items.jsp?order_id=${order.orderId}" class="btn-refund">환불요청</a>
-          </c:if>
+		  <form method="post" action="../mypage_refund/refund_items.jsp" style="display:inline;">
+		    <input type="hidden" name="order_id" value="${order.orderId}" />
+		    <button type="submit" class="btn-refund">환불요청</button>
+		  </form>
+		</c:if>
+
 
           <c:if test="${order.orderStatus == 'O1' || order.orderStatus == 'O2' || order.orderStatus == 'O3'}">
-            <a href="cancel_order.jsp?order_id=${order.orderId}" class="btn-refund"
-               onclick="return confirm('정말 주문을 취소하시겠습니까?');">
-              주문취소
-            </a>
+            <form method="post" action="cancel_order.jsp" style="display:inline;">
+              <input type="hidden" name="order_id" value="${order.orderId}" />
+              <button type="submit" class="btn-refund"
+                      onclick="return confirm('정말 주문을 취소하시겠습니까?');">
+                주문취소
+              </button>
+            </form>
           </c:if>
 
           <c:if test="${order.orderStatus == 'O0'}">
