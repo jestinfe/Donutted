@@ -44,6 +44,34 @@ request.setAttribute("currentCategoryId", categoryId);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>고객 메뉴</title>
+   <c:if test="${not empty param.msg}">
+  <div id="toast-msg" style="
+      position: fixed;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #f8a6c9;
+      color: white;
+      padding: 14px 24px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+  ">
+    ${param.msg}
+  </div>
+  <script>
+    const toast = document.getElementById("toast-msg");
+    if (toast) {
+      toast.style.opacity = "1";
+      setTimeout(() => {
+        toast.style.opacity = "0";
+      }, 1500);
+    }
+  </script>
+</c:if>
   <c:import url="../common/external_file.jsp"/>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -591,7 +619,7 @@ request.setAttribute("currentCategoryId", categoryId);
   <div class="name-heart" style="position: relative; margin: 10px 0;">
   <h3 style="text-align: center; margin: 0;">${prd.name}</h3>
 
-  <form action="add_wish.jsp" method="POST"
+  <form action="../wishlist/add_wish.jsp" method="POST"
         style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); margin: 0;">
     <input type="hidden" name="productId" value="${prd.productId}">
     <button type="submit" class="heart-btn" title="위시리스트 추가">
@@ -613,10 +641,13 @@ request.setAttribute("currentCategoryId", categoryId);
         <fmt:formatNumber value="${prd.price}" pattern="#,###" />원
       </p>
     </div>
-
-    <button class="add-btn" onclick="addToCart(${prd.productId}, '${prd.name}')">
+	<form action="../cart/addMenuTocart.jsp" method="POST">
+	 <input type="hidden" name="productId" value="${prd.getProductId()}">
+          <input type="hidden" name="qty" id="cartQty" value="1">
+    <button class="add-btn">
       <i class="fas fa-shopping-cart"></i> 담기
     </button>
+	</form>
   </div>
 </div>
     </c:forEach>
@@ -626,13 +657,14 @@ request.setAttribute("currentCategoryId", categoryId);
 
 <script>
   // 장바구니 추가 함수
-  function addToCart(productId, productName) {
-    // 여기에 실제 장바구니 추가 로직을 구현
-    // 예: AJAX 요청으로 서버에 전송
+//   function addToCart(productId, productName) {
+//     // 여기에 실제 장바구니 추가 로직을 구현
     
-    // 임시로 알림 표시
-    showNotification(${productName}이(가) 장바구니에 추가되었습니다!);
-  }
+//     // 예: AJAX 요청으로 서버에 전송
+    
+//     // 임시로 알림 표시
+//     showNotification(${productName}이(가) 장바구니에 추가되었습니다!);
+//   }
 
   // 알림 표시 함수
   function showNotification(message) {

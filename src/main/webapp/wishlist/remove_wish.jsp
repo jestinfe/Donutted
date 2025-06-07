@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="wishlist.WishListDTO"%>
 <%@page import="wishlist.WishService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -17,9 +18,11 @@ if(selectedWishList != null && selectedWishList.length>0){
 	for(String wishItem : selectedWishList){
 		int items = Integer.parseInt(wishItem);
 		ws.removeWishList(wlDTO, items);
-	}
+	} response.sendRedirect("wishlist.jsp?msg=" + URLEncoder.encode("선택한 상품이 삭제되었습니다.", "UTF-8"));
+return;
+} else {
+response.sendRedirect("wishlist.jsp?msg=" + URLEncoder.encode("삭제할 항목을 선택해주세요.", "UTF-8"));
+return;
 }
-
-response.sendRedirect("wishlist.jsp");
 
 %>

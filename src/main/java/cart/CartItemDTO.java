@@ -18,7 +18,8 @@ public class CartItemDTO {
 
 	private int userId, cartItemId, cartId, productId, quantity;
 	private String productName;
-	private int price;
+	private int price, stockQuantity;
 	private String thumbnailImg;
+	
 
 }

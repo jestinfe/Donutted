@@ -11,7 +11,7 @@ if(userId==null){
 	  %>
 	  	 <script>
 		    alert("로그인 후 이용해주세요.");
-	    	location.href = "../UserLogin/login.jsp";
+	    	location.href = "login.jsp";
 	  	</script>
 	  <% 
 	  	return;
@@ -30,7 +30,35 @@ request.setAttribute("wishList", wishList);
 <head>
 <meta charset="UTF-8">
 <title>찜목록</title>
-<c:import url="../common/external_file.jsp"/>
+<c:if test="${not empty param.msg}">
+  <div id="toast-msg" style="
+      position: fixed;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #f8a6c9;
+      color: white;
+      padding: 14px 24px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+  ">
+    ${param.msg}
+  </div>
+  <script>
+    const toast = document.getElementById("toast-msg");
+    if (toast) {
+      toast.style.opacity = "1";
+      setTimeout(() => {
+        toast.style.opacity = "0";
+      }, 1500);
+    }
+  </script>
+</c:if>
+<c:import url="../jsp/external_file.jsp"/>
 <script type="text/javascript">
 window.onload = function () {
 	  const checkAllTop = document.getElementById("checkAll");
@@ -68,7 +96,7 @@ window.onload = function () {
 	    btn.addEventListener("click", function () {
 	      const checked = document.querySelectorAll("input[name='checkWish']:checked");
 	      if (checked.length === 0) {
-	        alert("삭제할 항목을 선택해주세요.");
+	    	  location.href = "wishlist.jsp?msg=" + encodeURIComponent("삭제할 항목을 선택해주세요.");
 	        return;
 	      }
 	      if (confirm("선택한 항목을 삭제하시겠습니까?")) {

@@ -1,3 +1,6 @@
+<%@page import="wishlist.WishListDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="wishlist.WishService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="product.ProductService" %>
 <%@ page import="product.ProductDTO" %>
@@ -6,9 +9,24 @@
 
 <%
   int productId = Integer.parseInt(request.getParameter("productId"));
+  Integer userId = (Integer)session.getAttribute("userId");
   ProductService ps = new ProductService();
   ProductDTO prd = ps.getProductById(productId);
+  boolean isWished = false;
+  if(userId != null){
+	  WishService ws = new WishService();
+	  List<WishListDTO> wishList = ws.showWishList(userId);
+  	  for(WishListDTO w : wishList){
+//  	  wishProductId.add(w.getProductId());
+		 if(w.getProductId() == productId){
+			 isWished= true;
+			 break;
+		 }
+  	  	  
+  	  }
+  }
   request.setAttribute("prd", prd);
+  request.setAttribute("isWished", isWished);
 %>
 
 <!DOCTYPE html>
@@ -16,6 +34,34 @@
 <head>
   <meta charset="UTF-8">
   <title>${prd.name}</title>
+  <c:if test="${not empty param.msg}">
+  <div id="toast-msg" style="
+      position: fixed;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #f8a6c9;
+      color: white;
+      padding: 14px 24px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+  ">
+    ${param.msg}
+  </div>
+  <script>
+    const toast = document.getElementById("toast-msg");
+    if (toast) {
+      toast.style.opacity = "1";
+      setTimeout(() => {
+        toast.style.opacity = "0";
+      }, 1500);
+    }
+  </script>
+</c:if>
   <c:import url="../common/external_file.jsp" />
   <style>
     * {
@@ -342,7 +388,7 @@
   <div class="product-container">
     <div class="product-img <c:if test='${prd.stock == 0}'>sold-out</c:if>">
       <img id="mainImg"
-           src="<c:url value='/admin/common/images/products/${prd.thumbnailImg}' />"
+           src="<c:url value='admin/common/images/products/${prd.thumbnailImg}' />"
            alt="${prd.name}"
            onerror="this.onerror=null; this.dataset.error='true'; this.src='${pageContext.request.contextPath}/admin/common/images/default/error.png';">
 
@@ -410,7 +456,19 @@
           <input type="hidden" name="qty" id="singleQty" value="1">
           <button class="btn-buy" type="submit" <c:if test="${prd.stock == 0}">disabled</c:if>>구매하기</button>
         </form>
-        <button type="button" class="wishlist-btn" onclick="toggleHeart(this)">🤍</button>
+      <form action="add_wish_indetail.jsp"method="POST" id="form">
+      
+	       <input type="hidden" name="productId" value="${prd.productId}">
+           <button type="button" class="wishlist-btn" onclick="toggleHeart(this)">
+           <c:choose>
+           <c:when test="${isWished}">❤️
+           </c:when>
+           <c:otherwise>
+           🤍
+           </c:otherwise>
+           </c:choose>
+           </button>
+	    </form>
       </div>
     </div>
   </div>
@@ -483,8 +541,13 @@
   }
 
   function toggleHeart(btn) {
-    btn.textContent = btn.textContent === '🤍' ? '❤️' : '🤍';
-  }
+      if (btn.innerText.includes("🤍")) {
+        btn.innerText = "❤️";
+      } else {
+        btn.innerText = "🤍";
+      }
+			btn.closest("form").submit();        
+    }
 </script>
 
 <c:import url="../common/footer.jsp" />

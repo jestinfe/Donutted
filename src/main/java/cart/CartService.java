@@ -54,6 +54,7 @@ public class CartService {
 		try {
 			Integer cartId = cDAO.getCartIdByUser(userId);
 			if(cartId != 0) {
+			System.out.println("cartId:"+cartId);
 			list = cDAO.selectAllCartItem(cartId);
 			}
 		} catch (SQLException e) {
@@ -101,6 +102,56 @@ public class CartService {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	public int searchCartCnt(int cartId) {
+		int cnt = 0;
+		CartDAO cDAO = CartDAO.getInstance();
+		try {
+			cnt = cDAO.cartItemCnt(cartId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+	
+	public int plusQuantity(int cartId, int productId, int quantity) {
+		int cnt = 0;
+		CartDAO cDAO = CartDAO.getInstance();
+		try {
+			cnt = cDAO.updateQuantity(cartId, productId, quantity);
+			System.out.println(cartId+" "+productId+" "+quantity);
+			System.out.println("update 발동");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return cnt;
+	}//plus
+	public void addQuantity(int cartId, int productId) {
+		int cnt = 0;
+		CartDAO cDAO = CartDAO.getInstance();
+		try {
+			cDAO.plusQuantity(cartId, productId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}//plus
+	public Integer searchStockQuantity(int productId) {
+		int cnt = 0;
+		CartDAO cDAO = CartDAO.getInstance();
+		try {
+			cnt = cDAO.getStockQuantity(productId);
+			System.out.println("남은 수량"+cnt);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return cnt;
 	}
 	
 }
