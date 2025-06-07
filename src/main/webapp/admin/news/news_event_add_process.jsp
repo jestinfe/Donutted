@@ -15,7 +15,7 @@ String detailImageName = "";
 
 try {
     // 1. 저장 경로 설정
-   	File saveDir = new File("C:/dev/workspace/mall_prj/src/main/webapp/admin/common/images/news");
+   	File saveDir = new File("C:/Users/user/git/mall_prj/src/main/webapp/admin/common/images/news");
     if (!saveDir.exists()) saveDir.mkdirs();
 
     // 2. 업로드 크기 제한 (600MB)

@@ -37,7 +37,8 @@
   <div id="inputDiv">
     <form id="frm" method="get" action="id_dup.jsp">
       <label for="id">아이디</label>
-      <input type="text" name="id" id="id" value="<c:out value='${inputId}'/>" autofocus />
+      <input type="text" name="id" id="id" maxlength="10" 
+      	value="<c:out value='${inputId}'/>" autofocus />
       <input type="submit" value="중복확인" class="btn btn-primary btn-sm" />
     </form>
   </div>
@@ -63,6 +64,7 @@
 
 <script>
 $(function() {
+  // 사용 버튼 처리
   $('#btn2').click(function() {
     const id = $('#tempId').val();
     if (id === "") {
@@ -70,15 +72,37 @@ $(function() {
       return;
     } 
 
-    // 부모창에 값 전달 + readonly 설정 + 중복확인 완료 처리
     opener.document.frm.id.value = id;
     opener.document.frm.id.setAttribute('readonly', 'readonly');
     opener.idChecked = true;
 
     window.close();
   });
+
+  // 아이디 유효성 검증 추가
+  $('#frm').submit(function(e) {
+    const id = $('#id').val().trim();
+    const idPattern = /^[A-Za-z]{1,10}$/;
+
+    if (id === "") {
+      alert("아이디를 입력하세요.");
+      $('#id').focus();
+      e.preventDefault();
+      return;
+    }
+
+    if (!idPattern.test(id)) {
+      alert("아이디는 영문자만 사용하며, 최대 10자까지 가능합니다.");
+      $('#id').focus();
+      e.preventDefault();
+      return;
+      
+    }
+    // 유효성 통과 시 그대로 submit 진행됨
+  });
 });
 </script>
+
 
 </body>
 </html>
