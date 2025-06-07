@@ -7,11 +7,13 @@
   
 <!-- 배너 영역 -->
 <div class="slider">
-  <img src="<c:url value='/common/images/main.png'/>" class="active" alt="배너1">
-  <img src="<c:url value='/common/images/main2.png'/>" alt="배너2">
-  <img src="<c:url value='/common/images/main3.png'/>" alt="배너3">
-  <img src="<c:url value='/common/images/main4.png'/>" alt="배너4">
-  <img src="<c:url value='/common/images/main5.png'/>" alt="배너5">
+  <img src="<c:url value='/common/images/slider_1.png'/>" class="active" alt="배너1">
+  <img src="<c:url value='/common/images/slider_2.png'/>" alt="배너2">
+  <img src="<c:url value='/common/images/slider_3.png'/>" alt="배너3">
+  <img src="<c:url value='/common/images/slider_4.png'/>" alt="배너4">
+  <img src="<c:url value='/common/images/slider_5.png'/>" alt="배너5">
+  <img src="<c:url value='/common/images/slider_6.png'/>" alt="배너6">
+  <img src="<c:url value='/common/images/slider_7.png'/>" alt="배너7">
 </div>
 
 <script>
@@ -40,8 +42,9 @@
    .slider {
     position: relative;
     width: 100%;
-    height: 600px; 
+    height: 780px !important;
     overflow: hidden;
+    box-shadow: 0px 0px 30px rgb(0, 0, 0, 0.3);
   }
 
   .slider img {
@@ -49,10 +52,10 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: auto; !important;
     object-fit: cover;
     opacity: 0;
-    transition: opacity 1s ease-in-out; //화면비율
+    transition: transform 1s ease-in-out; /*화면비율*/
   }
 
   .slider img.active {
@@ -66,12 +69,14 @@
     width: 100%;
     position: relative;
     margin-top: 50px;
+    
   }
 
   .instagram-slider {
     display: flex;
     width: calc(200px * 20); /* 넉넉하게 반복 효과 위해 10장 x 2 */
     animation: scroll 20s linear infinite;
+    
   }
 
   .instagram-slider img {
@@ -92,6 +97,7 @@
   max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
+  
 }
 
 #instagram_section h3 {
@@ -108,6 +114,7 @@
       transform: translateX(-50%);
     }
   }
+
 </style>
 
 
@@ -153,27 +160,29 @@
   
   <div class="instagram-slider-container">
     <div class="instagram-slider">
-      <img src="<c:url value='/common/images/insta1.jpg'/>" alt="insta1">
-      <img src="<c:url value='/common/images/insta2.jpg'/>" alt="insta2">
-      <img src="<c:url value='/common/images/insta3.jpg'/>" alt="insta3">
-      <img src="<c:url value='/common/images/insta4.jpg'/>" alt="insta4">
-      <img src="<c:url value='/common/images/insta5.jpg'/>" alt="insta5">
-      <img src="<c:url value='/common/images/insta6.jpg'/>" alt="insta6">
-      <img src="<c:url value='/common/images/insta7.jpg'/>" alt="insta7">
-      <img src="<c:url value='/common/images/insta8.jpg'/>" alt="insta8">
-      <img src="<c:url value='/common/images/insta9.jpg'/>" alt="insta9">
-      <img src="<c:url value='/common/images/insta10.jpg'/>" alt="insta10">
+      <img src="<c:url value='/common/images/insta_1.png'/>" alt="insta1">
+      <img src="<c:url value='/common/images/insta_2.png'/>" alt="insta2">
+      <img src="<c:url value='/common/images/insta_3.png'/>" alt="insta3">
+      <img src="<c:url value='/common/images/insta_4.png'/>" alt="insta4">
+      <img src="<c:url value='/common/images/insta_5.png'/>" alt="insta5">
+      <img src="<c:url value='/common/images/insta_6.png'/>" alt="insta6">
+      <img src="<c:url value='/common/images/insta_7.png'/>" alt="insta7">
+      <img src="<c:url value='/common/images/insta_8.png'/>" alt="insta8">
+      <img src="<c:url value='/common/images/insta_9.png'/>" alt="insta9">
+      <img src="<c:url value='/common/images/insta_10.png'/>" alt="insta10">
+      <img src="<c:url value='/common/images/insta_11.png'/>" alt="insta11">
       <!-- 반복 효과 위해 이미지 한번 더 -->
-      <img src="<c:url value='/common/images/insta1.jpg'/>" alt="insta1-dup">
-      <img src="<c:url value='/common/images/insta2.jpg'/>" alt="insta2-dup">
-      <img src="<c:url value='/common/images/insta3.jpg'/>" alt="insta3-dup">
-      <img src="<c:url value='/common/images/insta4.jpg'/>" alt="insta4-dup">
-      <img src="<c:url value='/common/images/insta5.jpg'/>" alt="insta5-dup">
-      <img src="<c:url value='/common/images/insta6.jpg'/>" alt="insta6-dup">
-      <img src="<c:url value='/common/images/insta7.jpg'/>" alt="insta7-dup">
-      <img src="<c:url value='/common/images/insta8.jpg'/>" alt="insta8-dup">
-      <img src="<c:url value='/common/images/insta9.jpg'/>" alt="insta9-dup">
-      <img src="<c:url value='/common/images/insta10.jpg'/>" alt="insta10-dup">
+      <img src="<c:url value='/common/images/insta_1.png'/>" alt="insta1-dup">
+      <img src="<c:url value='/common/images/insta_2.png'/>" alt="insta2-dup">
+      <img src="<c:url value='/common/images/insta_3.png'/>" alt="insta3-dup">
+      <img src="<c:url value='/common/images/insta_4.png'/>" alt="insta4-dup">
+      <img src="<c:url value='/common/images/insta_5.png'/>" alt="insta5-dup">
+      <img src="<c:url value='/common/images/insta_6.png'/>" alt="insta6-dup">
+      <img src="<c:url value='/common/images/insta_7.png'/>" alt="insta7-dup">
+      <img src="<c:url value='/common/images/insta_8.png'/>" alt="insta8-dup">
+      <img src="<c:url value='/common/images/insta_9.png'/>" alt="insta9-dup">
+      <img src="<c:url value='/common/images/insta_10.png'/>" alt="insta10-dup">
+      <img src="<c:url value='/common/images/insta_11.png'/>" alt="insta11-dup">
     </div>
   </div>
 </section>

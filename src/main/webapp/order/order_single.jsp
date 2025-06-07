@@ -20,7 +20,7 @@
     SingleOrderDTO soDTO = os.getSingleOrder(productId);
 
     int deliveryCost = 3000;
-    int itemPrice = soDTO.getPrice();
+    int itemPrice = soDTO.getPrice();	
     int itemTotal = itemPrice * qty;
     int totalCost = itemTotal + deliveryCost;
 
@@ -104,7 +104,7 @@
             </div>
             <div class="telDiv">
               <div class="infoTitle">전화번호</div>
-              <div class="infoInput"><input type="text" name="phone" id="phoneInput" required></div>
+              <div class="infoInput"><input type="tel" name="phone" id="phoneInput" required></div>
             </div>
             <div class="emailDiv">
               <div class="infoTitle">이메일</div>

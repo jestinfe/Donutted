@@ -127,7 +127,7 @@
             <div class="infoInput"><input type="text" name="name" id="nameInput" required></div>
 
             <div class="infoTitle">전화번호</div>
-            <div class="infoInput"><input type="text" name="phone" id="phoneInput" required></div>
+            <div class="infoInput"><input type="tel" name="phone" id="phoneInput" required></div>
 
             <div class="infoTitle">이메일</div>
             <div class="infoInput"><input type="email" name="email" id="emailInput" required></div>
