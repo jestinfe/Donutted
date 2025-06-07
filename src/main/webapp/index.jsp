@@ -52,7 +52,7 @@
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out; //화면비율
   }
 
   .slider img.active {
