@@ -51,18 +51,16 @@ $(function(){
    });
    
    $('#modify').click(function(){
-	   // 원래 값 (서버에서 받아와 hidden input이나 data-* 속성에 저장했다고 가정)
-	   let originalTitle = "<%= board.getTitle().replaceAll("\"", "\\\"") %>";
-   	   let originalContent = `<%= board.getContent().replaceAll("`", "\\`") %>`;
+	   // 원래 값 (서버에서 받아와 hidden input이나 data-* 속성에 저장) + null safe 코드 추가함
+	   let originalTitle = "<%= board.getTitle() == null ? "" : board.getTitle().replaceAll("\"", "\\\\\"") %>";
+   	   let originalContent = `<%= board.getContent() == null ? "" : board.getContent().replaceAll("`", "\\`") %>`;
 
 	   // 현재 입력된 값
 	   let currentTitle = $("#title").val().trim();
 	   let currentContent = $("#summernote").val().trim();
-	   /* console.log(originalTitle);
-	   console.log(currentTitle); */
 	   
 	   // 제목과 내용이 모두 변경되지 않은 경우
-	   if (originalTitle === currentTitle && originalContent === currentContent) {
+	   if (originalTitle.trim() === currentTitle && originalContent.trim() === currentContent) {
 	      alert("수정 사항이 존재하지 않습니다.");
 	      return false;
 	   }

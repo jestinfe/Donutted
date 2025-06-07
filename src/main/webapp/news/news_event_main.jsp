@@ -56,24 +56,43 @@ if (keyword != null && !keyword.trim().isEmpty()) {
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
   }
-</style>
-
-<!-- <script>
-function placeholder(){
-	  const select = document.getElementById("searchType");
-	  const input = document.getElementById("keywordInput");
-
-	  const value = select.value;
-
-	  if (value === "title") {
-	    input.placeholder = "제목을 입력해주세요.";
-	  } else if (value === "posted_at") {
-	    input.placeholder = "날짜를 입력해주세요.";
-	  }
+  
+  .event-title-modern {
+    font-size: 4rem;
+    font-weight: 300;
+    color: #2c3e50;
+    text-align: center;
+    margin: 3rem 0;
+    position: relative;
+    letter-spacing: 4px;
+    padding-bottom: 20px;
 }
 
-</script> -->
+.event-title-underline {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: #2c3e50;
+    border-radius: 2px;
+    
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(function() {
+    $('#searchFrm').on('submit', function(e) {
+      const keyword = $('#keywordInput').val().trim();
 
+      if (keyword == null || keyword === "") {
+        alert('제목을 입력해주세요.');
+        e.preventDefault(); // 서버로 전송 중지
+      }
+    });
+  });
+</script> 
 </head>
 
 <body>
@@ -82,17 +101,16 @@ function placeholder(){
 
   <!-- ✅ 본문 영역 -->
   <main class="container" style="min-height: 600px; padding: 80px 20px;">
-    <h2 style="font-size: 50px; font-weight: bold; margin-bottom: 80px;" class="text-center" >Event</h2>
+    <h2 style="font-size: 50px; font-weight: bold; margin-bottom: 30px;" class="event-title-modern" >
+    Event
+    <div class="event-title-underline"></div>
+    </h2>
        
     <!-- TODO: 실제 컨텐츠 작성 영역 -->
     <!-- <p style="color: #555;"><strong>공지사항 &amp; 이벤트</strong></p> -->
     <div class="container">
-
-   <!-- 등록된 카드 반복 영역 -->
-   <c:choose>
-   <c:when test="${not empty eventList}">
 	   <!-- 검색 필터 -->
-	  <form class="row g-2 mb-3 d-flex justify-content-end" action="news_event_main.jsp" method="get">
+	  <form id="searchFrm" class="row g-2 mb-3 d-flex justify-content-end col-auto" action="news_event_main.jsp" method="get">
 	    <div class="col-md-2" style="min-width: 270px;">
 	      <input type="text" name="keyword" class="form-control" id="keywordInput" placeholder="제목을 입력해주세요." value="<%= keyword != null ? keyword : "" %>">
 	    </div>
@@ -100,6 +118,10 @@ function placeholder(){
 	      <button type="submit" class="btn btn-dark" >검색</button>
 	    </div>
 	  </form>
+
+   <!-- 등록된 카드 반복 영역 -->
+   <c:choose>
+   <c:when test="${not empty eventList}">
 	  
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 ">
 	<c:forEach var="event" items="${eventList}">
@@ -107,7 +129,7 @@ function placeholder(){
     <a href="news_event_view.jsp?board_id=${event.board_id}" class="text-decoration-none text-dark">
       <div class="card event-card shadow-sm rounded-3">
         <img src="${pageContext.request.contextPath}/admin/common/images/news/${event.thumbnail_url}" class="card-img-top event-img" alt="이벤트 이미지"
-        onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/error.png';">
+        onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/loading.gif';">
         
         <%-- <img src="${pageContext.request.contextPath}/admin/common/images/default/loading.jpg"
 	     id="img" class="preview-img mb-2" alt="썸네일 이미지"
@@ -128,14 +150,18 @@ function placeholder(){
   </div>
 </c:when>
 
+
 <c:otherwise>
-      <div style="">
+      <div>
       	<img src="${pageContext.request.contextPath}/admin/common/images/default/event_none.png"
       	style="margin-left: 60px;"/>
+      	<div class="text-center">
+      		<a href="news_event_main.jsp" class="btn btn-secondary">목록으로</a>
+      	</div>
       </div>
 </c:otherwise>
 
-</c:choose>
+</c:choose> 
 
     
     </div>

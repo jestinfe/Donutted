@@ -113,7 +113,7 @@
       <div>
         <img src="${pageContext.request.contextPath}/admin/common/images/news/<%= profileImg %>"
          id="img" class="preview-img mb-2" alt="썸네일 이미지"
-         onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/loading.jpg';">    
+         onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/loading.gif';">    
     	 <%-- <img src="${pageContext.request.contextPath}/admin/common/images/default/loading.jpg"
 	     data-src="${pageContext.request.contextPath}/admin/common/images/news/<%= profileImg %>"
 	     id="img" class="preview-img mb-2" alt="썸네일 이미지"
@@ -151,7 +151,7 @@
           <br>
          	<img src="${pageContext.request.contextPath}/admin/common/images/news/<%= eventImage %>"
             id="detailImgPreview" class="preview-img mb-2" alt="상세 설명 이미지"
-            onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/loading.jpg';">
+            onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/loading.gif';">
       		 <%-- <img src="${pageContext.request.contextPath}/admin/common/images/default/loading.jpg"
 		     data-src="${pageContext.request.contextPath}/admin/common/images/news/<%= eventImage %>"
 		     id="detailImgPreview" class="preview-img mb-2" alt="상세 설명 이미지"

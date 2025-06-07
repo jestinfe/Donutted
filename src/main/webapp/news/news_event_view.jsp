@@ -36,9 +36,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <style>
-    .event-title { font-size: 22px; font-weight: bold; text-align: center; margin-top: 30px; }
+    .event-title { font-size: 22px; font-weight: bold; text-align: center; margin-top: 50px; }
     .event-meta { text-align: center; color: #777; margin-bottom: 20px; font-size: 14px; }
-    .event-img { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+    .event-img { display: block; margin: 0 auto; max-width: 800px; height: auto; }
     .event-content { padding: 30px 50px; font-size: 16px; color: #333; }
     .back-btn { display: flex; justify-content: center; margin: 30px 0; }
     
@@ -51,6 +51,8 @@
     background-color: #f8f9fa; 
     cursor: pointer;
  	}
+ 	
+ 	
   </style>
 </head>
 <body>
@@ -66,17 +68,18 @@
       <fmt:formatDate value="${event.posted_at}" pattern="yyyy-MM-dd" />
       &nbsp;&nbsp; <i class="bi bi-eye"></i> ${event.viewCount}
     </div>
+    <div class="border-top mt-5 pt-4"></div>
     <img src="${pageContext.request.contextPath}/admin/common/images/news/${event.thumbnail_url}" 
          class="card-img-top event-img" alt="이벤트 썸네일 이미지"
-         onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/error.png';">
+         onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/loading.gif';">
     <img src="${pageContext.request.contextPath}/admin/common/images/news/${event.detail_image_url}" 
          class="card-img-top event-img" alt="이벤트 상세설명 이미지"
-         onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/error.png';">
+         onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/admin/common/images/default/loading.gif';">
   </div>
   
+  <div class="border-top mt-5 pt-4">
   
   <!-- 이전 글, 다음 글로 이동 -->
-  <div class="border-top mt-5 pt-4">
     <!-- 이전 글 -->
     <div class="d-flex align-items-center py-2 hover-row">
       <i class="bi bi-chevron-up me-2 text-muted"></i>

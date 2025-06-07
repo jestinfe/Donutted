@@ -6,8 +6,13 @@
 
     String title = request.getParameter("title");
     String content = request.getParameter("summernote");
-	System.out.println(title);
-	System.out.println(content);
+    
+    String plainContent = content
+    	    .replaceAll("(?i)<br[^>]*>", "")         // <br>, <br/> 제거 (대소문자 무시)
+    	    .replaceAll("&nbsp;", "")               // HTML 공백 제거
+    	    .replaceAll("<[^>]*>", "")              // 나머지 태그 제거
+    	    .replaceAll("\u00a0", "")               // non-breaking space 제거
+    	    .trim();
 	
     // 제목 입력값 검증
     if (title == null || title.trim().isEmpty()) {
@@ -21,7 +26,7 @@
     }//end if
     
     // 내용 입력값 검증
-    if (content == null || content.trim().isEmpty()) {
+    if (plainContent.isEmpty()) {
 %>
 <script>
     alert('내용을 입력해주세요.');

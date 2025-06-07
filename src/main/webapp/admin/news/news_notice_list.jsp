@@ -34,7 +34,7 @@
         currentPage = Integer.parseInt(pageParam);
     }
 
-    int pageScale = 5; // 한 페이지에 보여줄 게시글 수
+    int pageScale = 10; // 한 페이지에 보여줄 게시글 수
 
     int startNum = (currentPage - 1) * pageScale + 1;
     int endNum = startNum + pageScale - 1;
@@ -128,7 +128,7 @@ $(function(){
                 </c:when>
                 <c:otherwise>
                     <tr>
-                        <td colspan="5" style="text-align: center;">등록된 <%= boardType %>사항이 없습니다.</td>
+                        <td colspan="4" style="text-align: center;">등록된 <%= boardType %>사항이 없습니다.</td>
                     </tr>
                 </c:otherwise>
             </c:choose>

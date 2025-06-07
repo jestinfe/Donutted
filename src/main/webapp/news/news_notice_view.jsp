@@ -21,15 +21,13 @@ try {
     return;
 }
 
-// 조회수 증가 (세션 중복 방지)
 NewsService service = new NewsService();
 Boolean cntFlag = (Boolean) session.getAttribute("cntFlag");
-if (cntFlag != null && cntFlag.booleanValue()) {   
+if (cntFlag != null && cntFlag.booleanValue()) {
     service.plusViewCount(boardId);
     session.setAttribute("cntFlag", false);
 }
 
-// 데이터 조회
 BoardDTO dto = service.getOneNotice(boardId);
 if (dto == null) {
     response.sendRedirect("news_notice_main.jsp");
@@ -42,62 +40,99 @@ request.setAttribute("dto", dto);
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>공지사항 상세보기</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        .notice-title {
-            font-size: 36px;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 50px;
-            margin-bottom: 40px;
-        }
-        .notice-meta {
-            text-align: center;
-            color: #777;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        .back-btn {
-            display: flex;
-            justify-content: center;
-            margin: 30px 0;
-        }
-        .notice-content {
-            text-align: center;
-            padding: 20px;
-            font-size: 18px;
-            word-break: break-all;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>공지사항 | Donutted</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    .notice-wrapper {
+      max-width: 1000px;
+      margin: 60px auto;
+      padding: 20px 30px;
+    }
+
+
+    .notice-box {
+	  background-color: #fff0f5; 
+	  color: #2c2c2c;          
+	  padding: 20px 20px;
+	  border-radius: 7px;
+	  font-weight: bold;
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  font-size: 20px;
+	
+	  margin-left: -30px;
+	  margin-right: -30px;
+	  padding-left: 40px;
+	  padding-right: 40px;
+	}
+	
+    .notice-meta {
+      font-size: 14px;
+      color: #ccc;
+      margin-top: 5px;
+    }
+
+    .notice-content {
+      font-size: 17px;
+      line-height: 1.8;
+      padding: 40px 0;
+      white-space: pre-line;
+    }
+
+    .back-btn {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .back-btn a {
+      padding: 8px 30px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    
+     .notice-title-modern {
+    font-size: 4rem;
+    font-weight: 300;
+    color: #2c3e50;
+    text-align: left;
+    margin: 3rem 0;
+    position: relative;
+    letter-spacing: 4px;
+    padding-bottom: 20px;
+}
+
+  </style>
 </head>
 <body>
 
-<!-- ✅ 공통 헤더 -->
 <c:import url="/common/header.jsp" />
 
-<main class="container">
-    <div class="notice-title border rounded p-3 mb-2 text-center">
-        ${dto.title}
-        <div class="notice-meta">
-            <br>
-            <fmt:formatDate value="${dto.posted_at}" pattern="yyyy-MM-dd" />
-            &nbsp;&nbsp; <i class="bi bi-eye"></i> ${dto.viewCount}
-        </div>
-    </div>
+<div class="notice-wrapper">
+ 	<div style="line-height: 1; margin: 0; padding: 0;">
+ 	 <h3  class="notice-title-modern" style="font-weight:bold; font-size: 20px; margin-bottom: 0px; letter-spacing: -1px; ">Donutted 공지사항</h3>
+     <h2 style="font-size: 60px; font-weight: bold; margin-top:0px; line-height: 0.5; " class="notice-title-modern" >
+     Notice
+     </h2>
+	</div>
 
-    <div class="notice-content">
-        <c:out value="${dto.content}" escapeXml="false" />
-    </div>
+  <div class="notice-box">
+    <span>${dto.title}</span>
+    <span><fmt:formatDate value="${dto.posted_at}" pattern="yyyy-MM-dd" /> &nbsp; <i class="bi bi-eye"></i> ${dto.viewCount}</span>
+  </div>
 
-    <div class="back-btn">
-        <a href="news_notice_main.jsp" class="btn btn-secondary">목록으로</a>
+  <div class="notice-content">
+    <c:out value="${dto.content}" escapeXml="false" />
+  </div>
+	<div class="border-top mt-4 pt-4"></div>
+	<div style=" text-align: center;">
+    <a href="news_notice_main.jsp" class="btn btn-secondary">목록으로</a>
     </div>
-</main>
+</div>
+ 
 
-<!-- ✅ 공통 푸터 -->
 <c:import url="/common/footer.jsp" />
 
 </body>

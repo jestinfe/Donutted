@@ -31,7 +31,7 @@
         currentPage = Integer.parseInt(pageParam);
     }
 
-    int pageScale = 5;
+    int pageScale = 10;
     int startNum = (currentPage - 1) * pageScale + 1;
     int endNum = startNum + pageScale - 1;
 
@@ -121,7 +121,7 @@ $(function(){
         </c:when>
         <c:otherwise>
           <tr>
-            <td colspan="5" style="text-align: center;">등록된 <%= boardType %>가 없습니다.</td>
+            <td colspan="4" style="text-align: center;">등록된 <%= boardType %>가 없습니다.</td>
           </tr>
         </c:otherwise>
       </c:choose>
