@@ -368,7 +368,7 @@ function showToast(message) {
 
 		<!-- 주문 버튼 -->
 		<div style="text-align: center; margin-top: 30px;">
-			<form action="order_multiple.jsp" method="GET">
+			<form action="/mall_prj/order/order_multiple.jsp" method="GET">
 				<button
 					style="background-color: #f48fb1; border: none; color: white; font-size: 18px; padding: 12px 40px; border-radius: 30px; cursor: pointer;">
 					주문하기</button>
