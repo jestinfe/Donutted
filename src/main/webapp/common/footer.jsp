@@ -2,72 +2,124 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <style>
+      .slider {
+        position: relative;
+        width: 100%;
+        height: 600px; 
+        overflow: hidden;
+      }
 
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
+      .slider img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
 
-main {
-  flex: 1;
-}
+      .slider img.active {
+        opacity: 1;
+        z-index: 1;
+      }
 
+      #instagram_section {
+        margin-top: 80px;
+        margin-bottom: 80px;
+        background-color: #ffe4e1;
+        padding: 40px 20px;
+        border-radius: 12px;
+        max-width: 1280px;
+        margin-left: auto;
+        margin-right: auto;
+      }
 
+      #instagram_section h3 {
+        font-size: 24px;
+        color: #d63384;
+        margin-bottom: 24px;
+      }
 
-  .tms-footer {
-  margin-top: auto;
-  background: #fff0f5 url('<c:url value="/common/images/footer_cloud.png"/>') no-repeat center bottom;
-  background-size: cover;
-  padding: 30px 16px 180px;
-  font-family: 'Pretendard', sans-serif;
-  position: relative;
-}
+      .instagram-slider-container {
+        overflow: hidden;
+        width: 100%;
+        position: relative;
+      }
 
+      .instagram-slider {
+        display: flex;
+        width: calc(200px * 20);
+        animation: scroll 20s linear infinite;
+      }
 
-  .tms-footer-inner {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    max-width: 1280px;
-    margin: 0 auto;
-    gap: 20px;
-  }
+      .instagram-slider img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        flex-shrink: 0;
+        margin-right: 10px;
+        border-radius: 10px;
+      }
 
-  .tms-footer h3 {
-    font-size: 14px;
-    margin-bottom: 8px;
-    font-weight: bold;
-  }
+      @keyframes scroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
 
-  .tms-footer ul li {
-    font-size: 12px;
-    margin-bottom: 4px;
-    line-height: 1.6;
-  }
+      /* 푸터 스타일 */
+      .tms-footer {
+        background: #fff0f5 url('<c:url value="/common/images/footer_cloud.png"/>') no-repeat center bottom;
+        background-size: cover;
+        padding: 30px 16px 180px;
+        font-family: 'Pretendard', sans-serif;
+        position: relative;
+      }
 
-  .tms-footer a {
-    text-decoration: none;
-    color: #333;
-  }
+      .tms-footer-inner {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 1280px;
+        margin: 0 auto;
+        gap: 20px;
+      }
 
-  .tms-footer-bottom {
-    margin-top: 30px;
-    text-align: center;
-    font-size: 11px;
-    border-top: 1px solid #ddd;
-    padding-top: 12px;
-  }
+      .tms-footer h3 {
+        font-size: 14px;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
 
-  .tms-footer-bottom a {
-    margin: 0 10px;
-    text-decoration: none;
-    color: #333;
-  
-  }
-  
+      .tms-footer ul li {
+        font-size: 12px;
+        margin-bottom: 4px;
+        line-height: 1.6;
+      }
+
+      .tms-footer a {
+        text-decoration: none;
+        color: #333;
+      }
+
+      .tms-footer-bottom {
+        margin-top: 30px;
+        text-align: center;
+        font-size: 11px;
+        border-top: 1px solid #ddd;
+        padding-top: 12px;
+      }
+
+      .tms-footer-bottom a {
+        margin: 0 10px;
+        text-decoration: none;
+        color: #333;
+      }
 </style>
 
 <footer class="tms-footer">

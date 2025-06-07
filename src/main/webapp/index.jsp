@@ -2,7 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <c:import url="common/header.jsp" />
-
+  <!-- 메인 영역 시작 -->
+  <main>
+  
 <!-- 배너 영역 -->
 <div class="slider">
   <img src="<c:url value='/common/images/main.png'/>" class="active" alt="배너1">
@@ -24,6 +26,17 @@
 </script>
 
 <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      flex: 1;
+    }
+    
    .slider {
     position: relative;
     width: 100%;
@@ -164,5 +177,8 @@
     </div>
   </div>
 </section>
+
+  </main>
+  <!-- 메인 영역 끝 -->
 
 <c:import url="common/footer.jsp" />
