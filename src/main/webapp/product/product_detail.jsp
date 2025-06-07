@@ -12,6 +12,13 @@
   Integer userId = (Integer)session.getAttribute("userId");
   ProductService ps = new ProductService();
   ProductDTO prd = ps.getProductById(productId);
+  
+  if (prd == null) {
+	    response.sendRedirect("menu.jsp");
+	    return;
+	  }
+  
+  
   boolean isWished = false;
   if(userId != null){
 	  WishService ws = new WishService();
