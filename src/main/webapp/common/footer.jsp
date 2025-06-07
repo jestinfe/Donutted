@@ -2,7 +2,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <style>
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+
+
   .tms-footer {
+  margin-top: auto;
   background: #fff0f5 url('<c:url value="/common/images/footer_cloud.png"/>') no-repeat center bottom;
   background-size: cover;
   padding: 30px 16px 180px;
