@@ -388,7 +388,7 @@
   <div class="product-container">
     <div class="product-img <c:if test='${prd.stock == 0}'>sold-out</c:if>">
       <img id="mainImg"
-           src="<c:url value='admin/common/images/products/${prd.thumbnailImg}' />"
+           src="<c:url value='/admin/common/images/products/${prd.thumbnailImg}' />"
            alt="${prd.name}"
            onerror="this.onerror=null; this.dataset.error='true'; this.src='${pageContext.request.contextPath}/admin/common/images/default/error.png';">
 
