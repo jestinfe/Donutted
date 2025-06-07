@@ -153,21 +153,25 @@ $(function() {
     </table>
 
     <!-- 페이지네이션 -->
-    <nav>
-      <ul class="pagination justify-content-center">
-        <li class="page-item <%= currentPage == 1 ? "disabled" : "" %>">
-          <a class="page-link" href="news_notice_main.jsp?currentPage=<%= currentPage - 1 %>&type=<%= fieldText %>&keyword=<%= keyword %>">이전</a>
-        </li>
-      <c:forEach var="i" begin="1" end="${totalPage}">
-  <li class="page-item ${i == currentPage ? 'active' : ''}">
-    <a class="page-link" href="news_notice_main.jsp?currentPage=${i}&type=${fieldText}&keyword=${keyword}">${i}</a>
-  </li>
-</c:forEach>
-        <li class="page-item <%= currentPage == totalPage ? "disabled" : "" %>">
-          <a class="page-link" href="news_notice_main.jsp?currentPage=<%= currentPage + 1 %>&type=<%= fieldText %>&keyword=<%= keyword %>">다음</a>
-        </li>
-      </ul>
-    </nav>
+<%
+  String safeFieldText = (fieldText != null) ? fieldText : "";
+  String safeKeyword = (keyword != null) ? keyword : "";
+%>
+   <nav>
+  <ul class="pagination justify-content-center">
+    <li class="page-item <%= currentPage == 1 ? "disabled" : "" %>">
+      <a class="page-link" href="news_notice_main.jsp?currentPage=<%= currentPage - 1 %>&type=<%= safeFieldText %>&keyword=<%= safeKeyword %>">이전</a>
+    </li>
+    <c:forEach var="i" begin="1" end="${totalPage}">
+      <li class="page-item ${i == currentPage ? 'active' : ''}">
+        <a class="page-link" href="news_notice_main.jsp?currentPage=${i}&type=${safeFieldText}&keyword=${safeKeyword}">${i}</a>
+      </li>
+    </c:forEach>
+    <li class="page-item <%= currentPage == totalPage ? "disabled" : "" %>">
+      <a class="page-link" href="news_notice_main.jsp?currentPage=<%= currentPage + 1 %>&type=<%= safeFieldText %>&keyword=<%= safeKeyword %>">다음</a>
+    </li>
+  </ul>
+</nav>
 
   </main>
 
