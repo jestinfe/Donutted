@@ -13,7 +13,7 @@ if(userId == null){
 %>	
 	<script>
 	alert("로그인하세요");
-	location.href = "UserLogin/login.jsp";
+	location.href = "../UserLogin/login.jsp";
 	</script>
 	
 	<%
