@@ -151,7 +151,7 @@ request.setAttribute("refundables", refundables);
         <c:when test="${not empty refundables}">
           <c:forEach var="item" items="${refundables}">
             <div class="product-item">
-              <img src="<c:url value='/admin/common/upload/${item.thumbnailUrl}' />"
+              <img src="<c:url value='/admin/common/images/products/${item.thumbnailUrl}' />"
                    alt="${item.productName}"
                    onerror="this.src='/images/no_image.png';" />
               <div class="product-name">${item.productName}</div>

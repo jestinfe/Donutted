@@ -394,7 +394,7 @@
               <tr>
                 <td>
   <div class="product-cell">
-    <img src="${pageContext.request.contextPath}/admin/common/upload/${r.thumbnailUrl}" 
+    <img src="${pageContext.request.contextPath}/admin/common/images/products/${r.thumbnailUrl}" 
          alt="${r.productName}"
          class="product-image"
          onerror="this.src='/images/no_image.png';" />

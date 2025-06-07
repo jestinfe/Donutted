@@ -137,7 +137,7 @@
     <!-- 상품 정보 -->
     <header class="product-header">
       <div class="product-info">
-        <img src="/mall_prj/admin/common/upload/<%= item.getThumbnailUrl() %>" alt="상품 이미지" class="product-img">
+        <img src="/mall_prj/admin/common/images/products/<%= item.getThumbnailUrl() %>" alt="상품 이미지" class="product-img">
         <div class="product-text">
           <p><strong><%= item.getProductName() %></strong></p>
         </div>

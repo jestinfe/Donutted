@@ -153,29 +153,35 @@
     }
   }
 
-  /* 5개 카드 중앙 정렬을 위한 컨테이너 */
+  /* 5개 카드 전체 너비 분산 정렬을 위한 컨테이너 */
   .refund-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     flex-wrap: wrap;
     gap: 15px;
   }
 
   .refund-container .col-md-2 {
-    flex: 0 0 18%;
-    max-width: 200px;
+    flex: 1;
+    min-width: 0;
+    max-width: calc(20% - 12px);
   }
 
   @media (max-width: 992px) {
+    .refund-container {
+      justify-content: center;
+    }
+    
     .refund-container .col-md-2 {
       flex: 0 0 48%;
-      max-width: none;
+      max-width: 48%;
     }
   }
 
   @media (max-width: 576px) {
     .refund-container .col-md-2 {
       flex: 0 0 100%;
+      max-width: 100%;
     }
   }
 </style>

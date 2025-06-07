@@ -26,7 +26,7 @@
   String productImage = item.getThumbnailUrl();
 
   String contextPath = request.getContextPath();
-  String imagePath = contextPath + "/admin/common/upload/" + productImage;
+  String imagePath = contextPath + "/admin/common/images/products/" + productImage;
 %>
 
 <!DOCTYPE html>

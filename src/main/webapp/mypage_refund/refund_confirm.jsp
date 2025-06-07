@@ -25,7 +25,7 @@
 
   String reason = request.getParameter("reason");
   String contextPath = request.getContextPath();
-  String imagePath = contextPath + "/admin/common/upload/" + productImage;
+  String imagePath = contextPath + "/admin/common/images/products/" + productImage;
 
   String reasonText = "";
   switch (reason) {

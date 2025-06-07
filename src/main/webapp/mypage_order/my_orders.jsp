@@ -161,7 +161,7 @@
   <script>
     let page = 1;
     let loading = false;
-    const limit = 5;
+    const limit = 10;
 
     function loadMoreOrders() {
       if (loading) return;

@@ -49,7 +49,7 @@
         <div class="product-list">
           <c:forEach var="item" items="${order.items}">
             <div class="product-item" style="width: 110px; text-align: center; font-size: 14px; min-height: 180px; display: flex; flex-direction: column; justify-content: space-between;">
-              <img src="<c:url value='/admin/common//images/upload/${item.thumbnailUrl}' />" alt="상품 이미지"
+              <img src="<c:url value='/admin/common/images/products/${item.thumbnailUrl}' />" alt="상품 이미지"
                    style="width:100px; height:100px; border-radius:10px; object-fit:cover; box-shadow:0 2px 6px rgba(0,0,0,0.08);" />
               <div>${item.productName}</div>
               <div style="margin-top: 8px; min-height: 30px;">
