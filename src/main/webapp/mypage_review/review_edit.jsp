@@ -2,10 +2,10 @@
 <%@ page import="review.*, order.*" %>
 <%
   request.setCharacterEncoding("UTF-8");
-if (session.getAttribute("userId") ==null ) {
-	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-	  return;
-	}
+  if (session.getAttribute("userId") ==null ) {
+  	response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+  	return;
+  }
   int reviewId = Integer.parseInt(request.getParameter("review_id"));
   ReviewService reviewService = new ReviewService();
   ReviewDTO review = reviewService.getReviewById(reviewId);
@@ -132,6 +132,9 @@ if (session.getAttribute("userId") ==null ) {
 	  margin-top: 10px;
 	}
 	
+	.mg-10 {
+	  margin-top: 10px;
+	}
   </style>
 </head>
 <body>
@@ -174,31 +177,35 @@ if (session.getAttribute("userId") ==null ) {
         <div class="char-counter"><span id="charCount">0</span>/200</div>
       </div>
 
-      <!-- 이미지 -->
-      <div class="section setPadBot">
-        <label><strong>사진 첨부</strong></label>
-        <p class="note">
-          사진은 한 장만 첨부할 수 있으며,<br>
-          상품과 상관없는 사진은 첨부된 리뷰는 통보 없이 삭제될 수 있습니다.
-        </p>
-
-		<% if (review.getImageUrl() != null) { %>
-		  <div class="image-row">
-		    <img src="/mall_prj/common/images/review/<%= review.getImageUrl() %>" class="review-img" id="existingImage">
-		    <img class="review-img" id="previewImg" style="display: none;">
-		    <label for="photo-input" class="file-label">+</label>
-		    <input type="file" id="photo-input" name="image" accept="image/*" hidden>
-		  </div>
-		  <button type="button" id="deleteImageBtn">기존 사진 삭제</button>
-		  <input type="hidden" name="delete_image" id="deleteImageFlag" value="false">
-		<% } else { %>
-		  <div class="image-row">
-		    <img class="review-img" id="previewImg" style="display: none;">
-		    <label for="photo-input" class="file-label">+</label>
-		    <input type="file" id="photo-input" name="image" accept="image/*" hidden>
-		  </div>
-		<% } %>
-      </div>
+	<!-- 이미지 -->
+	<div class="section setPadBot">
+	  <label><strong>사진 첨부</strong></label>
+	  <p class="note">
+	    사진은 한 장만 첨부할 수 있으며,<br>
+	    상품과 상관없는 사진은 첨부된 리뷰는 통보 없이 삭제될 수 있습니다.
+	  </p>
+	
+	  <div class="image-row">
+	    <%-- 기존 이미지가 있으면 보여주고, 없으면 display: none --%>
+	    <img
+	      src="/mall_prj/common/images/review/<%= review.getImageUrl() != null ? review.getImageUrl() : "" %>"
+	      class="review-img"
+	      id="existingImage"
+	      style="display: <%= review.getImageUrl() != null ? "block" : "none" %>;">
+	    
+	    <img class="review-img" id="previewImg" style="display: none;">
+	    <label for="photo-input" class="file-label">+</label>
+	    <input type="file" id="photo-input" name="image" accept="image/*" hidden>
+	  </div>
+	
+	  <%-- 삭제 버튼은 항상 출력, 표시 여부만 조건 처리 --%>
+	  <button type="button" id="deleteImageBtn" class="mg-10"
+	    style="display: <%= review.getImageUrl() != null ? "inline-block" : "none" %>;">
+	    기존 사진 삭제
+	  </button>
+	
+	  <input type="hidden" name="delete_image" id="deleteImageFlag" value="false">
+	</div>
 
       <!-- 제출 -->
       <div style="text-align: center; margin-top: 20px;">
@@ -210,9 +217,6 @@ if (session.getAttribute("userId") ==null ) {
 <script>
   const stars = document.querySelectorAll('.star');
   const ratingInput = document.getElementById('ratingInput');
-  const charCount = document.getElementById('charCount');
-  const textarea = document.querySelector('textarea');
-
   // 별점 선택 로직
   stars.forEach(star => {
     star.addEventListener('click', () => {
@@ -224,6 +228,8 @@ if (session.getAttribute("userId") ==null ) {
     });
   });
 
+  const charCount = document.getElementById('charCount');
+  const textarea = document.querySelector('textarea');
   // 텍스트 입력 길이 실시간 표시
   textarea.addEventListener('input', () => {
     charCount.textContent = textarea.value.length;
@@ -233,7 +239,6 @@ if (session.getAttribute("userId") ==null ) {
   // 사진 관련 요소
   const deleteImageBtn = document.getElementById("deleteImageBtn");
   const deleteImageFlag = document.getElementById("deleteImageFlag");
-  let photoInput = document.getElementById("photo-input"); // let으로 바꿈
   const existingImage = document.getElementById("existingImage");
   const fileLabel = document.querySelector(".file-label");
   const previewImg = document.getElementById("previewImg");
@@ -254,20 +259,7 @@ if (session.getAttribute("userId") ==null ) {
     });
   }
 
-  // 새 파일 input으로 교체
-  function replacePhotoInput() {
-    const newInput = document.createElement("input");
-    newInput.type = "file";
-    newInput.id = "photo-input";
-    newInput.name = "image";
-    newInput.accept = "image/*";
-    newInput.hidden = true;
-
-    photoInput.parentNode.replaceChild(newInput, photoInput);
-    photoInput = newInput;
-    photoInput.addEventListener("change", onPhotoChange);
-  }
-
+  let photoInput = document.getElementById("photo-input"); // let으로 바꿈
   // 이미지 선택 처리
   function onPhotoChange() {
     const file = photoInput.files[0];
@@ -288,14 +280,28 @@ if (session.getAttribute("userId") ==null ) {
     } else {
       previewImg.style.display = "none";
       fileLabel.style.display = "inline-flex";
-      if (existingImage) {
-        existingImage.style.display = "block";
-      }
+	  if (existingImage) {
+	    existingImage.style.display = "block";
+	  }
     }
   }
-
+  
   // 초기 이벤트 연결
   photoInput.addEventListener("change", onPhotoChange);
+  
+  // 새 파일 input으로 교체
+  function replacePhotoInput() {
+    const newInput = document.createElement("input");
+    newInput.type = "file";
+    newInput.id = "photo-input";
+    newInput.name = "image";
+    newInput.accept = "image/*";
+    newInput.hidden = true;
+
+    photoInput.parentNode.replaceChild(newInput, photoInput);
+    photoInput = newInput;
+    photoInput.addEventListener("change", onPhotoChange);
+  }
 
   // + 버튼(label) 클릭 시 input 교체
   fileLabel.addEventListener("click", () => {

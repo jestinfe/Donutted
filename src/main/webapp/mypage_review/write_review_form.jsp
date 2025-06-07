@@ -2,10 +2,10 @@
 <%@ page import="order.*" %>
 <%
   request.setCharacterEncoding("UTF-8");
-if (session.getAttribute("userId") ==null ) {
-	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-	  return;
-	}
+  if (session.getAttribute("userId") ==null ) {
+  	 response.sendRedirect("/mall_prj/UserLogin/login.jsp");
+  	 return;
+  }
   int orderItemId = Integer.parseInt(request.getParameter("order_item_id"));
   OrderItemDTO item = new OrderService().getOrderItemDetail(orderItemId);
 %>
@@ -65,6 +65,7 @@ if (session.getAttribute("userId") ==null ) {
       width: 100%;
       padding: 8px;
       resize: vertical;
+      box-sizing: border-box;
     }
 
     .char-counter {
@@ -120,7 +121,7 @@ if (session.getAttribute("userId") ==null ) {
     }
 
     .setPadBot {
-      padding-bottom: 20px
+      padding-bottom: 20px;
     }
 
     .image-row {
@@ -149,7 +150,7 @@ if (session.getAttribute("userId") ==null ) {
     <p style="font-size: 0.8em" class="setPadBot">고객님, 구매 상품은 어떠셨나요?</p>
 
     <!-- 작성 폼 -->
-    <form action="review_submit.jsp" method="post" enctype="multipart/form-data">
+    <form id="reviewForm" action="review_submit.jsp" method="post" enctype="multipart/form-data">
       <input type="hidden" name="order_item_id" value="<%= orderItemId %>">
       <input type="hidden" name="rating" id="ratingInput" value="0">
 
@@ -166,7 +167,7 @@ if (session.getAttribute("userId") ==null ) {
       <!-- 내용 -->
       <div class="section setPadBot">
         <label><strong>리뷰 작성란</strong></label>
-        <textarea name="content" rows="4" maxlength="200" required></textarea>
+        <textarea name="content" rows="4" maxlength="200"></textarea>
         <div class="char-counter"><span id="charCount">0</span>/200</div>
       </div>
 
@@ -183,7 +184,7 @@ if (session.getAttribute("userId") ==null ) {
           <input type="file" id="photo-input" name="image" accept="image/*" hidden>
         </div>
       </div>
-
+	  <button type="button" id="deleteImageBtn" style="display: none; margin-top: 10px;">사진 삭제</button>
       <!-- 제출 -->
       <div style="text-align: center; margin-top: 20px;">
         <button type="submit" class="submit-btn">리뷰 작성하기</button>
@@ -192,43 +193,86 @@ if (session.getAttribute("userId") ==null ) {
   </div>
 
 <script>
-  // 별점 선택
-  const stars = document.querySelectorAll('.star');
-  const ratingInput = document.getElementById('ratingInput');
-  stars.forEach(star => {
-    star.addEventListener('click', () => {
-      const value = star.getAttribute('data-value');
-      ratingInput.value = value;
-      stars.forEach(s => {
-        s.classList.toggle('selected', s.getAttribute('data-value') <= value);
-      });
-    });
-  });
+	// 별점 선택
+	const stars = document.querySelectorAll('.star');
+	const ratingInput = document.getElementById('ratingInput');
+	stars.forEach(star => {
+	  star.addEventListener('click', () => {
+	    const value = star.getAttribute('data-value');
+	    ratingInput.value = value;
+	    stars.forEach((s) => {
+	      s.classList.toggle('selected', s.getAttribute('data-value') <= value);
+	    });
+	  });
+	});
+	
+	// 글자 수 실시간 반영
+	const charCount = document.getElementById('charCount');
+	const textarea = document.querySelector('textarea');
+	textarea.addEventListener('input', () => {
+	  charCount.textContent = textarea.value.length;
+	});
 
-  // 글자 수 실시간 반영
-  const charCount = document.getElementById('charCount');
-  const textarea = document.querySelector('textarea');
-  textarea.addEventListener('input', () => {
-    charCount.textContent = textarea.value.length;
-  });
-
-  // 이미지 미리보기
-  const photoInput = document.getElementById("photo-input");
   const previewImg = document.getElementById("previewImg");
+  const deleteImageBtn = document.getElementById("deleteImageBtn");
+  const fileLabel = document.querySelector(".file-label");
+  let photoInput = document.getElementById("photo-input");
+
   previewImg.className = "review-img";
-  photoInput.addEventListener("change", () => {
-    const file = photoInput.files[0];
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        previewImg.src = e.target.result;
-        previewImg.style.display = "block";
-      };
-      reader.readAsDataURL(file);
-    } else {
-      previewImg.style.display = "none";
-    }
+
+  function bindPhotoInput(input) {
+    input.addEventListener("change", () => {
+      const file = input.files[0];
+
+      if (file && file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          previewImg.src = e.target.result;
+          previewImg.style.display = "block";
+          deleteImageBtn.style.display = "inline-block";
+        };
+        reader.readAsDataURL(file);
+      } else if (!file) {
+        // 선택 후 아무 것도 선택 안 하고 창 닫은 경우: 미리보기 유지
+        return;
+      } else {
+        // 이미지가 아닌 파일
+        previewImg.style.display = "none";
+        deleteImageBtn.style.display = "none";
+      }
+    });
+  }
+
+  bindPhotoInput(photoInput);
+
+  function replacePhotoInput() {
+    const newInput = document.createElement("input");
+    newInput.type = "file";
+    newInput.name = "image";
+    newInput.id = "photo-input";
+    newInput.accept = "image/*";
+    newInput.hidden = true;
+    fileLabel.after(newInput);
+    photoInput.remove();
+    photoInput = newInput;
+    bindPhotoInput(photoInput);
+  }
+
+  deleteImageBtn.addEventListener("click", () => {
+    previewImg.src = "";
+    previewImg.style.display = "none";
+    deleteImageBtn.style.display = "none";
+    replacePhotoInput();
   });
+  
+  fileLabel.addEventListener("click", () => {
+	  e.preventDefault();  
+	  
+	  replacePhotoInput();  // (1) input 교체
+	  setTimeout(() => {    // (2) 이벤트 큐로 밀어넣음
+	    photoInput.click(); // (3) input 교체가 끝난 다음 주기에 실행됨 ✅
+	  }, 0);
+	});
 </script>
 </body>
 </html>
