@@ -6,64 +6,81 @@
   <meta charset="UTF-8">
   <title>로그인</title>
   <style>
-    body {
-      font-family: '맑은 고딕', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-    }
-    main {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 500px;
-      padding: 30px 20px;
-    }
-    .login-box {
-      background-color: #fff;
-      padding: 40px 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 300px;
-    }
-    .login-box h2 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .input-field {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-    .login-btn {
-      width: 100%;
-      padding: 12px;
-      background-color: #f8a7bb;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: '맑은 고딕', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+  }
+
+  .login-box {
+  background-color: #fff;
+  padding: 50px 40px; /* padding 위아래 50px로 줄임 */
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.12);
+  width: 420px;
+  max-width: 90%;
+  min-height: 450px; /* min-height 450px로 줄임 → 적당한 느낌 */
+}
+
+.login-box h2 {
+  text-align: center;
+  margin-bottom: 40px; /* 제목 아래 공간도 약간 늘리면 예쁨 */
+  font-size: 24px; /* 글자 크기도 약간 키움 */
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px; /* 입력창 padding도 약간 키움 */
+  margin-bottom: 18px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px; /* 글자 크기도 약간 키움 */
+}
+
+.login-btn {
+  width: 100%;
+  padding: 14px; /* 버튼 padding도 키움 */
+  background-color: #f8a7bb;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px; /* 버튼 글씨도 키움 */
+}
+
     .login-btn:hover {
       background-color: #f18aa7;
     }
     .link-box {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 15px;
-      font-size: 14px;
-    }
-    .link-box a {
-      color: #333;
-      text-decoration: none;
-    }
-    .link-box a:hover {
-      text-decoration: underline;
-    }
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  font-size: 16px; /* 기존 14px → 16px 으로 키움 */
+}
+
+.link-box a {
+  color: #333;
+  text-decoration: none;
+  font-weight: bold; /* 조금 더 강조하고 싶으면 bold 추가 가능 */
+}
+
+.link-box a:hover {
+  text-decoration: underline;
+}
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.6); display: flex;

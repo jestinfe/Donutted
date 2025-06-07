@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <c:import url="http://localhost/mall_prj/common/external_file.jsp"/>
   <meta charset="UTF-8">
   <title>Welcome to Donutted!!</title>
   
@@ -13,87 +12,83 @@
   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   
   <style>
-  body {
-    font-family: 'Pretendard', '맑은 고딕', sans-serif;
-    background-color: #fffafc;
-  }
+#container {
+  background-color: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  max-width: 800px;
+  margin: 40px auto;
+}
 
-  #container {
-    background-color: white;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    max-width: 800px;
-    margin: 40px auto;
-  }
+h2 {
+  text-align: center;
+  color: #ff6fa1;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
 
-  h2 {
-    text-align: center;
-    color: #ff6fa1;
-    margin-bottom: 30px;
-    font-weight: bold;
-  }
+table {
+  width: 100%;
+  border-spacing: 15px;
+}
 
-  table {
-    width: 100%;
-    border-spacing: 15px;
-  }
+th {
+  text-align: left;
+  color: #ff6fa1;
+  font-weight: bold;
+  vertical-align: top;
+  padding-top: 10px;
+  width: 150px;
+}
 
-  th {
-    text-align: left;
-    color: #ff6fa1;
-    font-weight: bold;
-    vertical-align: top;
-    padding-top: 10px;
-    width: 150px;
-  }
+.inputBox {
+  border: 1px solid #ffb7d2;
+  border-radius: 10px;
+  padding: 10px;
+  outline: none;
+  transition: box-shadow 0.3s;
+}
 
-  .inputBox {
-    border: 1px solid #ffb7d2;
-    border-radius: 10px;
-    padding: 10px;
-    outline: none;
-    transition: box-shadow 0.3s;
-  }
+.inputBox:focus {
+  box-shadow: 0 0 5px #ffa2cb;
+}
 
-  .inputBox:focus {
-    box-shadow: 0 0 5px #ffa2cb;
-  }
+.btnBox, input[type="button"], input[type="reset"] {
+  background-color: #ffa2cb;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-weight: bold;
+}
 
-  .btnBox, input[type="button"], input[type="reset"] {
-    background-color: #ffa2cb;
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-weight: bold;
-  }
+.btnBox:hover, input[type="button"]:hover, input[type="reset"]:hover {
+  background-color: #ff87bb;
+}
 
-  .btnBox:hover, input[type="button"]:hover, input[type="reset"]:hover {
-    background-color: #ff87bb;
-  }
+select, input[type="radio"], input[type="checkbox"] {
+  margin-top: 5px;
+  accent-color: #ffa2cb;
+}
 
-  select, input[type="radio"], input[type="checkbox"] {
-    margin-top: 5px;
-    accent-color: #ffa2cb;
-  }
+input[type="radio"] + label, input[type="checkbox"] + label {
+  margin-right: 10px;
+  font-weight: normal;
+}
 
-  input[type="radio"] + label, input[type="checkbox"] + label {
-    margin-right: 10px;
-    font-weight: normal;
-  }
+iframe {
+  border-radius: 15px;
+  margin-bottom: 30px;
+}
 
-  iframe {
-    border-radius: 15px;
-    margin-bottom: 30px;
-  }
+#btnConfirm, #btnCancel {
+  width: 100px;
+  margin: 10px 5px;
+}
 
-  #btnConfirm, #btnCancel {
-    width: 100px;
-    margin: 10px 5px;
-  }
 </style>
 
 <script>
