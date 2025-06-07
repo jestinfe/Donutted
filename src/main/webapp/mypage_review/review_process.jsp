@@ -4,10 +4,7 @@
 <%@ page import="review.*, java.util.*" %>
 
 <%
-if (session.getAttribute("userId") ==null ) {
-	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-	  return;
-	}
+
   int productId = Integer.parseInt(request.getParameter("productId"));
   String ratingParam = request.getParameter("rating");
   int rating = 0;
@@ -25,7 +22,7 @@ if (session.getAttribute("userId") ==null ) {
     <p class="text-center text-muted">등록된 리뷰가 없습니다.</p>
   </c:when>
   <c:otherwise>
-    <c:forEach var="review" items="<%= reviewList %>">
+   <c:forEach var="review" items="${reviewList}">
       <div class="border rounded p-3 mb-3">
         <!-- 별점 -->
         <div class="d-flex align-items-center mb-2">

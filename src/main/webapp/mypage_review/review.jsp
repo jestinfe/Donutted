@@ -4,10 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%
-if (session.getAttribute("userId") ==null ) {
-	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-	  return;
-	}
+
   int productId = Integer.parseInt(request.getParameter("productId"));
   request.setAttribute("productId", productId);
 
@@ -156,7 +153,7 @@ a { text-decoration:none; color:inherit; }
     <div id="reviewListContainer" class="mt-4">
       <jsp:include page="review_process.jsp">
         <jsp:param name="productId" value="${productId}" />
-        <jsp:param name="rating" value="" />
+        <jsp:param name="rating" value="0" />
       </jsp:include>
     </div>
   </div>
@@ -184,7 +181,7 @@ a { text-decoration:none; color:inherit; }
       const productId = '<c:out value="${productId}" />';
 
       $.ajax({
-        url: 'review_process.jsp',
+        url: '../mypage_review/review_process.jsp',
         data: { productId: productId, rating: ratingValue },
         success: function(data) {
           $('#reviewListContainer').html(data);
