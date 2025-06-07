@@ -3,12 +3,13 @@
 
 <style>
   .tms-footer {
-    background: #fff0f5 url('<c:url value="/common/images/footer_bg.png"/>') no-repeat center bottom;
-    background-size: cover;
-    padding: 30px 16px 120px; /* 하단 풀/꽃 부분 높이 고려해 패딩 넉넉히 */
-    font-family: 'Pretendard', sans-serif;
-    position: relative;
-  }
+  background: #fff0f5 url('<c:url value="/common/images/footer_cloud.png"/>') no-repeat center bottom;
+  background-size: cover;
+  padding: 30px 16px 180px;
+  font-family: 'Pretendard', sans-serif;
+  position: relative;
+}
+
 
   .tms-footer-inner {
     display: flex;
@@ -48,7 +49,9 @@
     margin: 0 10px;
     text-decoration: none;
     color: #333;
+  
   }
+  
 </style>
 
 <footer class="tms-footer">

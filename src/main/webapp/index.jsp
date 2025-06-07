@@ -5,8 +5,11 @@
 
 <!-- 배너 영역 -->
 <div class="slider">
-  <img src="<c:url value='/common/images/main.jpg'/>" class="active" alt="배너1">
+  <img src="<c:url value='/common/images/main.png'/>" class="active" alt="배너1">
   <img src="<c:url value='/common/images/main2.png'/>" alt="배너2">
+  <img src="<c:url value='/common/images/main3.png'/>" alt="배너3">
+  <img src="<c:url value='/common/images/main4.png'/>" alt="배너4">
+  <img src="<c:url value='/common/images/main5.png'/>" alt="배너5">
 </div>
 
 <script>
@@ -21,14 +24,27 @@
 </script>
 
 <style>
-  .slider img {
-    display: none;
+   .slider {
+    position: relative;
     width: 100%;
-    height: auto;
+    height: 600px; 
+    overflow: hidden;
+  }
+
+  .slider img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
   }
 
   .slider img.active {
-    display: block;
+    opacity: 1;
+    z-index: 1;
   }
 
   /* Instagram 슬라이더 스타일 */
@@ -53,6 +69,23 @@
     margin-right: 10px;
     border-radius: 10px;
   }
+
+#instagram_section {
+  margin-top: 80px;
+  margin-bottom: 80px !important; /* 중요도 높임 */
+  background-color: #ffe4e1;
+  padding: 40px 20px;
+  border-radius: 12px;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#instagram_section h3 {
+  font-size: 24px;
+  color: #d63384;
+  margin-bottom: 24px;
+}
 
   @keyframes scroll {
     0% {
