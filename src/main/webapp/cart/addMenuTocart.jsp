@@ -13,7 +13,7 @@ if(userId == null){
 %>	
 	<script>
 	alert("로그인하세요");
-	location.href = "UserLogin/login.jsp";
+	location.href = "../UserLogin/login.jsp";
 	</script>
 	
 	<%
@@ -35,16 +35,13 @@ CartItemDTO ciDTO = new CartItemDTO();
 
 if(cs.existsCart(cartId, productId)){
 	cs.addQuantity(cartId, productId);
-	response.sendRedirect("../product/product_detail.jsp?productId=" + productId + 
-            "&msg=" + URLEncoder.encode("장바구니에 추가되었습니다.", "UTF-8"));
+	response.sendRedirect("../product/menu.jsp?msg=" + URLEncoder.encode("장바구니에 추가되었습니다.", "UTF-8"));
 }else{
 
 ciDTO.setCartId(cartId);
 ciDTO.setProductId(productId);
 ciDTO.setQuantity(qty);
 cs.addToCart(ciDTO);
-response.sendRedirect("../product/product_detail.jsp?productId=" + productId + 
-            "&msg=" + URLEncoder.encode("장바구니에 추가되었습니다.", "UTF-8"));
+response.sendRedirect("../product/menu.jsp?msg=" + URLEncoder.encode("장바구니에 추가되었습니다.", "UTF-8"));
 }
 %>
-
