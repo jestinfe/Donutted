@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ include file="../common/external_file.jsp" %>
+<%@ include file="../common/external_file.jsp" %>
 
 <%
   String idParam = request.getParameter("inquiry_id");
@@ -38,12 +39,23 @@
   <title>1:1 문의 상세 - 관리자</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <style>
+   body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+    min-width: 1280px;        
+    overflow-x: hidden;       
+  }
     .main { padding: 40px; max-width: 800px; margin: auto; }
     .item { margin-bottom: 20px; }
     .label { font-weight: bold; margin-bottom: 5px; display: block; }
     .box { background: #f8f9fa; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
     textarea { width: 100%; height: 150px; padding: 10px; }
     .btn-save { background: #f8a7bb; color: white; font-weight: bold; }
+     table {
+    min-width: 1000px;        
+  }
   </style>
 </head>
 <body>

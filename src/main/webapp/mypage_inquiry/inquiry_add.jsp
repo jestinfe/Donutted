@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="inquiry.InquiryService" %>
+<%@ include file="../common/external_file.jsp" %>
 
 <%
     Integer userId = (Integer) session.getAttribute("userId");
@@ -9,22 +10,8 @@
         return;
     }
 
-    // 하루 최대 2회 제한 로직
-    int todayCount = InquiryService.getInstance().getTodayInquiryCount(userId);
-    if (todayCount >= 2) {
-%>
-    <script>
-      alert("하루에 가능한 문의는 2번입니다.");
-      history.back();
-    </script>
-<%
-        return;
-    }
-
     String userIdStr = String.valueOf(userId);
 %>
-
-
 
 
 <!DOCTYPE html>

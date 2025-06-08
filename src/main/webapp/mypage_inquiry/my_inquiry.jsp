@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
+<%@ include file="../common/external_file.jsp" %>
 <%
 Integer userId = (Integer) session.getAttribute("userId");
 if (userId == null) {
@@ -48,11 +48,12 @@ request.setAttribute("totalPages", totalPages);
       flex-direction: column;
     }
 
-    .main-container {
-      flex: 1;
-      display: flex;
-      margin-top: 60px;
-    }
+   .main-container {
+    display: flex;
+    flex: 1;
+    margin-top: 60px;
+    min-width: 1000px;  /* ✅ 최소 넓이 설정 → 화면 줄여도 고정 효과 */
+}
 
     .mypage-sidebar {
       position: fixed;
@@ -84,11 +85,13 @@ request.setAttribute("totalPages", totalPages);
       font-weight: bold;
     }
 
-    .qna-wrapper {
-      flex: 1;
-      margin-left: 220px;
-      padding: 30px;
-    }
+   .qna-wrapper {
+    flex: 1;
+    margin-left: 220px;
+    padding: 30px;
+    min-width: 780px;  /* ✅ 최소 넓이 설정 (적절히 조절 가능) */
+    box-sizing: border-box;  /* ✅ padding 포함해서 넓이 계산 */
+}
 
     table {
       width: 100%;
@@ -128,6 +131,12 @@ request.setAttribute("totalPages", totalPages);
     .footer-fixed {
       margin-top: auto;
     }
+    .table-responsive-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+    
+    
   </style>
 </head>
 <body>
@@ -144,11 +153,10 @@ request.setAttribute("totalPages", totalPages);
     <div class="qna-wrapper">
 <h5>
   <strong>나의 Q/A 내역 ( <%= totalCount %> 건 )</strong>
-  <span style="color: #ff5c8a; font-size: 15px; margin-left: 10px;">* 하루에 가능한 문의는 2번입니다.</span>
 </h5>
 	
 	
-
+<div style="overflow-x: auto;">
       <table>
         <thead>
           <tr>
@@ -185,7 +193,7 @@ request.setAttribute("totalPages", totalPages);
           </c:forEach>
         </tbody>
       </table>
-
+	</div>
       <!-- ✅ 페이지네이션 -->
       <div class="text-center mt-4">
         <nav>

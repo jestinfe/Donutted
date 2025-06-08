@@ -2,6 +2,7 @@
 <%@ page import="inquiry.InquiryDTO, inquiry.InquiryService" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ include file="../common/external_file.jsp" %>
 
 <%
   Integer loginUserId = (Integer) session.getAttribute("userId");
@@ -50,32 +51,42 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 0;
-    }
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    min-width: 1280px; /* ✅ 전체 최소 너비 고정 */
+    overflow-x: auto; /* ✅ 만약 더 작으면 가로 스크롤 생김 */
+}
 
-    .main-container {
-      max-width: 1280px;
-      margin: 60px auto;
-      display: flex;
-      gap: 30px;
-      padding: 0 20px;
-    }
+  .main-container {
+    max-width: 1280px;
+    min-width: 1280px; /* ✅ main 전체 고정 */
+    margin: 60px auto;
+    padding-left: 260px; /* ✅ 사이드바 고려 */
+    box-sizing: border-box;
+}
 
-    .sidebar {
-      width: 240px;
-      flex-shrink: 0;
-    }
+  .sidebar {
+    position: fixed;
+    top: 120px;
+    left: 0;
+    width: 240px;
+    height: auto;
+    z-index: 10;
+    background-color: #f8d7da;
+    padding: 20px;
+}
 
-    .detail-box {
-      flex: 1;
-      background-color: #ffffff;
-      padding: 40px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
+   .detail-box {
+    flex: 1;
+    min-width: 760px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    padding: 40px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
 
     h4 {
       font-size: 22px;

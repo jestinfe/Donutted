@@ -24,7 +24,7 @@
       margin: 0;
       padding: 0;
       font-family: '맑은 고딕', sans-serif;
-      background-color: #f8f9fa; /* 기본 배경 흰색 */
+      background-color: #f9fafc; 
     }
 
     .wrapper {
@@ -34,46 +34,46 @@
     }
 
     main.container {
-  flex: 1;
-  max-width: 2000px; /* ✅ 넓게 */
-  margin: 60px auto;
-  background: #ffe4ec;
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(255, 192, 203, 0.4);
-}
+      flex: 1;
+      max-width: 1200px;
+      margin: 60px auto;
+      background: #ffffff; 
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
 
     .faq-question {
-     font-size: 24px;
+      font-size: 20px;
       font-weight: bold;
       cursor: pointer;
-      padding: 14px 20px;
-      background: #ffc1d8;
+      padding: 12px 18px;
+      background: #f8d7e3; 
       border: none;
-      margin-bottom: 0;
-      border-radius: 12px;
+      margin-bottom: 5px;
+      border-radius: 8px;
       position: relative;
       transition: background 0.2s;
     }
 
     .faq-question:hover {
-      background: #ffb3cd;
+      background: #f4c6d7; 
     }
 
     .faq-question .arrow {
       position: absolute;
-      right: 20px;
+      right: 18px;
       transition: transform 0.3s ease;
-      font-size: 18px;
+      font-size: 16px;
     }
 
     .faq-answer {
-    font-size: 20px;
+      font-size: 18px;
       display: none;
-      padding: 16px 20px;
-      background: #fff0f5;
-      border-left: 4px solid #ff99bb;
-      border-radius: 0 0 12px 12px;
+      padding: 14px 18px;
+      background: #fdf2f7; 
+      border-left: 4px solid #e89ab5;
+      border-radius: 0 0 8px 8px;
       margin-bottom: 10px;
       color: #444;
     }
@@ -93,7 +93,7 @@
 
   <!-- ✅ 본문 -->
   <main class="container">
-    <h2 style="font-size: 28px; font-weight: bold; color: #d63384; margin-bottom: 30px;">
+    <h2 style="font-size: 26px; font-weight: bold; color: #c94f7c; margin-bottom: 20px;">
       자주 묻는 질문 (FAQ)
     </h2>
 
@@ -122,14 +122,11 @@
   function toggleAnswer(el) {
     const answerDiv = el.nextElementSibling;
     const arrow = el.querySelector(".arrow");
-    const isVisible = answerDiv.style.display === "block";
 
-    // 모든 답변 닫기
-    document.querySelectorAll(".faq-answer").forEach(div => div.style.display = "none");
-    document.querySelectorAll(".faq-question .arrow").forEach(a => a.textContent = "▶");
-
-    // 현재 항목 열기
-    if (!isVisible) {
+    if (answerDiv.style.display === "block") {
+      answerDiv.style.display = "none";
+      arrow.textContent = "▶";
+    } else {
       answerDiv.style.display = "block";
       arrow.textContent = "▼";
     }
