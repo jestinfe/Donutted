@@ -371,7 +371,7 @@
 <div class="content-wrapper">
   <div class="refunds-container">
    <div class="page-header">
-	  <h3>환불/반품 내역</h3>
+	  <h3>환불 내역</h3>
 	</div>
 
     <div class="refund-table-wrapper">
@@ -424,7 +424,7 @@
       <span class="status-badge status-complete">환불완료</span>
     </c:when>
     <c:otherwise>
-      <span class="status-badge status-denied">반료됨</span>
+      <span class="status-badge status-denied">반려됨</span>
     </c:otherwise>
   </c:choose>
 </td>

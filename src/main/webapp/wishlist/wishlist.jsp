@@ -202,7 +202,7 @@ window.onload = function () {
 
           <!-- 이미지 -->
           <div style="margin-right: 20px;">
-            <img src="<c:url value='/admin/common/upload/${wish.thumbnailUrl }'/>" width="200"
+            <img src="<c:url value='/admin/common/images/products/${wish.thumbnailUrl }'/>" width="200"
                  style="vertical-align: middle; margin-right:50px;"/>
           </div>
 
