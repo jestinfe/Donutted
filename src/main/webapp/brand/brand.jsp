@@ -7,15 +7,6 @@
   <meta charset="UTF-8">
   <title>브랜드 소개 | Donutted</title>
   <style>
-    .hero-message {
-      font-size: 20px;
-      text-align: center;
-      padding: 40px 20px 10px;
-      color: #444;
-      line-height: 1.8;
-      font-family: 'Apple SD Gothic Neo', sans-serif;
-    }
-    
     .info-img {
     	text-align: center; /* 백업용 */
     }
@@ -24,6 +15,16 @@
 	  max-width: 100%;
 	  height: auto;
 	}
+	
+	.border {
+		max-width: 60%;
+  		margin: 80px auto 50px auto; /* 가운데 정렬 */
+		padding: 50px 30px 50px 30px;
+		border: 1px solid;
+		border-radius: 10px;
+		background-color: #fff8f5;
+		box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+	}
   </style>
 </head>
 <body>
@@ -31,11 +32,8 @@
 <!-- ✅ 공통 헤더 -->
 <c:import url="/common/header.jsp" />
 
-<div class="hero-message" style="text-align: center; padding: 40px 20px;">
-</div>
-
 <!-- ✅ 본문 영역 -->
-<main class="container" style="min-height: 600px; padding: 60px 0px;">
+<main class="container" style="min-height: 600px;">
 
   <c:choose>
     <%-- 기본값 'about' 적용 --%>
@@ -65,15 +63,17 @@
     </c:when>
 
     <c:when test="${param.section eq 'location'}">
-      <h2 style="font-size: 40px; font-weight: bold; margin-bottom: 40px; text-align: center;">Visit Us</h2>
-      <p style="font-size: 18px; line-height: 1.8; color: #555; text-align: center; max-width: 800px; margin: 0 auto;">
-        donutted 역삼 플래그십 스토어<br>
-        📍 서울특별시 강남구 역삼동 테헤란로 132 한독약품빌딩 8층<br>
-        ☎️ 1800-6067<br>
-        🕘 운영시간: 매일 9:00 ~ 18:00
-      </p>
-      <div style="text-align: center; margin-top: 50px;">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6330.732002387768!2d127.02562245458282!3d37.49928500000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca1c32408f9b7%3A0x4e3761a4f356d1eb!2z7IyN7Jqp6rWQ7Jyh7IS87YSw!5e0!3m2!1sko!2skr!4v1747113528629!5m2!1sko!2skr" width="600" height="450" style="border:1; border-style: solid; border-color: gray;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="border">
+	      <h2 style="font-size: 40px; font-weight: bold; margin-bottom: 40px; text-align: center;">Visit Us</h2>
+	      <p style="font-size: 18px; line-height: 1.8; color: #555; text-align: center; max-width: 800px; margin: 0 auto;">
+	        donutted 역삼 플래그십 스토어<br>
+	        📍 서울특별시 강남구 역삼동 테헤란로 132 한독약품빌딩 8층<br>
+	        ☎️ 1800-6067<br>
+	        🕘 운영시간: 매일 9:00 ~ 18:00
+	      </p>
+	      <div style="text-align: center; margin-top: 50px;">
+	        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6330.732002387768!2d127.02562245458282!3d37.49928500000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca1c32408f9b7%3A0x4e3761a4f356d1eb!2z7IyN7Jqp6rWQ7Jyh7IS87YSw!5e0!3m2!1sko!2skr!4v1747113528629!5m2!1sko!2skr" width="100%" height="450" style="border:1; border-style: solid; border-color: gray;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+	      </div>
       </div>
     </c:when>
   </c:choose>
