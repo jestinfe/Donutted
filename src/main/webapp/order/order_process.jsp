@@ -1,6 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="order.OrderService" %>
 <%@ page import="java.io.*, java.util.*" %>
+<%@ include file="/common/login_chk.jsp" %>
+
+<link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
 
 <%
 response.setHeader("Cache-Control", "no-store");
@@ -8,10 +11,6 @@ response.setHeader("Pragma", "no-cache");
 response.setDateHeader("Expires", 0);
 request.setCharacterEncoding("UTF-8");
 
-if (session.getAttribute("userId") == null) {
-    response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-    return;
-}
 
 // 중복 주문 방지
 Boolean alreadyOrdered = (Boolean) session.getAttribute("alreadyOrdered");

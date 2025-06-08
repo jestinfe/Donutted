@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="user.UserService" %>
+<%@ include file="/common/login_chk.jsp" %>
 
 <%
   Integer userId = (Integer) session.getAttribute("userId");
@@ -11,7 +12,7 @@
 %>
     <script>
       alert("회원 탈퇴가 정상적으로 완료되었습니다. 이용해주셔서 감사합니다.");
-      location.href = "index.jsp";
+      location.href = "/mall_prj/index.jsp";
     </script>
 <%
   } else {

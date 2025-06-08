@@ -126,10 +126,22 @@
         <div class="row g-2 align-items-center">
           <div class="col-md-3">
             <select name="newStatus" class="form-select">
-              <option value="O1" ${order.orderStatus == 'O1' ? 'selected' : ''}>결제 완료 (O1)</option>
-              <option value="O2" ${order.orderStatus == 'O2' ? 'selected' : ''}>배송 준비중 (O2)</option>
-              <option value="O3" ${order.orderStatus == 'O3' ? 'selected' : ''}>배송 중 (O3)</option>
-              <option value="O4" ${order.orderStatus == 'O4' ? 'selected' : ''}>배송 완료 (O4)</option>
+             <option value="O1" ${order.orderStatus == 'O1' ? 'selected' : ''}
+  <c:if test="${order.orderStatus > 'O1'}">style="display:none"</c:if>>
+  결제 완료 (O1)
+</option>
+<option value="O2" ${order.orderStatus == 'O2' ? 'selected' : ''}
+  <c:if test="${order.orderStatus > 'O2'}">style="display:none"</c:if>>
+  배송 준비중 (O2)
+</option>
+<option value="O3" ${order.orderStatus == 'O3' ? 'selected' : ''}
+  <c:if test="${order.orderStatus > 'O3'}">style="display:none"</c:if>>
+  배송 중 (O3)
+</option>
+<option value="O4" ${order.orderStatus == 'O4' ? 'selected' : ''}>
+  배송 완료 (O4)
+</option>
+
             </select>
           </div>
           <div class="col-md-2">

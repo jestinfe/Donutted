@@ -7,7 +7,7 @@ String id = request.getParameter("id");
 String pass = request.getParameter("pass");
 
 UserService service = new UserService();
-UserDTO user = service.login(id, pass); // 
+UserDTO user = service.login(id, pass); // 로그인 로직
 
 if (user != null) {
     session.setAttribute("userId", user.getUserId());        
@@ -16,7 +16,7 @@ if (user != null) {
 %>
     <script>
       alert("<%=id %>님, 환영합니다");
-      location.href = "http://localhost/mall_prj/index.jsp";
+      location.href = "/mall_prj/index.jsp";
     </script>
 <%
 } else {

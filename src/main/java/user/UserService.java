@@ -95,7 +95,7 @@ public class UserService {
             if (user == null) return false;
 
             // 2) 복호화 후 `_withdrawn_` + userId 붙이고 다시 암호화
-            String email = CryptoUtil.decrypt(user.getEmail()) + "_withdrawn_" + userId;
+            String email = user.getEmail() + "_withdrawn_" + userId;
             String newEmail = CryptoUtil.encrypt(email);
             String newUsername = user.getUsername() + "_withdrawn_" + userId;
 

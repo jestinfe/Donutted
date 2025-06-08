@@ -1,12 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="review.*, order.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="/common/login_chk.jsp" %>
+
+<link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
+
 <%
   request.setCharacterEncoding("UTF-8");
-  if (session.getAttribute("userId") ==null ) {
-  	response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-  	return;
-  }
   int reviewId = Integer.parseInt(request.getParameter("review_id"));
   ReviewService reviewService = new ReviewService();
   ReviewDTO review = reviewService.getReviewById(reviewId);
@@ -144,7 +144,7 @@
     <!-- 상품 정보 -->
     <header class="product-header">
       <div class="product-info">
-        <img src="/mall_prj/admin/common/upload/<%= item.getThumbnailUrl() %>" alt="상품 이미지" class="product-img">
+        <img src="/mall_prj/admin/common/images/product<%= item.getThumbnailUrl() %>" alt="상품 이미지" class="product-img">
         <div class="product-text">
           <p><strong><%= item.getProductName() %></strong></p>
         </div>

@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ include file="/common/login_chk.jsp" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,11 +11,13 @@
   <title>주문목록/배송조회 | Donutted</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
+  
   <style>
     body { font-family: 'Pretendard', sans-serif; background-color: #fffefc; margin: 0; }
 
     .content-wrapper {
-      margin-left: 240px; /* sidebar 고려 */
+      margin-left: 240px;
       padding: 40px 20px;
       display: flex;
       justify-content: center;
@@ -24,7 +28,12 @@
       max-width: 1000px;
     }
 
-    h3 { font-weight: 700; margin-bottom: 30px; border-left: 5px solid #ef84a5; padding-left: 10px; }
+    h3 {
+      font-weight: 700;
+      margin-bottom: 30px;
+      border-left: 5px solid #ef84a5;
+      padding-left: 10px;
+    }
 
     .order-box {
       background-color: #fff;
@@ -152,7 +161,6 @@
     <div class="orders-container">
       <h3>주문배송 조회</h3>
       <div id="orderList"></div>
-      <div id="loading" style="text-align:center; padding:20px; display:none;">로딩 중...</div>
     </div>
   </div>
 
@@ -163,9 +171,10 @@
     let page = 1;
     let loading = false;
     const limit = 10;
+    let endOfData = false;
 
     function loadMoreOrders() {
-      if (loading) return;
+      if (loading || endOfData) return;
       loading = true;
       $('#loading').show();
 
@@ -178,11 +187,20 @@
           limit: limit
         },
         success: function (html) {
-          if ($.trim(html) !== '') {
+          const trimmed = $.trim(html);
+          if (trimmed !== '') {
             $('#orderList').append(html);
-            page++;
+            if ($(html).find('#no-more-orders').length > 0) {
+              endOfData = true;
+              $('#loading').text('더 이상 주문이 없습니다.').show();
+            } else {
+              page++;
+              $('#loading').hide();
+            }
+          } else {
+            endOfData = true;
+            $('#loading').text('더 이상 주문이 없습니다.').show();
           }
-          $('#loading').hide();
           loading = false;
         },
         error: function () {

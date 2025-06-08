@@ -1,15 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="order.OrderItemDTO, order.OrderService, java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="/common/login_chk.jsp" %>
+
+<link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
 
 <%
 request.setCharacterEncoding("UTF-8");
 
 Integer userId = (Integer) session.getAttribute("userId");
-if (userId == null) {
-    response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-    return;
-}
 
 String orderIdStr = request.getParameter("order_id");
 if (orderIdStr == null) {

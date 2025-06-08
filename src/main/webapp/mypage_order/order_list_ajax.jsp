@@ -10,7 +10,10 @@
   String pageStr = request.getParameter("page");
   String limitStr = request.getParameter("limit");
 
-  if (userIdStr == null || pageStr == null || limitStr == null) return;
+  if (userIdStr == null || pageStr == null || limitStr == null) {
+    response.setStatus(400);
+    return;
+  }
 
   int userId = Integer.parseInt(userIdStr);
   int pageNum = Integer.parseInt(pageStr);
@@ -21,15 +24,26 @@
   RangeDTO range = new RangeDTO(start, end);
   OrderService service = new OrderService();
   List<OrderDTO> orders = service.getOrdersByUserWithRange(userId, range);
+  boolean isLastPage = (orders == null || orders.size() < limit);
+
   request.setAttribute("orders", orders);
+  request.setAttribute("pageNum", pageNum);
+  request.setAttribute("isLastPage", isLastPage);
 %>
 
+  <!-- 첫 페이지에서 아무 주문도 없을 때 -->
 <c:choose>
-  <c:when test="${empty orders}">
+  <c:when test="${empty orders && pageNum == 1}">
     <div class="order-box" style="text-align:center; padding:30px; background:#fffbe6; border-left:5px solid #ffe58f;">
       주문 내역이 없습니다.
     </div>
+    <div id="no-more-orders" style="display:none;"></div>
   </c:when>
+
+  <c:when test="${empty orders && pageNum > 1}">
+    <div id="no-more-orders" style="display:none;"></div>
+  </c:when>
+
   <c:otherwise>
     <c:forEach var="order" items="${orders}">
       <div class="order-box">
@@ -71,12 +85,11 @@
 
         <div class="text-end">
           <c:if test="${order.orderStatus eq 'O4'}">
-		  <form method="post" action="../mypage_refund/refund_items.jsp" style="display:inline;">
-		    <input type="hidden" name="order_id" value="${order.orderId}" />
-		    <button type="submit" class="btn-refund">환불요청</button>
-		  </form>
-		</c:if>
-
+            <form method="post" action="../mypage_refund/refund_items.jsp" style="display:inline;">
+              <input type="hidden" name="order_id" value="${order.orderId}" />
+              <button type="submit" class="btn-refund">환불요청</button>
+            </form>
+          </c:if>
 
           <c:if test="${order.orderStatus == 'O1' || order.orderStatus == 'O2' || order.orderStatus == 'O3'}">
             <form method="post" action="cancel_order.jsp" style="display:inline;">
@@ -94,5 +107,9 @@
         </div>
       </div>
     </c:forEach>
+
+    <c:if test="${isLastPage}">
+      <div id="no-more-orders" style="display:none;"></div>
+    </c:if>
   </c:otherwise>
 </c:choose>
