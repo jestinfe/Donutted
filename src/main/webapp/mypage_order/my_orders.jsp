@@ -5,6 +5,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <c:import url="../common/external_file.jsp"/>
   <title>마이페이지 - 주문목록/배송조회</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet">

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="review.*, order.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
   request.setCharacterEncoding("UTF-8");
   if (session.getAttribute("userId") ==null ) {
@@ -15,6 +16,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <c:import url="../common/external_file.jsp"/>
   <title>리뷰 수정</title>
   <style>
     body {

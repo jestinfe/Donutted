@@ -6,7 +6,9 @@
 <head>
   <meta charset="UTF-8">
   <title>브랜드 소개 | Donutted</title>
+  <c:import url="../common/external_file.jsp"/>
   <style>
+  
     .info-img {
     	text-align: center; /* 백업용 */
     }
