@@ -9,8 +9,7 @@
 <%@ page import="product.CategoryDTO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-  <c:import url="../common/external_file.jsp"/>
-
+<c:import url="../common/external_file.jsp"/>
 <%
 Integer userId = (Integer)session.getAttribute("userId");
 HashSet<Integer> wishProductId = new HashSet<>();

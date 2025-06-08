@@ -1,15 +1,12 @@
  <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:import url="../common/header.jsp" />
-<%@ include file="../common/external_file.jsp" %>
-
+<%@ include file="../common/external_file.jsp" %>>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>Welcome to Donutted!!</title>
   
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   
   <style>
@@ -245,6 +242,7 @@ iframe {
 
 </head>
 <body>
+<c:import url="../common/header.jsp" />
 <main>
   <div id="container">
     <h2>회원가입</h2>
