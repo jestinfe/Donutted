@@ -171,6 +171,11 @@
       <img src="<c:url value='/common/images/insta_9.png'/>" alt="insta9">
       <img src="<c:url value='/common/images/insta_10.png'/>" alt="insta10">
       <img src="<c:url value='/common/images/insta_11.png'/>" alt="insta11">
+      <img src="<c:url value='/common/images/insta_12.png'/>" alt="insta12">
+      <img src="<c:url value='/common/images/insta_13.png'/>" alt="insta13">
+      <img src="<c:url value='/common/images/insta_14.png'/>" alt="insta14">
+      <img src="<c:url value='/common/images/insta_15.png'/>" alt="insta15">
+      <img src="<c:url value='/common/images/insta_16.png'/>" alt="insta16">
       <!-- 반복 효과 위해 이미지 한번 더 -->
       <img src="<c:url value='/common/images/insta_1.png'/>" alt="insta1-dup">
       <img src="<c:url value='/common/images/insta_2.png'/>" alt="insta2-dup">
@@ -183,6 +188,11 @@
       <img src="<c:url value='/common/images/insta_9.png'/>" alt="insta9-dup">
       <img src="<c:url value='/common/images/insta_10.png'/>" alt="insta10-dup">
       <img src="<c:url value='/common/images/insta_11.png'/>" alt="insta11-dup">
+      <img src="<c:url value='/common/images/insta_12.png'/>" alt="insta12-dup">
+      <img src="<c:url value='/common/images/insta_13.png'/>" alt="insta13-dup">
+      <img src="<c:url value='/common/images/insta_14.png'/>" alt="insta14-dup">
+      <img src="<c:url value='/common/images/insta_15.png'/>" alt="insta15-dup">
+      <img src="<c:url value='/common/images/insta_16.png'/>" alt="insta16-dup">
     </div>
   </div>
 </section>
