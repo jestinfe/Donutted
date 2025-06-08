@@ -88,7 +88,7 @@ iframe {
 #btnConfirm, #btnCancel {
   width: 100px;
   margin: 10px 5px;
-}
+} /* 스타일변경 */
 
 </style>
 
