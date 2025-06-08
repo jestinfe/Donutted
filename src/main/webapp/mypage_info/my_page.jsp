@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="user.UserService, user.UserDTO" %>
 <%@ page import="java.util.*" %>
+<%@ include file="../common/external_file.jsp" %>
 <%
   request.setCharacterEncoding("UTF-8");
   Integer userId = (Integer) session.getAttribute("userId");

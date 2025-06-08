@@ -5,6 +5,10 @@
 <%@ include file="../common/sidebar.jsp" %>
 <%@ include file="../common/login_check.jsp" %>
 
+<head>
+<title>리뷰 상세조회</title>
+</head>
+
 
 <%
   request.setCharacterEncoding("UTF-8");

@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List, news.NewsService, news.BoardDTO, news.PseRangeDTO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="../common/external_file.jsp" %>
 
 <%
     request.setCharacterEncoding("UTF-8");

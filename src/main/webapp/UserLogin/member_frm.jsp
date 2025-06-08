@@ -1,6 +1,7 @@
  <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:import url="../common/header.jsp" />
+<%@ include file="../common/external_file.jsp" %>
 
 <!DOCTYPE html>
 <html>
