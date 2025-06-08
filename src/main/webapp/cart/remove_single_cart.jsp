@@ -9,6 +9,7 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	Integer userId = (Integer)session.getAttribute("userId");
+	int productId = Integer.parseInt(request.getParameter("productId"));
 	CartService cs = new CartService();
 	int cartId = cs.searchCartId(userId);
 	if(cartId ==0){
@@ -18,17 +19,7 @@
 	CartItemDTO ciDTO = new CartItemDTO();
 	
 	ciDTO.setCartId(cartId);
-	String [] selectedItem = request.getParameterValues("checkCart");
 	
-	if(selectedItem != null && selectedItem.length>0){
-	for(String item : selectedItem){	
-		int items = Integer.parseInt(item);
-		cs.deleteCartItem(cartId, items);
-		}
-		session.setAttribute("toast", "선택한 항목이 삭제되었습니다");
-		response.sendRedirect("cart.jsp");
-	}else{
-		session.setAttribute("toast", "삭제할 항목을 선택하세요.");
-		response.sendRedirect("cart.jsp");
-	}
+	cs.deleteCartItem(cartId, productId);
+	
 %>

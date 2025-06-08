@@ -11,7 +11,7 @@ if(userId==null){
 	  %>
 	  	 <script>
 		    alert("로그인 후 이용해주세요.");
-	    	location.href = "login.jsp";
+	    	location.href = "../UserLogin/login.jsp";
 	  	</script>
 	  <% 
 	  	return;
@@ -30,7 +30,7 @@ request.setAttribute("wishList", wishList);
 <head>
 <meta charset="UTF-8">
 <title>찜목록</title>
-<c:if test="${not empty param.msg}">
+  <c:if test="${not empty sessionScope.toast}">
   <div id="toast-msg" style="
       position: fixed;
       top: 30px;
@@ -46,14 +46,20 @@ request.setAttribute("wishList", wishList);
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
   ">
-    ${param.msg}
+    ${sessionScope.toast}
   </div>
+   <%
+    session.removeAttribute("toast");  // 1회용으로 제거
+  %>
   <script>
     const toast = document.getElementById("toast-msg");
     if (toast) {
       toast.style.opacity = "1";
       setTimeout(() => {
         toast.style.opacity = "0";
+        setTimeout(() => {
+            toast.remove();  // DOM에서 제거
+          }, 500);  // transition 시간만큼 기다려서 지움
       }, 1500);
     }
   </script>
@@ -96,7 +102,7 @@ window.onload = function () {
 	    btn.addEventListener("click", function () {
 	      const checked = document.querySelectorAll("input[name='checkWish']:checked");
 	      if (checked.length === 0) {
-	    	  location.href = "wishlist.jsp?msg=" + encodeURIComponent("삭제할 항목을 선택해주세요.");
+	    	  showToast("삭제할 항목을 선택해주세요.");
 	        return;
 	      }
 	      if (confirm("선택한 항목을 삭제하시겠습니까?")) {
@@ -130,7 +136,7 @@ window.onload = function () {
 	document.getElementById("selectGoCartBtn").addEventListener("click", function(){
 		const checked = document.querySelectorAll("input[name='checkWish']:checked");
 		if(checked.length === 0){
-			alert("장바구니에 담을 항목을 선택해주세요.");
+			showToast("장바구니에 담을 항목을 선택해주세요.");
 			return;
 		}//if
 		
@@ -253,6 +259,38 @@ window.onload = function () {
 
 	<!-- ✅ 공통 푸터 -->
 	<c:import url="/common/footer.jsp" />
+<script>
+function showToast(message) {
+	  let toast = document.getElementById("toast-msg");
 
+	  if (!toast) {
+	    toast = document.createElement("div");
+	    toast.id = "toast-msg";
+	    toast.style.position = "fixed";
+	    toast.style.top = "30px";
+	    toast.style.left = "50%";
+	    toast.style.transform = "translateX(-50%)";
+	    toast.style.backgroundColor = "#f8a6c9";
+	    toast.style.color = "white";
+	    toast.style.padding = "14px 24px";
+	    toast.style.borderRadius = "30px";
+	    toast.style.fontSize = "16px";
+	    toast.style.fontWeight = "bold";
+	    toast.style.zIndex = "9999";
+	    toast.style.opacity = "0";
+	    toast.style.transition = "opacity 0.5s ease-in-out";
+	    document.body.appendChild(toast);
+	  }
+
+	  toast.textContent = message;
+	  toast.style.opacity = "1";
+
+	  setTimeout(() => {
+	    toast.style.opacity = "0";
+	    setTimeout(() => {
+	      toast.remove();
+	    }, 500);
+	  }, 1500);
+	}</script>
 </body>
 </html>

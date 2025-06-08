@@ -12,13 +12,6 @@
   Integer userId = (Integer)session.getAttribute("userId");
   ProductService ps = new ProductService();
   ProductDTO prd = ps.getProductById(productId);
-  
-  if (prd == null) {
-	    response.sendRedirect("menu.jsp");
-	    return;
-	  }
-  
-  
   boolean isWished = false;
   if(userId != null){
 	  WishService ws = new WishService();
@@ -41,7 +34,7 @@
 <head>
   <meta charset="UTF-8">
   <title>${prd.name}</title>
-  <c:if test="${not empty param.msg}">
+  <c:if test="${not empty sessionScope.toast}">
   <div id="toast-msg" style="
       position: fixed;
       top: 30px;
@@ -57,14 +50,20 @@
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
   ">
-    ${param.msg}
+    ${sessionScope.toast}
   </div>
+   <%
+    session.removeAttribute("toast");  // 1회용으로 제거
+  %>
   <script>
     const toast = document.getElementById("toast-msg");
     if (toast) {
       toast.style.opacity = "1";
       setTimeout(() => {
         toast.style.opacity = "0";
+        setTimeout(() => {
+            toast.remove();  // DOM에서 제거
+          }, 500);  // transition 시간만큼 기다려서 지움
       }, 1500);
     }
   </script>
@@ -395,7 +394,7 @@
   <div class="product-container">
     <div class="product-img <c:if test='${prd.stock == 0}'>sold-out</c:if>">
       <img id="mainImg"
-           src="<c:url value='/admin/common/images/products/${prd.thumbnailImg}' />"
+           src="<c:url value='admin/common/images/products/${prd.thumbnailImg}' />"
            alt="${prd.name}"
            onerror="this.onerror=null; this.dataset.error='true'; this.src='${pageContext.request.contextPath}/admin/common/images/default/error.png';">
 

@@ -48,6 +48,8 @@ json.put("totalPrice", totalPrice);
 json.put("totalQuantity", totalQuantity);
 json.put("unitPrice", unitPrice);
 json.put("productId", productId);
+json.put("quantity", quantity);
+json.put("stock", stock);
 
 out.print(json.toString());
 %>

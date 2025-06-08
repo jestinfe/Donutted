@@ -66,6 +66,6 @@ if (productIds != null && productIds.length > 1) {
 		msg = "장바구니에 추가되었습니다.";
 	}
 }
-
-response.sendRedirect("../wishlist/wishlist.jsp?msg=" + URLEncoder.encode(msg, "UTF-8"));
+session.setAttribute("toast", msg);
+response.sendRedirect("../wishlist/wishlist.jsp");
 %>

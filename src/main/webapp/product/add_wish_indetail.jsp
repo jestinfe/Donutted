@@ -28,8 +28,8 @@ if(ws.existWishes(userId, productId)){
 	response.sendRedirect("product_detail.jsp?productId="+productId);
 }else{
 	ws.insertWish(wlDTO);
-	response.sendRedirect("product_detail.jsp?productId=" + productId + 
-            "&msg=" + URLEncoder.encode("찜목록에 추가되었습니다.", "UTF-8"));
+	session.setAttribute("toast", "찜목록에 추가되었습니다.");
+	response.sendRedirect("product_detail.jsp?productId=" + productId);
 	
 }
 

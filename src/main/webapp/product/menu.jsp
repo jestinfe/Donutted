@@ -44,7 +44,7 @@ request.setAttribute("currentCategoryId", categoryId);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>고객 메뉴</title>
-   <c:if test="${not empty param.msg}">
+   <c:if test="${not empty sessionScope.toast}">
   <div id="toast-msg" style="
       position: fixed;
       top: 30px;
@@ -60,14 +60,20 @@ request.setAttribute("currentCategoryId", categoryId);
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
   ">
-    ${param.msg}
+    ${sessionScope.toast}
   </div>
+  <%
+    session.removeAttribute("toast");  // 1회용으로 제거
+  %>
   <script>
     const toast = document.getElementById("toast-msg");
     if (toast) {
       toast.style.opacity = "1";
       setTimeout(() => {
         toast.style.opacity = "0";
+        setTimeout(() => {
+            toast.remove();  // DOM에서 제거
+          }, 500);  // transition 시간만큼 기다려서 지움
       }, 1500);
     }
   </script>

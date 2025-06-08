@@ -35,13 +35,16 @@ CartItemDTO ciDTO = new CartItemDTO();
 
 if(cs.existsCart(cartId, productId)){
 	cs.addQuantity(cartId, productId);
-	response.sendRedirect("../product/menu.jsp?msg=" + URLEncoder.encode("장바구니에 추가되었습니다.", "UTF-8"));
+// 	response.sendRedirect("../product/menu.jsp?msg=" + URLEncoder.encode("장바구니에 추가되었습니다.", "UTF-8"));
+	session.setAttribute("toast", "장바구니에 추가되었습니다.");
+	response.sendRedirect("../product/menu.jsp");  // 주소창 깔끔
 }else{
 
 ciDTO.setCartId(cartId);
 ciDTO.setProductId(productId);
 ciDTO.setQuantity(qty);
 cs.addToCart(ciDTO);
-response.sendRedirect("../product/menu.jsp?msg=" + URLEncoder.encode("장바구니에 추가되었습니다.", "UTF-8"));
+session.setAttribute("toast", "장바구니에 추가되었습니다.");
+response.sendRedirect("../product/menu.jsp");  // 주소창 깔끔
 }
 %>
