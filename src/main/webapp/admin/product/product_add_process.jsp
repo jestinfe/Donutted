@@ -11,7 +11,7 @@ String savePath = "C:/dev/mall_prj/src/main/webapp/admin/common/images/products"
 File saveDir = new File(savePath);
 if (!saveDir.exists()) saveDir.mkdirs();
 
-int maxSize = 10 * 1024 * 1024;
+int maxSize = 50 * 1024 * 1024;
 String[] allowedExts = {"jpg", "jpeg", "png", "gif", "webp"};
 
 Map<String, String> savedFiles = new HashMap<>();

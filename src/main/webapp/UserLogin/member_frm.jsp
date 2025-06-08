@@ -88,7 +88,7 @@ iframe {
 #btnConfirm, #btnCancel {
   width: 100px;
   margin: 10px 5px;
-}
+} /* 스타일변경 */
 
 </style>
 
@@ -152,29 +152,42 @@ iframe {
 
     $('#btnZipcode').click(findZipcode);
 
-    $('#btnConfirm').click(function() {
-      const fields = [
-        { selector: '#id', label: '아이디' },
-        { selector: '#pass', label: '비밀번호' },
-        { selector: '#chkPass', label: '비밀번호 확인' },
-        { selector: '[name="name"]', label: '이름' },
-        { selector: '[name="birth"]', label: '생일' },
-        { selector: '[name="tel"]', label: '휴대폰' },
-        { selector: '[name="email"]', label: '이메일' },
-        { selector: '[name="domain"]', label: '도메인' },
-        { selector: '#zipcode', label: '우편번호' },
-        { selector: '#addr', label: '주소' }
-      ];
+    $('#btnConfirm').off('click').on('click', function() {
+    	  var fields = [
+    	    { selector: '#id', label: '아이디' },
+    	    { selector: '#pass', label: '비밀번호' },
+    	    { selector: '#chkPass', label: '비밀번호 확인' },
+    	    { selector: '[name="name"]', label: '이름' },
+    	    { selector: '[name="birth"]', label: '생일' },
+    	    { selector: '[name="tel"]', label: '휴대폰' },
+    	    { selector: '[name="email"]', label: '이메일' },
+    	    { selector: '[name="domain"]', label: '도메인' },
+    	    { selector: '#zipcode', label: '우편번호' },
+    	    { selector: '#addr', label: '주소' }
+    	  ];
 
-      for (const field of fields) {
-        const val = $(field.selector).val();
-        if (!val || val.trim() === '') {
-          alert(`${field.label}는 필수 입력입니다.`);
-          $(field.selector).focus();
-          return;
-        }
-      }
+    	  console.log('전체 fields:', fields);
 
+    	  for (var i = 0; i < fields.length; i++) {
+    	    var field = fields[i];
+
+    	    if (typeof field !== 'object' || field === null) {
+    	      console.error('잘못된 field 발견 (index=' + i + '):', field);
+    	      continue;
+    	    }
+
+    	    console.log('현재 field:', field);
+    	    var val = $(field.selector).val();
+
+    	    if (!val || val.trim() === '') {
+    	      alert((field.label ? field.label : '(label 없음)') + "는 필수 입력입니다.\n(필드: " + (field.selector ? field.selector : '(selector 없음)') + ")");
+    	      if (field.selector && !$(field.selector).prop('readonly')) {
+    	        $(field.selector).focus();
+    	      }
+    	      return;
+    	    }
+    	  }
+      
       if (!idChecked) {
         alert("아이디 중복확인을 해주세요.");
         return;
@@ -283,15 +296,14 @@ iframe {
   <td>
     <input type="text" name="email" class="inputBox" style="width:250px" 
     maxlength="15">@ 
-    <input type="text" name="domain" class="inputBox" list="domain" style="width:150px">
-    <datalist id="domain">
-      <option value="직접 입력">
-      <option value="naver.com">
-      <option value="gmail.com">
-      <option value="daum.net">
-      <option value="nate.com">
-      <option value="hotmail.com">
-    </datalist>
+    <input type="text" name="domain" class="inputBox" list="domainList" style="width:150px">
+	<datalist id="domainList">
+  		<option value="naver.com">
+  		<option value="gmail.com">
+  		<option value="daum.net">
+  		<option value="nate.com">
+  		<option value="hotmail.com">
+</datalist>
   </td>
 </tr>
         <tr>

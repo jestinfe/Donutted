@@ -43,7 +43,7 @@ request.setAttribute("currentCategoryId", categoryId);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>고객 메뉴</title>
+  <title>고객 메뉴 | Donutted</title>
    <c:if test="${not empty sessionScope.toast}">
   <div id="toast-msg" style="
       position: fixed;
