@@ -168,7 +168,7 @@ Map<Integer, OrderItemDTO> itemMap = new HashMap<>();
 			   		</a>
 			   	</h4>
 			   	<a href="/mall_prj/product/product_detail.jsp?productId=<%= item.getProductId() %>" style="text-decoration: none; color: inherit;">
-			    	<img src="/mall_prj/admin/common/upload/<%= item.getThumbnailUrl() %>"
+			    	<img src="/mall_prj/admin/common/images/products/<%= item.getThumbnailUrl() %>"
 			        	alt="상품 이미지" class="itemImage">
 			 	</a>
 		    </div>

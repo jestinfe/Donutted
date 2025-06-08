@@ -72,7 +72,7 @@
           <div class="itemList">
             <div class="singleItemDiv">
               <div class="itemImgDiv">
-                <img src="<c:url value='/admin/common/upload/${orderedItemImg}' />" alt="${orderedItemName}" />
+                <img src="<c:url value='/admin/common/images/products/${orderedItemImg}' />" alt="${orderedItemName}" />
               </div>
               <div class="itemInfoTitle">
                 <div><a href="product_detail.jsp?productId=${productId}">${orderedItemName}</a></div>

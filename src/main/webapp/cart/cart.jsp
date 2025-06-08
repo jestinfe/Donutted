@@ -362,7 +362,7 @@ function showToast(message) {
 										<c:if test="${item.stockQuantity == 0}">disabled</c:if> /></td>
 
 									<td style="text-align: left; padding: 10px;"><img
-										src="<c:url value='/admin/common/upload/${item.thumbnailImg}'/>"
+										src="<c:url value='/admin/common/images/products/${item.thumbnailImg}'/>"
 										width="100"
 										style="vertical-align: middle; margin-right: 20px; border-radius: 8px;" />
 										${item.productName} <c:if test="${item.stockQuantity == 0}">

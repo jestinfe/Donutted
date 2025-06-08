@@ -94,7 +94,7 @@
             %>
               <div class="singleItemDiv" style="margin-bottom: 30px;">
                 <div class="itemImgDiv">
-                  <img src="<c:url value='/admin/common/upload/${productImage}' />" />
+                  <img src="<c:url value='/admin/common/images/products/${productImage}' />" />
                 </div>
                 <div class="infoDiv">
 	                <div class="itemInfoTitle1"><div><%= p.getName() %></div></div>

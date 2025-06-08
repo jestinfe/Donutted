@@ -7,7 +7,7 @@
 <%
 request.setCharacterEncoding("UTF-8");
 
-String savePath = "C:/Users/user/git/mall_prj/src/main/webapp/admin/common/images/products";
+String savePath = "C:/dev/mall_prj/src/main/webapp/admin/common/images/products";
 File saveDir = new File(savePath);
 if (!saveDir.exists()) saveDir.mkdirs();
 
