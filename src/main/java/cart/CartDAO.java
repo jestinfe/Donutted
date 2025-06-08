@@ -280,17 +280,18 @@ public class CartDAO {
 	           pstmt.executeUpdate();
 	       }
 	   }
-	public void plusQuantity(int cartId, int productId) throws SQLException{
+	public void plusQuantity(int cartId, int productId, int qty) throws SQLException{
 		
 		DbConnection dbConn = DbConnection.getInstance();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = dbConn.getDbConn();
-			String updateSql ="update cart_item set quantity = quantity+1 where cart_id=? and product_id=?";
+			String updateSql ="update cart_item set quantity = quantity+? where cart_id=? and product_id=?";
 			pstmt=conn.prepareStatement(updateSql);
-			pstmt.setInt(1, cartId);
-			pstmt.setInt(2, productId);
+			pstmt.setInt(1, qty);
+			pstmt.setInt(2, cartId);
+			pstmt.setInt(3, productId);
 			pstmt.executeUpdate();
 		}finally {
 			dbConn.dbClose(null, pstmt, conn);

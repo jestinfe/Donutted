@@ -6,6 +6,7 @@
 <%@ page import="product.ProductDTO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+  <c:import url="../common/external_file.jsp" />
 
 <%
   int productId = Integer.parseInt(request.getParameter("productId"));
@@ -68,7 +69,6 @@
     }
   </script>
 </c:if>
-  <c:import url="../common/external_file.jsp" />
   <style>
     * {
       margin: 0;
@@ -529,6 +529,7 @@
       totalSpan.innerText = total.toLocaleString();
       document.getElementById("cartQty").value = qtyVal;
       document.getElementById("singleQty").value = qtyVal;
+      console.log(qtyVal)
     }
   }
 

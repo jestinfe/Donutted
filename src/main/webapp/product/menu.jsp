@@ -9,6 +9,7 @@
 <%@ page import="product.CategoryDTO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+  <c:import url="../common/external_file.jsp"/>
 
 <%
 Integer userId = (Integer)session.getAttribute("userId");
@@ -78,7 +79,6 @@ request.setAttribute("currentCategoryId", categoryId);
     }
   </script>
 </c:if>
-  <c:import url="../common/external_file.jsp"/>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   

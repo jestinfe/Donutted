@@ -34,7 +34,7 @@ CartItemDTO ciDTO = new CartItemDTO();
 
 
 if(cs.existsCart(cartId, productId)){
-	cs.addQuantity(cartId, productId);
+	cs.addQuantity(cartId, productId, qty);
 	session.setAttribute("toast", "장바구니에 추가되었습니다.");
 	response.sendRedirect("../product/product_detail.jsp?productId=" + productId);
 }else{

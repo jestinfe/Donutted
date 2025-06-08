@@ -130,11 +130,11 @@ public class CartService {
 		
 		return cnt;
 	}//plus
-	public void addQuantity(int cartId, int productId) {
+	public void addQuantity(int cartId, int productId, int qty) {
 		int cnt = 0;
 		CartDAO cDAO = CartDAO.getInstance();
 		try {
-			cDAO.plusQuantity(cartId, productId);
+			cDAO.plusQuantity(cartId, productId, qty);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

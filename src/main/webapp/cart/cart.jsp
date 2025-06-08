@@ -5,6 +5,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<c:import url="../common/external_file.jsp" />
 
 <%
 Integer userId = (Integer) session.getAttribute("userId");
@@ -65,7 +66,6 @@ request.setAttribute("totalQuantity", totalQuantity);
     }
   </script>
 </c:if>
-<c:import url="../common/external_file.jsp" />
 <script type="text/javascript">
 function showToast(message) {
 	  let toast = document.getElementById("toast-msg");
