@@ -3,6 +3,7 @@ package user;
 import java.sql.*;
 import java.util.*;
 
+import util.CryptoUtil;
 import util.DbConnection;
 import util.RangeDTO;
 
@@ -352,11 +353,18 @@ public class UserDAO {
             Connection con = db.getDbConn();
             PreparedStatement pstmt = con.prepareStatement(sql)
         ) {
-            pstmt.setString(1, newPassword);
+            // ✅ 비밀번호 암호화
+            String encryptedPassword = CryptoUtil.encrypt(newPassword);
+
+            pstmt.setString(1, encryptedPassword);
             pstmt.setString(2, username);
             return pstmt.executeUpdate() == 1;
+        } catch (Exception e) {
+            e.printStackTrace(); // AES 암호화 실패 예외 포함
+            return false;
         }
     }
+
 
     public UserDTO selectByUsernameAndPassword(String username, String password) throws SQLException {
         String sql = "SELECT * FROM users WHERE username = ? AND password = ? AND user_status = 'U1'";

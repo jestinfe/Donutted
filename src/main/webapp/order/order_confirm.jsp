@@ -2,14 +2,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ include file="/common/external_file.jsp" %>
 <%@ include file="/common/header.jsp" %>
+<%@ include file="/common/login_chk.jsp" %>
 
 <%
     request.setCharacterEncoding("UTF-8");
 
-    if (session.getAttribute("userId") == null) {
-        response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-        return;
-    }
 
     String userId = request.getParameter("userId");
     String name = request.getParameter("name");

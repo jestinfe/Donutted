@@ -9,7 +9,7 @@
   <meta charset="UTF-8">
   <title>로그아웃</title>
   <script>
-    alert("로그아웃되었습니다. 마이페이지를 이용하시려면 재로그인해주세요.");
+    alert("로그아웃되었습니다.");
     location.href = "login.jsp";
   </script>
 </head>

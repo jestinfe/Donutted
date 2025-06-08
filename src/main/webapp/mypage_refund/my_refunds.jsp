@@ -4,14 +4,13 @@
 <%@ page import="java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ include file="/common/login_chk.jsp" %>
+
+<link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
 
 <%
   request.setCharacterEncoding("UTF-8");
 
-  if (session.getAttribute("userId") == null) {
-    response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-    return;
-  }
 
   Integer userId = (Integer) session.getAttribute("userId");
   List<RefundDTO> refundList = new ArrayList<>();

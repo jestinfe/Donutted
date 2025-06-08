@@ -454,6 +454,7 @@ function showToast(message) {
 
 			<c:if test="${hasInStockItem}">
 				<button id="orderBtn"
+
 					style="background-color: #f48fb1; border: none; color: white; font-size: 18px; padding: 12px 40px; border-radius: 30px; cursor: pointer;">
 					주문하기</button>
 			</c:if>

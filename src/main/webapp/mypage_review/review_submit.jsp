@@ -1,13 +1,12 @@
 <%@ page import="com.oreilly.servlet.MultipartRequest, com.oreilly.servlet.multipart.DefaultFileRenamePolicy" %>
 <%@ page import="java.io.File, review.*" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="/common/login_chk.jsp" %>
+
+<link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
 
 <%
   request.setCharacterEncoding("UTF-8");
-if (session.getAttribute("userId") ==null ) {
-	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-	  return;
-	}
   String savePath = "C:/Users/user/git/mall_prj/mall_prj/src/main/webapp/common/images/review"; // 수정된 경로
   int maxSize = 10 * 1024 * 1024; // 10MB
 

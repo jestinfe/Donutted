@@ -1,15 +1,11 @@
 <%@ page contentType="text/plain; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="user.UserService, user.UserDTO" %>
-
+<%@ include file="/common/login_chk.jsp" %>
 <%
 request.setCharacterEncoding("UTF-8");
 
 // 세션에서 로그인된 사용자 ID 가져오기
 Integer userId = (Integer) session.getAttribute("userId");
-if (userId == null) {
-    out.print("unauthorized");
-    return;
-}
 
 // 입력값 받기
 String currentPassword = request.getParameter("currentPassword");

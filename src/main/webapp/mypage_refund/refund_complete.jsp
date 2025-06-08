@@ -1,14 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="refund.RefundService, refund.RefundDTO, order.OrderService, order.OrderItemDTO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="/common/login_chk.jsp" %>
+
+<link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
 
 <%
   request.setCharacterEncoding("UTF-8");
 
-  if (session.getAttribute("userId") == null) {
-      response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-      return;
-  }
 
   Integer userId = (Integer) session.getAttribute("userId");
   int orderItemId = Integer.parseInt(request.getParameter("order_item_id"));

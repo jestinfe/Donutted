@@ -3,15 +3,12 @@
 <%@ page import="user.UserService, user.UserDTO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ include file="/common/login_chk.jsp" %>
 
 <jsp:useBean id="userService" class="user.UserService" />
 <%
     request.setCharacterEncoding("UTF-8");
 
-	if(session.getAttribute("userId") == null){
-		response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-		return;
-	}
     int productId = Integer.parseInt(request.getParameter("productId"));
     int qty = Integer.parseInt(request.getParameter("qty"));
     int userId = (Integer) session.getAttribute("userId");

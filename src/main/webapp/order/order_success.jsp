@@ -3,15 +3,12 @@
 <%@ include file="../common/header.jsp" %>
 <%@ page import="order.OrderService, order.OrderDTO, order.OrderItemDTO" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ include file="/common/login_chk.jsp" %>
 
 <%
   session.removeAttribute("alreadyOrdered");
 
   Integer userId = (Integer) session.getAttribute("userId");
-  if (userId == null) {
-    response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-    return;
-  }
 
   OrderService service = new OrderService();
 

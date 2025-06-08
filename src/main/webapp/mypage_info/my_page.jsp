@@ -3,19 +3,13 @@
 <%@ page import="user.UserService, user.UserDTO" %>
 <%@ page import="java.util.*" %>
 <%@ include file="../common/external_file.jsp" %>
+<%@ include file="/common/login_chk.jsp" %>
+
 <%
   request.setCharacterEncoding("UTF-8");
   Integer userId = (Integer) session.getAttribute("userId");
-  if (userId == null) {
-    response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-    return;
-  }
   UserService service = new UserService();
   UserDTO user = service.getUserById(userId);
-  if (user == null) {
-    response.sendRedirect("/login.jsp");
-    return;
-  }
   String[] phoneParts = user.getPhone() != null 
                         ? user.getPhone().split("-") 
                         : new String[]{"","",""};

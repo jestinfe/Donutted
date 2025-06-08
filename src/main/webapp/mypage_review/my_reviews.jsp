@@ -1,11 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page
 	import="review.*, java.util.*, order.OrderService, order.OrderItemDTO"%>
+<%@ include file="/common/login_chk.jsp" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>리뷰관리 | Donutted</title>
+<link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:import url="http://localhost/mall_prj/common/external_file.jsp" />
 
@@ -119,10 +123,6 @@ html, body {
 <body>
 
 <%
-if (session.getAttribute("userId") ==null ) {
-	  response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-	  return;
-	}
 request.setCharacterEncoding("UTF-8");
 Integer userId = (Integer) session.getAttribute("userId");
 List<ReviewDTO> reviews = new ArrayList<>();

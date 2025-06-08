@@ -1,15 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="order.OrderService" %>
+<%@ include file="/common/login_chk.jsp" %>
+
+<link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
 
 <%
 request.setCharacterEncoding("UTF-8");
 
 // ✅ 로그인 여부 확인
 Integer sessionUserId = (Integer) session.getAttribute("userId");
-if (sessionUserId == null) {
-    response.sendRedirect("/mall_prj/UserLogin/login.jsp");
-    return;
-}
 
 // ✅ 파라미터 검증
 String orderIdParam = request.getParameter("order_id");
