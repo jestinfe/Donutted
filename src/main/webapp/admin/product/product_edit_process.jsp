@@ -9,7 +9,7 @@
 <%
 request.setCharacterEncoding("UTF-8");
 String savePath = "C:/dev/workspace/mall_prj/src/main/webapp/admin/common/images/products";
-int maxSize = 10 * 1024 * 1024;
+int maxSize = 50 * 1024 * 1024;
 MultipartRequest mr = new MultipartRequest(request, savePath, maxSize, "UTF-8", new DefaultFileRenamePolicy());
 
 int productId = Integer.parseInt(mr.getParameter("product_id"));
