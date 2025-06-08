@@ -11,7 +11,7 @@ if (userId == null) {
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>마이페이지 - 회원 탈퇴</title>
+  <title>회원탈퇴 | Donutted</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet" />
   <style>

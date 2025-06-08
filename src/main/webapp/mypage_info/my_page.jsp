@@ -26,7 +26,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>마이페이지 - 내 정보</title>
+  <title>내 정보 조회 | Donutted</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>

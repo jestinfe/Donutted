@@ -33,7 +33,7 @@
       <a href="../mypage_info/my_page.jsp">My 정보</a>
       <ul class="submenu">
         <li class='<%= path.equals("my_page.jsp") ? "active" : "" %>'>
-          <a href="../mypage_info/my_page.jsp">내 정보 확인/수정</a>
+          <a href="../mypage_info/my_page.jsp">내 정보 조회</a>
         </li>
         <li class='<%= path.equals("withdraw.jsp") ? "active" : "" %>'>
           <a href="../mypage_info/withdraw.jsp">회원 탈퇴</a>

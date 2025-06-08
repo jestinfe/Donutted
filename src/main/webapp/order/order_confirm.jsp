@@ -28,7 +28,7 @@
 
     String cartId = request.getParameter("cartId");
 %>
-
+<title>주문 확인 | Donutted</title>
 <div class="container mt-5 mb-5">
   <h2 class="mb-4 fw-bold">📝 주문 확인</h2>
   <p class="text-muted">아래 정보로 주문을 진행합니다. 확인 후 결제 버튼을 눌러주세요.</p>

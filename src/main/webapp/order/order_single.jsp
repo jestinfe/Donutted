@@ -41,7 +41,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>주문하기</title>
+  <title>주문하기 | Donutted</title>
   <c:import url="/common/external_file.jsp" />
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

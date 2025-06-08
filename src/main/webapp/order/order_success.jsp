@@ -25,7 +25,7 @@
   int deliveryCost = 3000;                              // 정액 배송비
   double productTotal = totalPriceFromDB - deliveryCost;   // 상품 가격 총합
 %>
-
+<title>주문 완료 | Donutted</title>
 <div class="container mt-5">
   <div class="text-center p-5 bg-light rounded-4 shadow-sm mb-5">
     <h2 class="text-success fw-bold mb-3">🎉 주문이 성공적으로 완료되었습니다!</h2>
