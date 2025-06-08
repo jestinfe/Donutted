@@ -39,7 +39,7 @@ public class NewsDAO {
 
             if (prDTO.getKeyword() != null && !"".equals(prDTO.getKeyword())) {
                 // 컬럼명을 그대로 사용
-                sql.append(" AND instr(").append(prDTO.getField()).append(", ?) != 0 ");
+            	sql.append(" AND instr(LOWER(").append(prDTO.getField()).append("), LOWER(?)) != 0 ");
             }
 
             pstmt = con.prepareStatement(sql.toString());
@@ -81,7 +81,7 @@ public class NewsDAO {
                .append("   WHERE type = ? ");
             
             if (prDTO.getKeyword() != null && !"".equals(prDTO.getKeyword())) {
-                sql.append(" AND instr(").append(prDTO.getField()).append(", ?) != 0 ");
+            	sql.append(" AND instr(LOWER(").append(prDTO.getField()).append("), LOWER(?)) != 0 ");
             }
 
 
@@ -429,9 +429,10 @@ public class NewsDAO {
     	try {
     		con=db.getDbConn();
     		
-    		String sql = "SELECT board_id,title,thumbnail_url,detail_image_url,posted_at,viewCount from board "
-    		           + "WHERE type = '이벤트' AND title LIKE '%' || ? || '%' "
-    		           + "ORDER BY board_id DESC";
+    		 String sql = "SELECT board_id, title, thumbnail_url, detail_image_url, posted_at, viewCount " +
+	                     "FROM board " +
+	                     "WHERE type = '이벤트' AND LOWER(title) LIKE '%' || LOWER(?) || '%' " +
+	                     "ORDER BY board_id DESC";
     		
     		pstmt=con.prepareStatement(sql);
             //바인드 변수에 값 할당

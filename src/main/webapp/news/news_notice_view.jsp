@@ -2,7 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ include file="../common/external_file.jsp" %>
+
 <%
 request.setCharacterEncoding("UTF-8");
 
@@ -28,6 +28,7 @@ if (cntFlag != null && cntFlag.booleanValue()) {
     session.setAttribute("cntFlag", false);
 }
 
+//게시글 정보 조회 + id 없는 값 입력시 null -> main 페이지로
 BoardDTO dto = service.getOneNotice(boardId);
 if (dto == null) {
     response.sendRedirect("news_notice_main.jsp");
@@ -41,9 +42,11 @@ request.setAttribute("dto", dto);
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>공지사항 | Donutted</title>
+  <title>${dto.title} > 공지사항 | Donutted</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+   <!-- favicon 설정 -->
+<link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
   <style>
     .notice-wrapper {
       max-width: 1000px;

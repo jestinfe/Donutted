@@ -102,7 +102,7 @@ $(function(){
   <thead class="table-light">
     <tr>
       <th>번호</th>
-      <th>썸네일</th> <!-- 추가 -->
+      <!-- <th>썸네일</th> 추가 -->
       <th>제목</th>
       <th>작성일</th>
       <th>조회수</th>
@@ -114,14 +114,14 @@ $(function(){
         <c:forEach var="dto" items="${newsList}">
           <tr onclick="location.href='news_event_edit.jsp?board_id=${dto.board_id}&boardType=<%= boardType %>'" style="cursor:pointer;">
             <td>${dto.board_id}</td>
-            <td>
+            <%-- <td>
               <c:if test="${not empty dto.thumbnail_url}">
                 <img src="<c:url value='/admin/common/images/news/${dto.thumbnail_url}'/>" alt="썸네일" style="width:80px; height:auto;">
               </c:if>
               <c:if test="${empty dto.thumbnail_url}">
                 <span style="color:gray;">이미지 없음</span>
               </c:if>
-            </td>
+            </td> --%>
             <td>${dto.title}</td>
             <td>${dto.posted_at}</td>
             <td>${dto.viewCount}</td>
@@ -130,7 +130,7 @@ $(function(){
       </c:when>
       <c:otherwise>
         <tr>
-          <td colspan="5" style="text-align: center;">등록된 <%= boardType %>가 없습니다.</td>
+          <td colspan="4" style="text-align: center;">등록된 <%= boardType %>가 없습니다.</td>
         </tr>
       </c:otherwise>
     </c:choose>

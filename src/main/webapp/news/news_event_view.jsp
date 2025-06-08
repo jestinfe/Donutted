@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="news.BoardDTO, news.NewsService" %>
-<%@ include file="../common/external_file.jsp" %>
 <%
   int board_id = Integer.parseInt(request.getParameter("board_id"));
   
@@ -21,7 +20,7 @@
     session.setAttribute("cntFlag", false);
 	}
   
-  //게시글 정보 조회
+  //게시글 정보 조회 + id 없는 값 입력시 null -> main 페이지로
   BoardDTO dto = service.getOneEvent(board_id); 
   if (dto == null) {
 	    response.sendRedirect("news_event_main.jsp");
@@ -33,9 +32,11 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>이벤트 상세</title>
+  <title>${event.title} > 이벤트 | Donutted</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+   <!-- favicon 설정 -->
+<link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
   <style>
     .event-title { font-size: 22px; font-weight: bold; text-align: center; margin-top: 50px; }
     .event-meta { text-align: center; color: #777; margin-bottom: 20px; font-size: 14px; }

@@ -5,8 +5,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ include file="../common/external_file.jsp" %>
-
+ 
 <%
 request.setCharacterEncoding("UTF-8");
 
@@ -41,6 +40,8 @@ if (keyword != null && !keyword.trim().isEmpty()) {
   <meta charset="UTF-8">
   <title>이벤트 | Donutted</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+ <!-- favicon 설정 -->
+<link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
 <style>
   .event-card {
     height: 650px;
@@ -89,7 +90,7 @@ $(function() {
       const keyword = $('#keywordInput').val().trim();
 
       if (keyword == null || keyword === "") {
-        alert('제목을 입력해주세요.');
+        alert('검색어를 입력해주세요.');
         e.preventDefault(); // 서버로 전송 중지
       }
     });
@@ -103,13 +104,12 @@ $(function() {
 
   <!-- ✅ 본문 영역 -->
   <main class="container" style="min-height: 600px; padding: 80px 20px;">
-    <h2 style="font-size: 50px; font-weight: bold; margin-bottom: 30px;" class="event-title-modern" >
+    <h2 style="font-size: 50px; font-weight: bold; margin-bottom: 70px;" class="event-title-modern" >
     Event
     <div class="event-title-underline"></div>
     </h2>
        
     <!-- TODO: 실제 컨텐츠 작성 영역 -->
-    <!-- <p style="color: #555;"><strong>공지사항 &amp; 이벤트</strong></p> -->
     <div class="container">
 	   <!-- 검색 필터 -->
 	  <form id="searchFrm" class="row g-2 mb-3 d-flex justify-content-end col-auto" action="news_event_main.jsp" method="get">

@@ -12,6 +12,15 @@
   
   NewsService service = new NewsService();
   BoardDTO board = service.getOneNotice(boardId);
+  if (board == null) {
+		%>
+		    <script>
+		        alert("해당 공지사항을 찾을 수 없습니다.");
+		        history.back();
+		    </script>
+		<%
+		    return;
+		}
   
   request.setAttribute("dto", board);
 %>
@@ -20,6 +29,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>공지사항 수정</title>
 <!-- summernote -->
 <!-- include libraries(jQuery, bootstrap) -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
@@ -30,8 +40,89 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
 <!-- summernote -->
 <style>
- .btn-warning {
+  body {
+    background-color: #f9f9f9;
+  }
+
+  .main {
+    padding: 40px 0;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  #writeWrap {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 40px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  margin-left: 40px;
+  width: 100%;              /* 화면 폭에 맞춰 확장 */
+  max-width: 1000px;        /* 최대 폭 제한 */
+  box-sizing: border-box;   /* 패딩 포함 폭 계산 */
+}
+
+  h3 strong {
+    font-size: 24px;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    display: block;
+  }
+
+  .table th {
+    background-color: #f2f2f2;
+    text-align: center;
+    color: #333;
+    vertical-align: middle;
+  }
+
+  .table td {
+    background-color: #fff;
+    vertical-align: middle;
+  }
+
+  .form-group label {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .form-control {
+    border-radius: 6px;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  .note-editor {
+    border-radius: 6px;
+    border: 1px solid #ddd;
+  }
+
+  .btn {
+    border-radius: 6px;
+    padding: 8px 20px;
+    margin-right: 3px;
+  }
+
+  .btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
     color: #000;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+  }
+
+  .btn-container {
+    text-align: left;
+    margin-top: 20px;
   }
 </style>
 <script type="text/javascript">
@@ -39,7 +130,7 @@ $(function(){
    $('#summernote').summernote({
 	   placeholder: '내용을 입력해주세요.',
        tabsize: 2,
-       height: 120,
+       height: 350,
        toolbar: [
          ['style', ['style']],
          ['font', ['bold', 'underline', 'clear']],
@@ -85,7 +176,7 @@ $(function(){
 
 <body>
 <div class="main">
- <div id="writeWrap" style="width:800px;">
+ <div id="writeWrap">
     <form action="<%= contextPath %>/admin/news/news_notice_edit_process.jsp" method="post" id="writeFrm">
       <h3><strong>공지사항 수정</strong></h3>
 
@@ -93,16 +184,16 @@ $(function(){
   <input type="hidden" name="board_id" value="<%= board.getBoard_id() %>">
 
  <!-- 메타 정보 테이블 -->
-        <table class="table table-bordered mb-4" style="max-width: 900px;">
-          <tr>
-            <th style="width:100px;">번호</th>
-            <td>${dto.board_id}</td>
-            <th style="width:120px;">작성일</th>
-            <td>${dto.posted_at}</td>
-            <th style="width:120px;">조회수</th>
-            <td>${dto.viewCount}</td>
-          </tr>
-        </table>
+       <table class="table table-bordered mb-4" style="max-width: 1000px;">
+	  <tr>
+	    <th style="width:120px;">번호</th>
+	    <td style="width:150px;">${dto.board_id}</td>
+	    <th style="width:120px;">작성일</th>
+	    <td style="width:250px;">${dto.posted_at}</td>
+	    <th style="width:120px;">조회수</th>
+	    <td style="width:150px;">${dto.viewCount}</td>
+	  </tr>
+	</table>
 
       <div class="form-group mb-3">
         <label for="title">제목</label>
