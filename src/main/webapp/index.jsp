@@ -1,5 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
+
+  <title>Donutted</title>
 
 <c:import url="common/header.jsp" />
   <!-- 메인 영역 시작 -->
