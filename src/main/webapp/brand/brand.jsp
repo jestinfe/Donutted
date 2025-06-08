@@ -30,6 +30,10 @@
   </style>
 </head>
 <body>
+<!-- ✅ 잘못된 파라미터일 경우 강제로 about으로 이동 -->
+<c:if test="${not empty param.section and param.section ne 'about' and param.section ne 'location'}">
+  <c:redirect url="?section=about" />
+</c:if>
 
 <!-- ✅ 공통 헤더 -->
 <c:import url="/common/header.jsp" />

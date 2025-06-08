@@ -17,7 +17,7 @@
 <head>
   <meta charset="UTF-8">
   <c:import url="../common/external_file.jsp"/>
-  <title>리뷰 수정</title>
+  <title>리뷰 수정 | Donutted</title>
   <style>
     body {
       font-family: 'Pretendard', sans-serif;

@@ -5,7 +5,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>리뷰관리</title>
+<title>리뷰관리 | Donutted</title>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:import url="http://localhost/mall_prj/common/external_file.jsp" />
 
