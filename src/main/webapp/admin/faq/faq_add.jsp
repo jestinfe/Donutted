@@ -3,8 +3,11 @@
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
 <%@ include file="../common/login_check.jsp" %>
+<%@ include file="../common/external_file.jsp" %>
 
-<!-- 응~ -->
+<head>
+<title>관리자 faq 등록</title>
+</head>
 <div class="main">
   <h3>FAQ (등록)</h3>
   <form action="faq_process.jsp" method="post" onsubmit="return validateForm()">

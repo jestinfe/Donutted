@@ -273,9 +273,10 @@ public class InquiryDAO {
 	        if (status.equals("WAIT")) {
 	            sql.append(" AND (reply_content IS NULL OR TRIM(reply_content) = '')");
 	        } else if (status.equals("DONE")) {
-	            sql.append(" AND reply_content IS NOT NULL AND TRIM(reply_content) != ''");
+	            sql.append(" AND NVL(LENGTH(TRIM(reply_content)), 0) > 0");
 	        }
 	    }
+
 
 	    sql.append(" ORDER BY inquiry_id DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
 

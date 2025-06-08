@@ -21,6 +21,7 @@
 %>
 
 
+<head><title>관리자 FAQ </title></head>
 <div class="main">
   <h3>FAQ</h3>
 
