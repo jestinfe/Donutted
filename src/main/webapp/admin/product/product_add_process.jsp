@@ -1,3 +1,4 @@
+<%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
@@ -18,10 +19,11 @@ Map<String, String> savedFiles = new HashMap<>();
 
 try {
     MultipartRequest mr = new MultipartRequest(
-        request,
-        savePath,
-        maxSize,
-        "UTF-8"
+         request,
+         savePath,
+         maxSize,
+         "UTF-8",
+         new DefaultFileRenamePolicy()
     );
 
     String name = mr.getParameter("name");
