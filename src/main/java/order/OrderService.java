@@ -180,7 +180,7 @@ public class OrderService {
             List<OrderDTO> all = dao.selectOrdersByRange(new RangeDTO(1, Integer.MAX_VALUE), null, searchDate, searchStatus);
             List<OrderDTO> filtered = new ArrayList<>();
             for (OrderDTO dto : all) {
-                String decryptedName = safeDecrypt(dto.getUserName());
+                String decryptedName = dto.getUserName();
                 dto.setUserName(decryptedName);
 
                 boolean match = true;

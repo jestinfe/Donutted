@@ -608,6 +608,7 @@ public class OrderDAO {
 
                      try {
                          order.setUserName(CryptoUtil.decrypt(rs.getString("user_name")));  // name 컬럼 복호화 적용
+                         System.out.println(order.getUserName());
                      } catch (Exception e) {
                          e.printStackTrace();
                      }
