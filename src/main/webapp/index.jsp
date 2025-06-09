@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel="shortcut icon" href="http://localhost/mall_prj/admin/common/images/core/favicon.ico"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
   <title>Donutted</title>
 
@@ -38,129 +39,149 @@
       display: flex;
       flex-direction: column;
     }
+
     main {
       flex: 1;
     }
     
-   .slider {
-    position: relative;
-    width: 100%;
-    height: 780px !important;
-    overflow: hidden;
-    box-shadow: 0px 0px 30px rgb(0, 0, 0, 0.3);
-  }
-
-  .slider img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: auto; !important;
-    object-fit: cover;
-    opacity: 0;
-    transition: transform 1s ease-in-out; /*화면비율*/
-  }
-
-  .slider img.active {
-    opacity: 1;
-    z-index: 1;
-  }
-
-  /* Instagram 슬라이더 스타일 */
-  .instagram-slider-container {
-    overflow: hidden;
-    width: 100%;
-    position: relative;
-    margin-top: 50px;
-    
-  }
-
-  .instagram-slider {
-    display: flex;
-    width: calc(200px * 20); /* 넉넉하게 반복 효과 위해 10장 x 2 */
-    animation: scroll 20s linear infinite;
-    
-  }
-
-  .instagram-slider img {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    flex-shrink: 0;
-    margin-right: 10px;
-    border-radius: 10px;
-  }
-
-#instagram_section {
-  margin-top: 80px;
-  margin-bottom: 80px !important; /* 중요도 높임 */
-  background-color: #ffe4e1;
-  padding: 40px 20px;
-  border-radius: 12px;
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
-  
+    .slider img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* 수정! */
+  object-fit: cover;
+  opacity: 0;
+  transition: transform 1s ease-in-out;
 }
 
-#instagram_section h3 {
-  font-size: 24px;
-  color: #d63384;
-  margin-bottom: 24px;
+    .slider img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: auto !important;
+      object-fit: cover;
+      opacity: 0;
+      transition: transform 1s ease-in-out;
+    }
+
+    .slider img.active {
+      opacity: 1;
+      z-index: 1;
+    }
+
+    /* Instagram 슬라이더 스타일 */
+    .instagram-slider-container {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+      margin-top: 50px;
+    }
+
+    .instagram-slider {
+      display: flex;
+      width: calc(200px * 20);
+      animation: scroll 20s linear infinite;
+    }
+
+    .instagram-slider img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      flex-shrink: 0;
+      margin-right: 10px;
+      border-radius: 10px;
+    }
+
+    #instagram_section {
+      margin-top: 80px;
+      margin-bottom: 80px !important;
+      background: url('<c:url value="/common/images/instagram_bg.png"/>') no-repeat center center / cover;
+      padding: 40px 20px;
+      border-radius: 12px;
+      max-width: 1280px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    #instagram_section h3 {
+      font-size: 36px;
+      color: #d63384;
+      margin-bottom: 20px;
+      text-align: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    #instagram_section h3::after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 4px;
+      background-color: #d63384;
+      margin: 10px auto 0;
+      border-radius: 2px;
+    }
+
+
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+    
+    .kakao-channel-box {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-  @keyframes scroll {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
+.kakao-channel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #fee500;
+  color: #3c1e1e;
+  font-weight: bold;
+  padding: 12px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.kakao-channel-btn:hover {
+  background-color: #ffd900;
+  transform: translateY(-2px);
+}
+
+.rabbit-icon {
+  width: 32px;
+  height: 32px;
+}
 
 </style>
 
-
-<!-- 카테고리 -->
-<!-- <div class="category-menu container">
-  <a href="#"><img src="https://cdn.imweb.me/upload/S2023090509034a75f0994/f6e09b64aaae6.png"><span>시그니처</span></a>
-  <a href="#"><img src="https://cdn.imweb.me/upload/S2023090509034a75f0994/1cfc1d4b899aa.png"><span>크림도넛</span></a>
-  <a href="#"><img src="https://cdn.imweb.me/upload/S2023090509034a75f0994/07f89bc734c25.png"><span>굿즈</span></a>
-  <a href="#"><img src="https://cdn.imweb.me/upload/S2023090509034a75f0994/f7ecb255b5883.png"><span>음료</span></a>
-</div> -->
-
-<!-- 갤러리 -->
-<!-- <main>
-  <section id="gallery_section">
-    <div class="container">
-      <div class="gallery_row">
-        <div class="item_gallary">
-          <div class="item_container">
-            <div class="img_wrap" style="background-image:url('https://cdn.imweb.me/upload/S2023090509034a75f0994/965ed88071abd.png');"></div>
-            <div class="text_wrap">
-              <div class="title">시그니처 도넛</div>
-              <div class="body">달콤한 맛의 부드러운 디저트</div>
-            </div>
-          </div>
-        </div>
-        <div class="item_gallary">
-          <div class="item_container">
-            <div class="img_wrap" style="background-image:url('https://cdn.imweb.me/upload/S2023090509034a75f0994/f3d54ad34c71b.png');"></div>
-            <div class="text_wrap">
-              <div class="title">굿즈 &amp; 머그컵</div>
-              <div class="body">귀엽고 실용적인 디자인 상품</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</main> -->
-
 <!-- Instagram 영역 -->
 <section id="instagram_section">
-  <h3 style="text-align:center; margin-bottom:20px;">Instagram</h3>
+  <h3>📸Instagram💕</h3>
   
+  <!-- 카카오톡 채널 추가 영역 -->
+<div class="kakao-channel-box">
+  <a href="https://pf.kakao.com/_AUDFj" target="_blank" class="kakao-channel-btn">
+    <img src="<c:url value='/common/images/kakao.png'/>" alt="카카오톡 QR코드" class="rabbit-icon">
+    카카오톡 채널 추가하기
+  </a>
+</div>
+
+  <!-- 기존 슬라이더 영역 -->
   <div class="instagram-slider-container">
     <div class="instagram-slider">
       <img src="<c:url value='/common/images/insta_1.png'/>" alt="insta1">
@@ -199,6 +220,7 @@
     </div>
   </div>
 </section>
+
 
   </main>
   <!-- 메인 영역 끝 -->
