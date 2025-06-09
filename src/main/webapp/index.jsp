@@ -44,27 +44,26 @@
       flex: 1;
     }
     
-    .slider img {
+    .slider {
+  position: relative;
+  width: 100%;
+  height: 780px !important;
+  overflow: hidden;
+  box-shadow: 0px 0px 30px rgb(0, 0, 0, 0.3);
+}
+    
+    
+.slider img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%; /* 수정! */
+  height: 100%; 
   object-fit: cover;
   opacity: 0;
   transition: transform 1s ease-in-out;
 }
 
-    .slider img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: auto !important;
-      object-fit: cover;
-      opacity: 0;
-      transition: transform 1s ease-in-out;
-    }
 
     .slider img.active {
       opacity: 1;
@@ -95,7 +94,7 @@
     }
 
     #instagram_section {
-      margin-top: 80px;
+      margin-top: 10px;
       margin-bottom: 80px !important;
       background: url('<c:url value="/common/images/instagram_bg.png"/>') no-repeat center center / cover;
       padding: 40px 20px;
@@ -167,7 +166,39 @@
   height: 32px;
 }
 
+#brand_story_section {
+  background-color: #fff5f8;
+  text-align: center;
+  padding: 60px 20px 20px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#brand_story_section h3 {
+  font-size: 28px;
+  color: #d63384;
+  margin-bottom: 20px;
+  text-align: center; /* 혹시 몰라 h3도 따로 명시 */
+}
+
+#brand_story_section p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  max-width: 800px;
+  margin: 0 auto; /* 가운데 정렬 + 가운데 박스 */
+  text-align: center; /* 텍스트 자체도 가운데 정렬 */
+}
+
+
+
 </style>
+
+<section id="brand_story_section">
+  <h3>🍩 Welcome Donutted 🍩</h3>
+  <p>Donutted는 세상에서 가장 사랑스러운 도넛과 커피를 만드는 브랜드입니다.<br>
+  매일 아침 신선한 재료로 구워내는 다양한 도넛과 풍미 깊은 커피로 고객님께 행복을 선사합니다. ☕️🍩✨</p>
+</section>
+
 
 <!-- Instagram 영역 -->
 <section id="instagram_section">
