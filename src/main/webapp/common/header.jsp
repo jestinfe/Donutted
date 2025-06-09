@@ -15,7 +15,6 @@
   a { text-decoration:none; color:inherit; }
   ul { list-style:none; }
   .container { width:100%; max-width:1280px; margin:0 auto; padding:0 20px; }
-  #doz_header_wrap { background:#fff; border-bottom:1px solid #e7e7e7; position:sticky; top:0; z-index:1000; }
 
   header {
     background: #fff;
@@ -32,7 +31,6 @@
     padding: 0 30px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     height: 80px;
     position: relative;
     z-index: 1001;
@@ -41,7 +39,7 @@
   .logo {
     display: flex;
     align-items: center;
-    margin-right: auto;
+    flex-shrink: 0;
   }
 
   .logo img {
@@ -53,14 +51,17 @@
   .nav {
     display: flex;
     justify-content: center;
+    align-items: center;
     flex: 1;
     margin: 0 60px;
+    padding-top: 20px
   }
 
   .nav ul {
     display: flex;
-    gap: 120px; /* 80px에서 120px로 간격 확대 */
+    gap: 80px;
     align-items: center;
+    justify-content: center;
   }
 
   .nav li {
@@ -74,6 +75,7 @@
     padding: 10px 0;
     transition: color 0.3s ease;
     position: relative;
+    display: block;
   }
 
   .nav > ul > li > a:hover {
@@ -87,7 +89,7 @@
     height: 2px;
     bottom: -5px;
     left: 50%;
-    background-color: #FFE4ED;
+    background-color: #EF84A5;
     transition: all 0.3s ease;
     transform: translateX(-50%);
   }
@@ -101,8 +103,9 @@
     position: fixed;
     top: 80px;
     left: 0;
+    right: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 0.98);
+    background: rgba(255,255,255,0.98);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid #e0e0e0;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
@@ -119,18 +122,17 @@
     transform: translateY(0);
   }
 
- .dropdown-content {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 48px;
-  transform: translateX(-120px); /* 살짝 왼쪽 이동 */
-}
-
+  .dropdown-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    transform: translateX(-60px);
+  }
 
   .dropdown-section {
     min-width: 120px;
@@ -152,7 +154,7 @@
   .dropdown-section li a {
     font-size: 15px;
     color: #666;
-    padding: 4px 12px;
+    padding: 8px 12px;
     transition: all 0.3s ease;
     display: block;
     border-radius: 6px;
@@ -168,9 +170,9 @@
   .user-menu {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     font-size: 14px;
-    margin-left: auto;
+    flex-shrink: 0;
   }
 
   .user-menu a {
@@ -185,15 +187,6 @@
   .user-menu a:hover {
     background: #f8f9fa;
     color: #EF84A5;
-  }
-
-  .user-menu a:last-child {
-    color: #666;
-    font-weight: 600;
-  }
-
-  .user-menu a:hover {
-   color: #EF84A5;
   }
 
   .slider {
@@ -218,11 +211,15 @@
   /* 반응형 */
   @media (max-width: 1200px) {
     .nav ul {
-      gap: 80px; /* 중간 사이즈에서 간격 조정 */
+      gap: 60px;
     }
     
     .dropdown-content {
-      gap: 80px;
+      gap: 5px;
+    }
+    
+    .nav {
+      margin: 0 40px;
     }
   }
 
@@ -232,16 +229,16 @@
     }
     
     .nav {
-      margin: 0 40px;
+      margin: 0 30px;
     }
     
     .nav ul {
-      gap: 50px;
+      gap: 40px;
     }
     
     .dropdown-content {
       padding: 20px 0;
-      gap: 50px;
+      gap: 5px;
     }
   }
 
@@ -259,7 +256,7 @@
     }
     
     .nav ul {
-      gap: 30px;
+      gap: 25px;
     }
     
     .nav > ul > li > a {
@@ -267,31 +264,63 @@
     }
     
     .dropdown-content {
-      gap: 30px;
+      gap: 0px;
     }
     
     .user-menu {
-      gap: 15px;
+      gap: 10px;
     }
     
     .user-menu a {
       font-size: 12px;
-      padding: 6px 10px;
+      padding: 6px 8px;
     }
   }
 
   @media (max-width: 640px) {
+    .header-wrapper {
+      padding: 0 15px;
+    }
+    
+    .nav {
+      margin: 0 15px;
+    }
+    
     .nav ul {
       gap: 20px;
     }
     
     .dropdown-content {
-      gap: 20px;
-      padding: 20px 15px;
+      gap: 0px;
+      padding: 15px;
     }
     
     .dropdown-section {
       min-width: 80px;
+    }
+    
+    .user-menu {
+      gap: 8px;
+    }
+    
+    .user-menu a {
+      font-size: 11px;
+      padding: 5px 8px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .nav ul {
+      gap: 15px;
+    }
+    
+    .nav > ul > li > a {
+      font-size: 13px;
+    }
+    
+    .user-menu a {
+      font-size: 10px;
+      padding: 4px 6px;
     }
   }
 </style>
@@ -300,7 +329,7 @@
   <div class="header-wrapper">
     <div class="logo">
       <a href="http://localhost/mall_prj/index.jsp">
-        <img src="http://localhost/mall_prj/admin/common/images/core/logo.png" alt="Logo">
+        <img src="http://localhost/mall_prj/admin/common/images/core/logo.png" style="display:block; background:transparent;"  alt="Logo">
       </a>
     </div>
 
@@ -358,7 +387,7 @@
       </div>
       <div class="dropdown-section">
         <ul>
-          <li><a href="<c:url value='/help/help.jsp'/>">고객센터</a></li>
+          <li><a href="<c:url value='/help/help.jsp'/>">FAQ</a></li>
         </ul>
       </div>
     </div>
