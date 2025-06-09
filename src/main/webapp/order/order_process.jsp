@@ -11,7 +11,6 @@ response.setHeader("Pragma", "no-cache");
 response.setDateHeader("Expires", 0);
 request.setCharacterEncoding("UTF-8");
 
-
 // 중복 주문 방지
 Boolean alreadyOrdered = (Boolean) session.getAttribute("alreadyOrdered");
 if (alreadyOrdered != null && alreadyOrdered) {
@@ -27,7 +26,7 @@ try {
 %>
     <script>
         alert("필수 주문 정보가 누락되었습니다.");
-        response.sendRedirect("index.jsp");
+        location.href = "index.jsp";
     </script>
 <%
         return;
@@ -48,9 +47,25 @@ try {
     OrderService service = new OrderService();
     boolean success = false;
 
-    // ✅ 장바구니 기반 주문 처리
+    // ✅ 선택 상품 주문 처리 (selectedProductIds[]가 존재할 경우)
+    String[] selectedIds = request.getParameterValues("selectedProductIds");
     String cartIdStr = request.getParameter("cartId");
-    if (cartIdStr != null && !cartIdStr.trim().isEmpty()) {
+
+    if (selectedIds != null && selectedIds.length > 0 && cartIdStr != null && !cartIdStr.trim().isEmpty()) {
+        int cartId = Integer.parseInt(cartIdStr.trim());
+        List<Integer> selectedProductIds = new ArrayList<>();
+        for (String idStr : selectedIds) {
+            try {
+                selectedProductIds.add(Integer.parseInt(idStr));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+
+        success = service.placeOrderBySelection(userId, cartId, selectedProductIds, name, phone, email, zipCode, addr1, addr2, memo, totalCost);
+    }
+    // ✅ 장바구니 전체 주문 처리
+    else if (cartIdStr != null && !cartIdStr.trim().isEmpty()) {
         int cartId = Integer.parseInt(cartIdStr.trim());
         success = service.placeOrder(userId, cartId, name, phone, email, zipCode, addr1, addr2, memo, totalCost);
     }
@@ -66,7 +81,7 @@ try {
 %>
     <script>
         alert("상품 주문 정보가 누락되었습니다.");
-        response.sendRedirect("index.jsp");
+        location.href = "index.jsp";
     </script>
 <%
             return;

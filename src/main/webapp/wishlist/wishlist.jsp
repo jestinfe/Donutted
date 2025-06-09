@@ -30,7 +30,7 @@ request.setAttribute("wishList", wishList);
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>찜목록</title>
+<title>찜목록 | Donutted</title>
   <c:if test="${not empty sessionScope.toast}">
   <div id="toast-msg" style="
       position: fixed;

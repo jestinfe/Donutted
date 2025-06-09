@@ -7,7 +7,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>회원가입 처리</title>
+  <title>회원가입 처리 | Donutted</title>
   <style>
     #container { min-height: 600px; margin-top: 30px; margin-left: 20px }
     .result-img { width: 300px; margin: 20px 0; }

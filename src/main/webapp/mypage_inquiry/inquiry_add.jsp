@@ -18,7 +18,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>1:1 문의 작성</title>
+  <title>1:1 문의 작성 | Donutted</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet">
   <style>

@@ -7,7 +7,6 @@
 <%
     request.setCharacterEncoding("UTF-8");
 
-
     String userId = request.getParameter("userId");
     String name = request.getParameter("name");
     String phone = request.getParameter("phone");
@@ -24,7 +23,9 @@
     String quantity = request.getParameter("quantity");
 
     String cartId = request.getParameter("cartId");
+    String[] selectedIds = request.getParameterValues("selectedProductIds");
 %>
+
 <title>주문 확인 | Donutted</title>
 <div class="container mt-5 mb-5">
   <h2 class="mb-4 fw-bold">📝 주문 확인</h2>
@@ -53,21 +54,22 @@
         <li class="list-group-item"><b>수량:</b> <%= quantity %>개</li>
         <li class="list-group-item"><b>단가:</b> <fmt:formatNumber value="<%= Integer.parseInt(unitPrice) %>" type="number" /> 원</li>
       </ul>
-    <% } else if (cartId != null) {
+    <% } else if (selectedIds != null && selectedIds.length > 0 && cartId != null) {
         cart.CartService cs = new cart.CartService();
-        java.util.List<cart.CartItemDTO> cartItems = cs.showAllCartItem(Integer.parseInt(userId));
+        java.util.List<cart.CartItemDTO> allItems = cs.showAllCartItem(Integer.parseInt(userId));
+        java.util.Set<Integer> selectedSet = new java.util.HashSet<>();
+        for (String id : selectedIds) selectedSet.add(Integer.parseInt(id));
     %>
-      <!-- 장바구니 상품 리스트 세로 나열 -->
-<div class="d-flex flex-column gap-3">
-  <% for (cart.CartItemDTO item : cartItems) { %>
-  <div class="card p-3 bg-light border">
-    <p class="mb-2"><b>상품명:</b> <%= item.getProductName() %></p>
-    <p class="mb-2"><b>수량:</b> <%= item.getQuantity() %>개</p>
-    <p class="mb-0"><b>단가:</b> <fmt:formatNumber value="<%= item.getPrice() %>" type="number" /> 원</p>
-  </div>
-  <% } %>
-</div>
-
+    <div class="d-flex flex-column gap-3">
+      <% for (cart.CartItemDTO item : allItems) {
+           if (!selectedSet.contains(item.getProductId())) continue; %>
+        <div class="card p-3 bg-light border">
+          <p class="mb-2"><b>상품명:</b> <%= item.getProductName() %></p>
+          <p class="mb-2"><b>수량:</b> <%= item.getQuantity() %>개</p>
+          <p class="mb-0"><b>단가:</b> <fmt:formatNumber value="<%= item.getPrice() %>" type="number" /> 원</p>
+        </div>
+      <% } %>
+    </div>
     <% } %>
   </div>
 
@@ -90,17 +92,18 @@
     <input type="hidden" name="memo" value="<%= memo %>"/>
     <input type="hidden" name="totalCost" value="<%= totalCost %>"/>
 
-    <!-- 주문 유형별 전송 -->
     <% if (productId != null) { %>
       <input type="hidden" name="productId" value="<%= productId %>"/>
       <input type="hidden" name="productName" value="<%= productName %>"/>
       <input type="hidden" name="unitPrice" value="<%= unitPrice %>"/>
       <input type="hidden" name="quantity" value="<%= quantity %>"/>
-    <% } else if (cartId != null) { %>
+    <% } else if (selectedIds != null && selectedIds.length > 0 && cartId != null) { %>
       <input type="hidden" name="cartId" value="<%= cartId %>"/>
+      <% for (String id : selectedIds) { %>
+        <input type="hidden" name="selectedProductIds" value="<%= id %>"/>
+      <% } %>
     <% } %>
 
-    <!-- 안내문구 -->
     <div class="alert alert-warning mt-4 text-start" role="alert" style="font-size:15px;">
       ⚠️ <strong>주문 전 반드시 확인해주세요</strong><br>
       · 본 상품은 <strong>식품</strong>으로, 단순 변심에 의한 <u>반품/환불이 제한</u>될 수 있습니다.<br>
@@ -109,7 +112,6 @@
       · 수취인 정보 및 배송지를 <u>정확히 입력</u>해 주세요. 배송 오류에 대한 책임은 고객에게 있을 수 있습니다.
     </div>
 
-    <!-- 버튼 -->
     <button type="submit" class="btn btn-primary btn-lg me-3">✅ 결제하기</button>
     <button type="button" onclick="history.back()" class="btn btn-outline-secondary btn-lg">↩ 돌아가기</button>
   </form>

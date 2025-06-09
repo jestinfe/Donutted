@@ -111,6 +111,21 @@ public class OrderService {
         return dao.selectOrderedItemsByUserId(userId);
     }
 
+    public List<OrderItemDTO> makeNewOrderItemsBySelection(int userId, int cartId, List<Integer> selectedProductIds) throws SQLException {
+        List<CartItemDTO> selectedItems = dao.selectCartItemsByProductIds(userId, cartId, selectedProductIds);
+        List<OrderItemDTO> orderItems = new ArrayList<>();
+        for (CartItemDTO item : selectedItems) {
+            OrderItemDTO orderItem = new OrderItemDTO();
+            orderItem.setProductId(item.getProductId());
+            orderItem.setProductName(item.getProductName());
+            orderItem.setQuantity(item.getQuantity());
+            orderItem.setUnitPrice(item.getPrice());
+            orderItem.setThumbnailUrl(item.getThumbnailImg());
+            orderItems.add(orderItem);
+        }
+        return orderItems;
+    }
+
     public boolean placeOrder(int userId, int cartId, String name, String phone, String email,
                               String zipCode, String addr1, String addr2, String memo, int totalCost) {
         Connection conn = null;
@@ -268,7 +283,6 @@ public class OrderService {
         }
     }
 
-    // [사용자 마이페이지 전용] 특정 userId의 주문 목록을 RangeDTO로 페이징 조회 (리뷰 상태 포함)
     public List<OrderDTO> getOrdersByUserWithRange(int userId, RangeDTO range) {
         try {
             return dao.getOrdersByUserWithRange(userId, range);
@@ -281,9 +295,7 @@ public class OrderService {
     public OrderDTO getItemsWithReviewStatusByOrder(int userId, int orderId) throws SQLException {
         return dao.getItemsWithReviewStatusByOrder(userId, orderId);
     }
-    
-    /** 장바구니 총 금액 계산 */
- // ✅ 두 개의 파라미터: cartId, userId
+
     public int calculateCartTotal(int cartId, int userId) {
         int total = 0;
         try {
@@ -297,11 +309,10 @@ public class OrderService {
         return total;
     }
 
-    
     public int calculateSingleTotal(int unitPrice, int quantity) {
         return unitPrice * quantity;
     }
-    
+
     public boolean isOrderOwnedByUser(int orderId, int userId) {
         OrderDAO dao = OrderDAO.getInstance();
         try {
@@ -311,16 +322,53 @@ public class OrderService {
             return false;
         }
     }
-    
+
     public boolean isOrderItemOwnedByUser(int orderItemId, int userId) {
         OrderDAO dao = OrderDAO.getInstance();
         try {
             return dao.isOrderItemOwnedByUser(orderItemId, userId);
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            e.printStackTrace();            return false;
         }
     }
+    
+    public boolean placeOrderBySelection(int userId, int cartId, List<Integer> selectedProductIds,
+            String name, String phone, String email,
+            String zipCode, String addr1, String addr2,
+            String memo, int totalCost) {
+Connection conn = null;
+try {
+javax.naming.Context ctx = new javax.naming.InitialContext();
+javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup("java:comp/env/jdbc/myoracle");
+conn = ds.getConnection();
+conn.setAutoCommit(false);
 
+// 1. 주문 생성
+int orderId = dao.insertOrderWithUserInfo(conn, userId, name, phone, email, zipCode, addr1, addr2, memo, totalCost);
+
+// 2. 선택된 상품만 주문 상품으로 insert
+dao.insertSelectedOrderItems(conn, userId, cartId, selectedProductIds, orderId);
+
+// 3. 선택된 상품만 장바구니에서 제거
+cDAO.clearSelectedCartItems(conn, cartId, selectedProductIds);
+
+conn.commit();
+return true;
+} catch (Exception e) {
+e.printStackTrace();
+try {
+if (conn != null) conn.rollback();
+} catch (Exception rollbackEx) {
+rollbackEx.printStackTrace();
+}
+return false;
+} finally {
+try {
+if (conn != null) conn.close();
+} catch (Exception closeEx) {
+closeEx.printStackTrace();
+}
+}
+}
 
 }

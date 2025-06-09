@@ -47,7 +47,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>1:1 문의 상세</title>
+  <title>1:1 문의 상세 | Donutted</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <style>
     body {

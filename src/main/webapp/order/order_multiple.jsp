@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="order.OrderService, order.OrderItemDTO" %>
@@ -13,8 +14,20 @@
   Integer userId = (Integer) session.getAttribute("userId");
   int cartId = Integer.parseInt(request.getParameter("cartId"));
 
+  String[] productIdParams = request.getParameterValues("productIds");
+  List<Integer> selectedProductIds = new ArrayList<>();
+  if (productIdParams != null) {
+    for (String pid : productIdParams) {
+      try {
+        selectedProductIds.add(Integer.parseInt(pid));
+      } catch (NumberFormatException e) {
+        // 무시
+      }
+    }
+  }
+
   OrderService os = new OrderService();
-  List<OrderItemDTO> orderList = os.makeNewOrderItems(userId, cartId);
+  List<OrderItemDTO> orderList = os.makeNewOrderItemsBySelection(userId, cartId, selectedProductIds);
 
   UserService us = new UserService();
   UserDTO user = us.getUserById(userId);
@@ -22,6 +35,7 @@
   int deliveryCost = 3000;
   int totalPrice = 0;
 %>
+
 
 
 <!DOCTYPE html>
@@ -164,6 +178,9 @@
           <div class="checkBox2">
             <input class="checkbox3" type="checkbox" required> 구매조건 확인 및 결제진행에 동의합니다.
           </div>
+			<% for (Integer pid : selectedProductIds) { %>
+			  <input type="hidden" name="selectedProductIds" value="<%= pid %>" />
+			<% } %>
 
           <input type="hidden" name="totalCost" value="<%= totalPrice + deliveryCost %>" />
           <input type="hidden" name="userId" value="<%= userId %>" />

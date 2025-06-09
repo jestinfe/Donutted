@@ -1078,5 +1078,83 @@ public class OrderDAO {
             return false;
         }
 
+        public List<CartItemDTO> selectCartItemsByProductIds(int userId, int cartId, List<Integer> selectedProductIds) throws SQLException {
+            List<CartItemDTO> list = new ArrayList<>();
+            if (selectedProductIds == null || selectedProductIds.isEmpty()) return list;
+
+            StringBuilder placeholders = new StringBuilder();
+            for (int i = 0; i < selectedProductIds.size(); i++) {
+                placeholders.append("?");
+                if (i < selectedProductIds.size() - 1) placeholders.append(",");
+            }
+
+            String sql = "SELECT ci.cart_id, ci.product_id, ci.quantity, ci.added_at, " +
+                         "p.name AS product_name, p.price AS unit_price, p.thumbnail_url " +
+                         "FROM cart_item ci " +
+                         "JOIN product p ON ci.product_id = p.product_id " +
+                         "WHERE ci.cart_id = ? " +
+                         "AND ci.product_id IN (" + placeholders + ")";
+
+            try (Connection conn = db.getDbConn();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setInt(1, cartId);
+                for (int i = 0; i < selectedProductIds.size(); i++) {
+                    pstmt.setInt(i + 2, selectedProductIds.get(i));
+                }
+
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        CartItemDTO dto = new CartItemDTO();
+                        dto.setCartId(rs.getInt("cart_id"));
+                        dto.setProductId(rs.getInt("product_id"));
+                        dto.setQuantity(rs.getInt("quantity"));
+                        dto.setAdded_at(rs.getDate("added_at"));
+                        dto.setPrice(rs.getInt("unit_price"));  // 🔥 product 테이블의 price
+                        dto.setProductName(rs.getString("product_name"));
+                        dto.setThumbnailImg(rs.getString("thumbnail_url"));
+                        list.add(dto);
+                    }
+                }
+            }
+
+            return list;
+        }
+
+
+
+        
+        public void insertSelectedOrderItems(Connection conn, int userId, int cartId, List<Integer> selectedProductIds, int orderId) throws SQLException {
+            if (selectedProductIds == null || selectedProductIds.isEmpty()) return;
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("""
+                INSERT INTO order_item (order_item_id, order_id, product_id, quantity, unit_price)
+                SELECT order_item_seq.NEXTVAL, ?, ci.product_id, ci.quantity, p.price
+                  FROM cart_item ci
+                  JOIN product p ON ci.product_id = p.product_id
+                 WHERE ci.cart_id = ?
+                   AND ci.product_id IN (
+            """);
+
+            for (int i = 0; i < selectedProductIds.size(); i++) {
+                sql.append("?");
+                if (i < selectedProductIds.size() - 1) {
+                    sql.append(", ");
+                }
+            }
+            sql.append(")");
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+                pstmt.setInt(1, orderId);
+                pstmt.setInt(2, cartId);
+                for (int i = 0; i < selectedProductIds.size(); i++) {
+                    pstmt.setInt(3 + i, selectedProductIds.get(i));
+                }
+                pstmt.executeUpdate();
+            }
+        }
+
+
 
 }

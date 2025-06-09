@@ -4,7 +4,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>아이디 / 비밀번호 찾기</title>
+  <title>아이디 / 비밀번호 찾기 | Donutted</title>
   <style>
     body {
       font-family: '맑은 고딕';

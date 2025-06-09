@@ -10,7 +10,7 @@ if (id == null || id.trim().isEmpty()) {
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>비밀번호 재설정</title>
+  <title>비밀번호 재설정 | Donutted</title>
   <style>
     body { font-family: '맑은 고딕'; background: #f9f9f9; padding: 50px; }
     .box {
