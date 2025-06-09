@@ -62,10 +62,12 @@ html, body {
 }
 
 .main-content {
-	flex-grow: 1;
-	padding: 80px 300px 100px 100px;
-	background: transparent;
-	animation: fadeInUp 0.8s ease-out;
+  flex-grow: 1;
+  padding: 80px 20px 100px 20px;
+  background: transparent;
+  animation: fadeInUp 0.8s ease-out;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 @keyframes fadeInUp {
