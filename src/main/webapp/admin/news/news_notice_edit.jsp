@@ -4,6 +4,7 @@
 <%@ include file="../common/external_file.jsp" %>
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
+<%@ include file="../common/login_check.jsp" %>
 <%
   String contextPath = request.getContextPath();
 
@@ -142,23 +143,38 @@ $(function(){
    });
    
    $('#modify').click(function(){
-	   // 원래 값 (서버에서 받아와 hidden input이나 data-* 속성에 저장) + null safe 코드 추가함
 	   let originalTitle = "<%= board.getTitle() == null ? "" : board.getTitle().replaceAll("\"", "\\\\\"") %>";
-   	   let originalContent = `<%= board.getContent() == null ? "" : board.getContent().replaceAll("`", "\\`") %>`;
-
-	   // 현재 입력된 값
+	   let originalContent = `<%= board.getContent() == null ? "" : board.getContent().replaceAll("`", "\\`").replaceAll("\"", "\\\"") %>`;
+	
 	   let currentTitle = $("#title").val().trim();
-	   let currentContent = $("#summernote").val().trim();
-	   
-	   // 제목과 내용이 모두 변경되지 않은 경우
-	   if (originalTitle.trim() === currentTitle && originalContent.trim() === currentContent) {
-	      alert("수정 사항이 존재하지 않습니다.");
-	      return false;
+	   let currentContent = $('#summernote').summernote('code').trim();
+	
+	   if (currentTitle === "") {
+	     alert("제목을 입력해주세요.");
+	     $("#title").focus();
+	     return false;
 	   }
-	   // 변경된 내용이 있다면 submit 진행
+	
+	   let plainText = currentContent
+	     .replace(/<br\s*\/?>/gi, "")
+	     .replace(/&nbsp;/gi, "")
+	     .replace(/<[^>]*>/g, "")
+	     .replace(/\u00a0/g, "")
+	     .trim();
+	
+	   if (plainText === "") {
+	     alert("내용을 입력해주세요.");
+	     return false;
+	   }
+	
+	   if (originalTitle.trim() === currentTitle && originalContent.trim() === currentContent) {
+	     alert("수정 사항이 존재하지 않습니다.");
+	     return false;
+	   }
+	
 	   $('#writeFrm').attr('action', '<%= contextPath %>/admin/news/news_notice_edit_process.jsp');
 	   $("#writeFrm").submit();
-   })
+   });
    
    $('#delete').click(function(){
 

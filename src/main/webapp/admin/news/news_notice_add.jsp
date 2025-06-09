@@ -2,7 +2,7 @@
 <%@ include file="../common/external_file.jsp" %>
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
-
+<%@ include file="../common/login_check.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -104,6 +104,32 @@ $(function(){
        ]
    });
    
+   // 등록 버튼 클릭 → form submit
+   $("#btn").click(function(){
+
+	   const title = $("#title").val().trim();
+	   const content = $('#summernote').summernote('isEmpty') ? '' : $('#summernote').summernote('code');
+
+	     if (title === "") {
+	       alert("제목을 입력해주세요.");
+	       $("#title").focus();
+	       return false;
+	     }
+
+	     const plainText = content
+	     .replace(/<br\s*\/?>/gi, "")
+	     .replace(/&nbsp;/gi, "")
+	     .replace(/<[^>]*>/g, "")
+	     .replace(/\u00a0/g, "")
+	     .trim();
+
+	   if (plainText === "") {
+	     alert("내용을 입력해주세요.");
+	     return false;
+	   }
+   	    
+     $("#writeFrm").submit();
+   });
 });//ready
 </script>
 </head>
@@ -112,7 +138,7 @@ $(function(){
 <div class="main">
   <div class="container-fluid">
  <div id="writeWrap">
-    <form action="news_notice_add_process.jsp" method="post" id="writeFrm">
+    <form action="news_notice_add_process.jsp" method="post" id="writeFrm" name="writeFrm">
 
       <h3><strong>공지사항 작성</strong></h3>
 
@@ -135,7 +161,7 @@ $(function(){
       </div>
 
       <div style="text-align: right;">
-        <button type="submit" class="btn btn-primary">등록</button>
+        <button type="button" id="btn" name="btn" class="btn btn-primary">등록</button>
         <a href="javascript:history.back();" class="btn btn-secondary">뒤로</a>
       </div>
 

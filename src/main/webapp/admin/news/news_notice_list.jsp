@@ -1,12 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="news.NewsService, news.BoardDTO, news.PseRangeDTO" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../common/external_file.jsp" %>
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
 <%@ include file="../common/login_check.jsp" %>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
     request.setCharacterEncoding("UTF-8");
@@ -105,13 +104,13 @@ $(function(){
     </form>
 
     <!-- 목록 테이블 -->
-    <table class="table table-bordered text-center align-middle table-hover">
+    <table class="table table-bordered text-center align-middle table-hover" style="table-layout: fixed; width: 100%;">
         <thead class="table-light">
             <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성일</th>
-                <th>조회수</th>
+                <th style="width: 10%;">번호</th>
+		        <th style="width: 60%;">제목</th>
+		        <th style="width: 20%;">작성일</th>
+		        <th style="width: 10%;">조회수</th>
             </tr>
         </thead>
         <tbody>
