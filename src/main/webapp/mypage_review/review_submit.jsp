@@ -7,7 +7,7 @@
 
 <%
   request.setCharacterEncoding("UTF-8");
-  String savePath = "C:/Users/user/git/mall_prj/mall_prj/src/main/webapp/common/images/review"; // 수정된 경로
+  String savePath = "C:/dev/workspace/mall_prj/src/main/webapp/common/images/review";
   int maxSize = 10 * 1024 * 1024; // 10MB
 
   File dir = new File(savePath);

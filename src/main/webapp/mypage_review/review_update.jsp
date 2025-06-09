@@ -7,7 +7,7 @@
 
 <%
   request.setCharacterEncoding("UTF-8");
-  String savePath = application.getRealPath("/common/images/review");
+  String savePath = "C:/dev/workspace/mall_prj/src/main/webapp/common/images/review";
 
   int maxSize = 10 * 1024 * 1024;
   MultipartRequest mr = new MultipartRequest(request, savePath, maxSize, "UTF-8", new DefaultFileRenamePolicy());
