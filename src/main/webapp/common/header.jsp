@@ -54,7 +54,7 @@
     align-items: center;
     flex: 1;
     margin: 0 60px;
-    padding-top: 20px
+    padding-top: 15px
   }
 
   .nav ul {
