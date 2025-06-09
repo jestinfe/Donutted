@@ -2,16 +2,15 @@
    pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <style>
- * { margin:0; padding:0; box-sizing:border-box; }
-  /* body 스타일에서 margin 관련 속성을 제거하거나 0으로 명시 */
+  * { margin:0; padding:0; box-sizing:border-box; }
   body { 
     font-family:'Pretendard',sans-serif; 
     background:#fff; 
     color:#212121; 
-    margin: 0; /* 이 줄을 추가하여 혹시 모를 기본 마진 재설정을 막음 */
-    padding: 0; /* 이 줄을 추가하여 혹시 모를 기본 패딩 재설정을 막음 */
+    margin: 0;
+    padding: 0;
   }
   a { text-decoration:none; color:inherit; }
   ul { list-style:none; }
@@ -20,20 +19,21 @@
 
   header {
     background: #fff;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     z-index: 1000;
-    position: relative;
+    position: sticky;
+    top: 0;
   }
 
   .header-wrapper {
-    max-width: 1280px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 40px;
+    padding: 0 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 100px;
-    gap: 40px;
+    height: 80px;
     position: relative;
     z-index: 1001;
   }
@@ -41,22 +41,25 @@
   .logo {
     display: flex;
     align-items: center;
+    margin-right: auto;
   }
 
   .logo img {
-    height: 98px;
-    max-height: 98px;
+    height: 60px;
+    max-height: 60px;
+    width: auto;
   }
 
   .nav {
-    flex: 1;
     display: flex;
     justify-content: center;
+    flex: 1;
+    margin: 0 60px;
   }
 
   .nav ul {
     display: flex;
-    gap: 36px;
+    gap: 120px; /* 80px에서 120px로 간격 확대 */
     align-items: center;
   }
 
@@ -64,34 +67,133 @@
     position: relative;
   }
 
-  .nav a {
-    font-size: 18px;
-    font-weight: 700;
-    color: #212121;
+  .nav > ul > li > a {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    padding: 10px 0;
+    transition: color 0.3s ease;
+    position: relative;
   }
 
-  .nav li ul {
-    display: none;
+  .nav > ul > li > a:hover {
+    color: #EF84A5;
+  }
+
+  .nav > ul > li > a::after {
+    content: '';
     position: absolute;
-    top: 100%;
-    left: 0;
-    background: white;
-    padding: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    border-radius: 4px;
-    list-style: none;
-    z-index: 1002;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 50%;
+    background-color: #FFE4ED;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
   }
 
-  .nav li:hover ul {
+  .nav > ul > li > a:hover::after {
+    width: 100%;
+  }
+
+  /* 드롭다운 메뉴 스타일 */
+  .dropdown-overlay {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+  }
+
+  .dropdown-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+ .dropdown-content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 48px;
+  transform: translateX(-120px); /* 살짝 왼쪽 이동 */
+}
+
+
+  .dropdown-section {
+    min-width: 120px;
+    text-align: center;
+  }
+
+  .dropdown-section h3 {
+    display: none;
+  }
+
+  .dropdown-section ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 0;
+    text-align: center;
+  }
+
+  .dropdown-section li a {
+    font-size: 15px;
+    color: #666;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
     display: block;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  .dropdown-section li a:hover {
+    color: #EF84A5;
+    background: #f8f9fa;
+    transform: translateX(2px);
   }
 
   .user-menu {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 20px;
     font-size: 14px;
+    margin-left: auto;
+  }
+
+  .user-menu a {
+    color: #666;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .user-menu a:hover {
+    background: #f8f9fa;
+    color: #EF84A5;
+  }
+
+  .user-menu a:last-child {
+    color: #666;
+    font-weight: 600;
+  }
+
+  .user-menu a:hover {
+   color: #EF84A5;
   }
 
   .slider {
@@ -112,6 +214,86 @@
   .slider img.active {
     display: block;
   }
+
+  /* 반응형 */
+  @media (max-width: 1200px) {
+    .nav ul {
+      gap: 80px; /* 중간 사이즈에서 간격 조정 */
+    }
+    
+    .dropdown-content {
+      gap: 80px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .header-wrapper {
+      padding: 0 20px;
+    }
+    
+    .nav {
+      margin: 0 40px;
+    }
+    
+    .nav ul {
+      gap: 50px;
+    }
+    
+    .dropdown-content {
+      padding: 20px 0;
+      gap: 50px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .header-wrapper {
+      height: 70px;
+    }
+    
+    .logo img {
+      height: 50px;
+    }
+    
+    .nav {
+      margin: 0 20px;
+    }
+    
+    .nav ul {
+      gap: 30px;
+    }
+    
+    .nav > ul > li > a {
+      font-size: 14px;
+    }
+    
+    .dropdown-content {
+      gap: 30px;
+    }
+    
+    .user-menu {
+      gap: 15px;
+    }
+    
+    .user-menu a {
+      font-size: 12px;
+      padding: 6px 10px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .nav ul {
+      gap: 20px;
+    }
+    
+    .dropdown-content {
+      gap: 20px;
+      padding: 20px 15px;
+    }
+    
+    .dropdown-section {
+      min-width: 80px;
+    }
+  }
 </style>
 
 <header>
@@ -126,27 +308,23 @@
       <ul>
         <li>
           <a href="<c:url value='/brand/brand.jsp?section=about'/>">BRAND</a>
-          <ul>
-            <li><a href="<c:url value='/brand/brand.jsp?section=about'/>">About</a></li>
-            <li><a href="<c:url value='/brand/brand.jsp?section=location'/>">Location</a></li>
-          </ul>
         </li>
-        <li><a href="<c:url value='/product/menu.jsp'/>">MENU</a></li>
+        <li>
+          <a href="<c:url value='/product/menu.jsp'/>">MENU</a>
+        </li>
         <li>
           <a href="<c:url value='/news/news_event_main.jsp'/>">NEWS</a>
-          <ul>
-            <li><a href="<c:url value='/news/news_event_main.jsp'/>">Event</a></li>
-            <li><a href="<c:url value='/news/news_notice_main.jsp'/>">Notice</a></li>
-          </ul>
         </li>
-        <li><a href="<c:url value='/help/help.jsp'/>">HELP</a></li>
+        <li>
+          <a href="<c:url value='/help/help.jsp'/>">HELP</a>
+        </li>
       </ul>
     </nav>
 
     <div class="user-menu">
       <a href="<c:url value='${empty sessionScope.loginId ? "/UserLogin/login.jsp" : "/mypage_order/my_orders.jsp"}'/>">마이페이지</a>
-	<a href="<c:url value='${empty sessionScope.loginId ? "/UserLogin/login.jsp" : "/cart/cart.jsp"}'/>">장바구니</a>
-	<a href="<c:url value='${empty sessionScope.loginId ? "/UserLogin/login.jsp" : "/wishlist/wishlist.jsp"}'/>">찜</a>
+      <a href="<c:url value='${empty sessionScope.loginId ? "/UserLogin/login.jsp" : "/cart/cart.jsp"}'/>">장바구니</a>
+      <a href="<c:url value='${empty sessionScope.loginId ? "/UserLogin/login.jsp" : "/wishlist/wishlist.jsp"}'/>">찜</a>
       <c:choose>
         <c:when test="${empty sessionScope.loginId}">
           <a href="<c:url value='/UserLogin/login.jsp'/>">Login</a>
@@ -157,4 +335,64 @@
       </c:choose>
     </div>
   </div>
+
+  <!-- 통합 드롭다운 오버레이 -->
+  <div class="dropdown-overlay" id="dropdownOverlay">
+    <div class="dropdown-content">
+      <div class="dropdown-section">
+        <ul>
+          <li><a href="<c:url value='/brand/brand.jsp?section=about'/>">About</a></li>
+          <li><a href="<c:url value='/brand/brand.jsp?section=location'/>">Location</a></li>
+        </ul>
+      </div>
+      <div class="dropdown-section">
+        <ul>
+          <li><a href="<c:url value='/product/menu.jsp'/>">전체 메뉴</a></li>
+        </ul>
+      </div>
+      <div class="dropdown-section">
+        <ul>
+          <li><a href="<c:url value='/news/news_event_main.jsp'/>">Event</a></li>
+          <li><a href="<c:url value='/news/news_notice_main.jsp'/>">Notice</a></li>
+        </ul>
+      </div>
+      <div class="dropdown-section">
+        <ul>
+          <li><a href="<c:url value='/help/help.jsp'/>">고객센터</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </header>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const nav = document.querySelector('.nav');
+  const dropdownOverlay = document.getElementById('dropdownOverlay');
+  let hoverTimeout;
+
+  // 네비게이션 영역에 마우스가 들어왔을 때
+  nav.addEventListener('mouseenter', function() {
+    clearTimeout(hoverTimeout);
+    dropdownOverlay.classList.add('active');
+  });
+
+  // 네비게이션 영역에서 마우스가 나갔을 때
+  nav.addEventListener('mouseleave', function() {
+    hoverTimeout = setTimeout(() => {
+      dropdownOverlay.classList.remove('active');
+    }, 100);
+  });
+
+  // 드롭다운 오버레이에 마우스가 들어왔을 때
+  dropdownOverlay.addEventListener('mouseenter', function() {
+    clearTimeout(hoverTimeout);
+    dropdownOverlay.classList.add('active');
+  });
+
+  // 드롭다운 오버레이에서 마우스가 나갔을 때
+  dropdownOverlay.addEventListener('mouseleave', function() {
+    dropdownOverlay.classList.remove('active');
+  });
+});
+</script>
