@@ -36,8 +36,6 @@
   int totalPrice = 0;
 %>
 
-
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -47,155 +45,505 @@
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <style>
-    .orderDiv { display: flex; justify-content: space-between; gap: 30px; overflow:visible;
-    border: 1px solid none}
-    .divLeft { min-width: 550px; margin-left: 20px; padding: 15px}
-    .divRight {min-width: 550px; box-shadow: 0 0px 4px rgba(0,0,0,0.4);
-    border-radius: 8px; padding: 15px;
-    min-height: 910px; 	height: 940px; margin-right: 70px; position: fixed; top: 40px; position: sticky; margin-top: 40px}
-    .itemList { border: 1px solid #ddd; padding: 20px; border-radius: 16px; background-color: #f2f2f2; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-    .itemImgDiv img { width: 140px; border-radius: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    .itemInfoTitle1, .itemInfoPrice { display: flex; align-items: center; gap: 10px; margin-top: 15px; font-size: 16px; }
-    .infoTitle { width: 80px; font-weight: bold; color: #555; }
-    .infoInput input, .infoInput select { width: 100%; padding: 6px 10px; border: 1px solid #ccc; border-radius: 8px; }
-    table { width: 100%; margin-top: 21px; font-size: 20px}
-    td {margin-bottom: 5px; height:40px; border: 1px solid none}
-    .cost { text-align: right; font-size: 21px; padding-right:15px}
-    .orderBtnDiv { text-align: center; margin-top: 25px; }
-    .orderBtn { font-size: 30px; background-color: #ff69b4; color: white; font-weight:bold; margin-bottom:8px;
-    border: none; border-radius: 8px; cursor: pointer; width: 75%; height: 80px}
-    .orderBtn:hover{ font-size: 30px; background-color: #812151; color: white; font-weight:bold; margin-bottom:8px;
-    border: none; border-radius: 8px; cursor: pointer; width: 75%; height: 80px; transition: background-color 0.2s ease-in-out;}
-    .checkBox2 { margin-top: 20px; font-size: 18px; color: #555; padding-left: 20px;
-    display: flex; justify-content: center; align-items: center}
+    * {
+      box-sizing: border-box;
+    }
     
-    .singleItemDiv { border: 1px solid none; border-radius: 8px; background-color: white;
-    display: flex; height: 160px; box-shadow: 0 0px 4px rgba(0,0,0,0.4);}
-    .singleItemDiv > div {border:1px solid none; margin:10px}
-    .singleItemDiv > .itemImgDiv { width:140px; height: 140px}
-    .itemImgDiv > img {width: 100%; height: 100%}
-    .infoDiv {display: flex; min-width: 320px; flex-direction: column}
-    .infoDiv > div{display: flex; border:1px solid none}
-    .infoDiv > .itemInfoTitle1 {flex: 1; font-size:26px; font-weight: bold}
-    .itemInfoTitle2 {font-size:20px}
-    .infoDiv > .itemInfoPrice {flex: 2; font-size:22px; margin-bottom: 6px}
-    .orderInfo > div {margin-bottom: 3px}
-    .checkbox3 {margin-right: 15px; width: 15px; height: 15px}
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
     
+    .main-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
     
+    .page-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    
+    .order-layout {
+      display: grid;
+      grid-template-columns: 1fr 450px;
+      gap: 40px;
+      align-items: start;
+    }
+    
+    /* 왼쪽 주문 상품 영역 */
+    .order-items-section {
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e9ecef;
+    }
+    
+    .section-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 3px solid #ff69b4;
+      display: inline-block;
+    }
+    
+    .item-card {
+      background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e9ecef;
+      transition: all 0.3s ease;
+    }
+    
+    .item-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+    
+    .item-content {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    
+    .item-image {
+      width: 120px;
+      height: 120px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .item-details {
+      flex: 1;
+    }
+    
+    .item-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+    
+    .item-quantity {
+      font-size: 16px;
+      color: #6c757d;
+      margin-bottom: 12px;
+    }
+    
+    .item-quantity .qty-number {
+      font-weight: 600;
+      color: #ff69b4;
+      margin-left: 8px;
+    }
+    
+    .item-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 18px;
+    }
+    
+    .price-calculation {
+      color: #6c757d;
+    }
+    
+    .price-total {
+      font-weight: 700;
+      color: #ff69b4;
+      font-size: 20px;
+    }
+    
+    /* 오른쪽 주문자 정보 영역 */
+    .order-form-section {
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e9ecef;
+      position: sticky;
+      top: 40px;
+      max-height: calc(100vh - 80px);
+      overflow-y: auto;
+    }
+    
+    .same-info-checkbox {
+      text-align: right;
+      margin-bottom: 24px;
+    }
+    
+    .same-info-checkbox label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #495057;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+    
+    .same-info-checkbox label:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .same-info-checkbox input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #ff69b4;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background-color: #fff;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #ff69b4;
+      box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+    }
+    
+    .address-row {
+      display: flex;
+      gap: 12px;
+      align-items: end;
+    }
+    
+    .zipcode-input {
+      flex: 0 0 140px;
+    }
+    
+    .address-search-btn {
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+    
+    .address-search-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+    }
+    
+    .address-detail {
+      margin-top: 8px;
+    }
+    
+    .memo-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      font-size: 16px;
+      background-color: white;
+      cursor: pointer;
+    }
+    
+    .memo-input {
+      margin-top: 8px;
+      display: none;
+    }
+    
+    /* 주문 요약 */
+    .order-summary {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 16px;
+      padding: 24px;
+      margin: 32px 0;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      font-size: 16px;
+    }
+    
+    .summary-row:not(:last-child) {
+      border-bottom: 1px solid #dee2e6;
+    }
+    
+    .summary-label {
+      color: #495057;
+    }
+    
+    .summary-value {
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    
+    .summary-total {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ff69b4;
+    }
+    
+    .summary-total .summary-label {
+      color: #2c3e50;
+    }
+    
+    /* 동의 체크박스 */
+    .agreement-section {
+      margin: 24px 0;
+      text-align: center;
+    }
+    
+    .agreement-checkbox {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 16px;
+      color: #495057;
+      cursor: pointer;
+      padding: 16px 20px;
+      border-radius: 12px;
+      background-color: #f8f9fa;
+      transition: background-color 0.2s;
+    }
+    
+    .agreement-checkbox:hover {
+      background-color: #e9ecef;
+    }
+    
+    .agreement-checkbox input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: #ff69b4;
+    }
+    
+    /* 결제 버튼 */
+    .payment-button {
+      width: 100%;
+      padding: 20px;
+      background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(255, 105, 180, 0.3);
+    }
+    
+    .payment-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 105, 180, 0.4);
+    }
+    
+    .payment-button:active {
+      transform: translateY(0);
+    }
+    
+    /* 반응형 디자인 */
+    @media (max-width: 1200px) {
+      .order-layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      
+      .order-form-section {
+        position: static;
+        max-height: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 20px 16px;
+      }
+      
+      .order-items-section,
+      .order-form-section {
+        padding: 24px;
+      }
+      
+      .item-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .item-image {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .address-row {
+        flex-direction: column;
+      }
+      
+      .zipcode-input {
+        flex: 1;
+      }
+    }
   </style>
 </head>
 <body>
   <c:import url="/common/header.jsp" />
 
-  <main class="container" style="min-height:600px; padding:60px 20px;">
-    <h2 style="font-size:28px; font-weight:bold; margin-bottom:20px;">주문하기</h2>
-    <form action="order_confirm.jsp" method="POST">
+  <div class="main-container">
+    <h1 class="page-title">주문하기</h1>
     
-      <div class="orderDiv" >
-        <div class="divLeft">
-          <h4>주문상품</h4>
-          <div class="itemList">
-            <% for (OrderItemDTO item : orderList) {
-                 ProductDTO p = ProductDAO.getInstance().selectProductById(item.getProductId());
-                 request.setAttribute("productImage", p.getThumbnailImg());
-
-                 int itemTotal = item.getUnitPrice() * item.getQuantity();
-                 totalPrice += itemTotal;
-            %>
-              <div class="singleItemDiv" style="margin-bottom: 30px;">
-                <div class="itemImgDiv">
-                  <img src="<c:url value='/admin/common/images/products/${productImage}' />" />
+    <form action="order_confirm.jsp" method="POST">
+      <div class="order-layout">
+        <!-- 주문 상품 섹션 -->
+        <div class="order-items-section">
+          <h2 class="section-title">주문상품</h2>
+          
+          <% for (OrderItemDTO item : orderList) {
+               ProductDTO p = ProductDAO.getInstance().selectProductById(item.getProductId());
+               request.setAttribute("productImage", p.getThumbnailImg());
+               int itemTotal = item.getUnitPrice() * item.getQuantity();
+               totalPrice += itemTotal;
+          %>
+            <div class="item-card">
+              <div class="item-content">
+                <img src="<c:url value='/admin/common/images/products/${productImage}' />" 
+                     alt="<%= p.getName() %>" class="item-image" />
+                <div class="item-details">
+                  <div class="item-name"><%= p.getName() %></div>
+                  <div class="item-quantity">
+                    수량: <span class="qty-number"><%= item.getQuantity() %>개</span>
+                  </div>
+                  <div class="item-price-row">
+                    <span class="price-calculation">
+                      <fmt:formatNumber value="<%= item.getUnitPrice() %>" pattern="###,###" />원 × <%= item.getQuantity() %>
+                    </span>
+                    <span class="price-total">
+                      <fmt:formatNumber value="<%= itemTotal %>" pattern="###,###" />원
+                    </span>
+                  </div>
                 </div>
-                <div class="infoDiv">
-	                <div class="itemInfoTitle1"><div><%= p.getName() %></div></div>
-	                 <div class="itemInfoTitle2"><div>수량:</div><div style="font-weight: bold; margin-left: 15px"><%= item.getQuantity() %>개</div></div>
-	                <div class="itemInfoPrice">
-	                  <div><fmt:formatNumber value="<%= item.getUnitPrice() %>" pattern="###,###" />원 × <%= item.getQuantity() %> =</div>
-	                  <div><b><fmt:formatNumber value="<%= itemTotal %>" pattern="###,###" />원</b></div>
-	                </div>
-                </div>
-                
               </div>
-            <% } %>
-          </div>
-        </div><!-- divLeft -->
-        
-        
-		
-        <div class="divRight">
-          <h4>주문자 정보</h4>
+            </div>
+          <% } %>
+        </div>
 
-          <div class="form-check mb-3 text-end" style="font-weight:bold;">
-            <label class="form-check-label" for="sameAsUserInfo" style="cursor:pointer;">
-              <input class="form-check-input me-1" type="checkbox" id="sameAsUserInfo" style="cursor:pointer;">
+        <!-- 주문자 정보 섹션 -->
+        <div class="order-form-section">
+          <h2 class="section-title">주문자 정보</h2>
+
+          <div class="same-info-checkbox">
+            <label for="sameAsUserInfo">
+              <input type="checkbox" id="sameAsUserInfo">
               회원정보와 동일
             </label>
           </div>
 
-          <div class="orderInfo">
-            <div class="infoTitle">수취인</div>
-            <div class="infoInput"><input type="text" name="name" id="nameInput" required></div>
-
-            <div class="infoTitle">전화번호</div>
-            <div class="infoInput"><input type="tel" name="phone" id="phoneInput" required></div>
-
-            <div class="infoTitle">이메일</div>
-            <div class="infoInput"><input type="email" name="email" id="emailInput" required></div>
-
-            <div class="infoTitle">우편번호</div>
-            <div class="infoInput">
-              <input type="text" name="zipCode" id="zipcode" readonly style="width:120px;">
-              <button type="button" onclick="findZipcode()" class="btn btn-outline-secondary btn-sm">주소 검색</button>
-            </div>
-
-            <div class="infoTitle">주소</div>
-            <div class="infoInput">
-              <input type="text" name="addr1" id="addr" required placeholder="도로명 주소" style="margin-bottom: 5px"><br>
-              <input type="text" name="addr2" id="addr2" placeholder="상세 주소">
-            </div>
-
-            <div class="infoTitle">배송메모</div>
-            <div class="infoInput">
-              <select name="memoSelect" id="memoSelect" onchange="toggleMemoInput()">
-                <option value="">선택하세요</option>
-                <option value="부재 시 경비실에 맡겨주세요">부재 시 경비실에 맡겨주세요</option>
-                <option value="문 앞에 놓아주세요">문 앞에 놓아주세요</option>
-                <option value="배송 전 연락주세요">배송 전 연락주세요</option>
-                <option value="직접입력">직접입력</option>
-              </select>
-              <input type="text" name="memo" id="memoInput" placeholder="요청사항 직접입력" style="margin-top:8px; display:none;">
-            </div>
-          </div><!-- orderInfo -->
-
-          <table>
-            <tr><td style="padding-left: 15px">상품금액</td><td class="cost" ><fmt:formatNumber value="<%= totalPrice %>" pattern="###,###" /> 원</td></tr>
-            <tr><td style="padding-left: 15px">배송비</td><td class="cost">+ <fmt:formatNumber value="<%= deliveryCost %>" pattern="###,###" /> 원</td></tr>
-            <tr><td colspan="2" style="height:5px;"><hr></td></tr>
-            <tr><td style="padding-left: 15px"><b>총 주문금액</b></td><td class="cost"><b><fmt:formatNumber value="<%= totalPrice + deliveryCost %>" pattern="###,###" /> 원</b></td></tr>
-          </table>
-
-          <div class="checkBox2">
-            <input class="checkbox3" type="checkbox" required> 구매조건 확인 및 결제진행에 동의합니다.
+          <div class="form-group">
+            <label class="form-label">수취인</label>
+            <input type="text" name="name" id="nameInput" class="form-input" required>
           </div>
-			<% for (Integer pid : selectedProductIds) { %>
-			  <input type="hidden" name="selectedProductIds" value="<%= pid %>" />
-			<% } %>
 
+          <div class="form-group">
+            <label class="form-label">전화번호</label>
+            <input type="tel" name="phone" id="phoneInput" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">이메일</label>
+            <input type="email" name="email" id="emailInput" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">우편번호</label>
+            <div class="address-row">
+              <input type="text" name="zipCode" id="zipcode" class="form-input zipcode-input" readonly>
+              <button type="button" onclick="findZipcode()" class="address-search-btn">주소 검색</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">주소</label>
+            <input type="text" name="addr1" id="addr" class="form-input" required placeholder="도로명 주소">
+            <input type="text" name="addr2" id="addr2" class="form-input address-detail" placeholder="상세 주소">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">배송메모</label>
+            <select name="memoSelect" id="memoSelect" class="memo-select" onchange="toggleMemoInput()">
+              <option value="">선택하세요</option>
+              <option value="부재 시 경비실에 맡겨주세요">부재 시 경비실에 맡겨주세요</option>
+              <option value="문 앞에 놓아주세요">문 앞에 놓아주세요</option>
+              <option value="배송 전 연락주세요">배송 전 연락주세요</option>
+              <option value="직접입력">직접입력</option>
+            </select>
+            <input type="text" name="memo" id="memoInput" class="form-input memo-input" placeholder="요청사항 직접입력">
+          </div>
+
+          <!-- 주문 요약 -->
+          <div class="order-summary">
+            <div class="summary-row">
+              <span class="summary-label">상품금액</span>
+              <span class="summary-value"><fmt:formatNumber value="<%= totalPrice %>" pattern="###,###" /> 원</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">배송비</span>
+              <span class="summary-value">+ <fmt:formatNumber value="<%= deliveryCost %>" pattern="###,###" /> 원</span>
+            </div>
+            <div class="summary-row summary-total">
+              <span class="summary-label">총 주문금액</span>
+              <span class="summary-value"><fmt:formatNumber value="<%= totalPrice + deliveryCost %>" pattern="###,###" /> 원</span>
+            </div>
+          </div>
+
+          <!-- 동의 체크박스 -->
+          <div class="agreement-section">
+            <label class="agreement-checkbox">
+              <input type="checkbox" required>
+              구매조건 확인 및 결제진행에 동의합니다.
+            </label>
+          </div>
+
+          <!-- 히든 필드들 -->
+          <% for (Integer pid : selectedProductIds) { %>
+            <input type="hidden" name="selectedProductIds" value="<%= pid %>" />
+          <% } %>
           <input type="hidden" name="totalCost" value="<%= totalPrice + deliveryCost %>" />
           <input type="hidden" name="userId" value="<%= userId %>" />
           <input type="hidden" name="cartId" value="<%= cartId %>" />
 
-          <div class="orderBtnDiv">
-            <input type="submit" value="결제하기" class="orderBtn" />
-          </div>
-          
-        </div><!-- divRight -->
-        
-        
-      </div><!-- orderDiv -->
+          <!-- 결제 버튼 -->
+          <input type="submit" value="결제하기" class="payment-button" />
+        </div>
+      </div>
     </form>
-  </main>
+  </div>
 
   <c:import url="/common/footer.jsp" />
 
