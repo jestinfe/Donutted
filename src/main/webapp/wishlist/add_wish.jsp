@@ -1,39 +1,41 @@
 <%@page import="wishlist.WishListDTO"%>
 <%@page import="wishlist.WishDAO"%>
 <%@page import="wishlist.WishService"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-   pageEncoding="UTF-8" info=""%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <%
 request.setCharacterEncoding("UTF-8");
-Integer userId = (Integer)session.getAttribute("userId");
-if(userId == null){
-	%>
-	 <script>
-    alert("로그인 후 이용해주세요.");
-	location.href = "../UserLogin/login.jsp";
-	</script>
-	<%
-	return;
+
+Integer userId = (Integer) session.getAttribute("userId");
+String productIdParam = request.getParameter("productId");
+
+if (userId == null) {
+    out.print("{\"success\": false, \"message\": \"로그인이 필요합니다.\"}");
+    return;
 }
-int productId = Integer.parseInt(request.getParameter("productId"));
+
+if (productIdParam == null || productIdParam.trim().isEmpty()) {
+    out.print("{\"success\": false, \"message\": \"상품 ID가 유효하지 않습니다.\"}");
+    return;
+}
+
+int productId = Integer.parseInt(productIdParam);
 WishService ws = new WishService();
 
 WishListDTO wlDTO = new WishListDTO();
 wlDTO.setProductId(productId);
 wlDTO.setUserId(userId);
-if(ws.existWishes(userId, productId)){
-ws.removeWishList(wlDTO, productId);
-response.sendRedirect("../product/menu.jsp");
-}else{
-ws.insertWish(wlDTO);
-response.sendRedirect("../product/menu.jsp");
+
+try {
+    if (ws.existWishes(userId, productId)) {
+        ws.removeWishList(wlDTO, productId);
+        out.print("{\"success\": true, \"action\": \"removed\"}");
+    } else {
+        ws.insertWish(wlDTO);
+        out.print("{\"success\": true, \"action\": \"added\"}");
+    }
+} catch (Exception e) {
+    e.printStackTrace();
+    out.print("{\"success\": false, \"message\": \"서버 오류가 발생했습니다.\"}");
 }
-%>
-<!-- <script> -->
-<!-- alert("찜목록에 추가되었습니다"); -->
-<!-- location.href="menu.jsp"; -->
-<!-- </script> -->
-<%
 %>

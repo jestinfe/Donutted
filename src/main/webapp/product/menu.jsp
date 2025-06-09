@@ -624,20 +624,20 @@ request.setAttribute("currentCategoryId", categoryId);
   <div class="name-heart" style="position: relative; margin: 10px 0;">
   <h3 style="text-align: center; margin: 0;">${prd.name}</h3>
 
-  <form action="../wishlist/add_wish.jsp" method="POST"
-        style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); margin: 0;">
-    <input type="hidden" name="productId" value="${prd.productId}">
-    <button type="submit" class="heart-btn" title="위시리스트 추가">
-      <c:choose>
-        <c:when test="${wishProductId.contains(prd.productId)}">
-          ❤️
-        </c:when>
-        <c:otherwise>
-          🤍
-        </c:otherwise>
-      </c:choose>
-    </button>
-  </form>
+<button type="button"
+        class="heart-btn"
+        data-product-id="${prd.productId}"
+        data-in-wishlist="${wishProductId.contains(prd.productId)}"
+          style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); margin: 0;">
+  <c:choose>
+    <c:when test="${wishProductId.contains(prd.productId)}">
+      ❤️
+    </c:when>
+    <c:otherwise>
+      🤍
+    </c:otherwise>
+  </c:choose>
+</button>
 </div>
 
 
@@ -646,14 +646,15 @@ request.setAttribute("currentCategoryId", categoryId);
         <fmt:formatNumber value="${prd.price}" pattern="#,###" />원
       </p>
     </div>
-	<form action="../cart/addMenuTocart.jsp" method="POST">
-	 <input type="hidden" name="productId" value="${prd.getProductId()}">
-          <input type="hidden" name="qty" id="cartQty" value="1">
-    <button class="add-btn">
+    
+    <button class="add-btn" 
+    		type="button"
+    		data-product-id="${prd.productId}"
+    		>
       <i class="fas fa-shopping-cart"></i> 담기
     </button>
-	</form>
   </div>
+  
 </div>
     </c:forEach>
   </div>
@@ -661,15 +662,6 @@ request.setAttribute("currentCategoryId", categoryId);
 <c:import url="../common/footer.jsp" />
 
 <script>
-  // 장바구니 추가 함수
-//   function addToCart(productId, productName) {
-//     // 여기에 실제 장바구니 추가 로직을 구현
-    
-//     // 예: AJAX 요청으로 서버에 전송
-    
-//     // 임시로 알림 표시
-//     showNotification(${productName}이(가) 장바구니에 추가되었습니다!);
-//   }
 
   // 알림 표시 함수
   function showNotification(message) {
@@ -743,6 +735,112 @@ request.setAttribute("currentCategoryId", categoryId);
     });
   });
 </script>
+<script>
+$(function () {
+  $(".heart-btn").click(function () {
+    const button = $(this);
+    const productId = button.data("product-id");
+    const isInWishlist = button.data("in-wishlist") === true;
 
+    const action = isInWishlist ? "remove" : "add";
+
+    $.ajax({
+      url: "../wishlist/add_wish.jsp",
+      type: "POST",
+      data: {
+        productId: productId,
+        action: action
+      },
+      dataType: "json",
+      success: function (response) {
+        if (response.success) {
+          if (response.action === "added") {
+            button.html("❤️").data("in-wishlist", true);
+          } else {
+            button.html("🤍").data("in-wishlist", false);
+          }
+        } else {
+          alert(response.message || "처리에 실패했습니다.");
+          if (response.message === "로그인이 필요합니다.") {
+            window.location.href = "../UserLogin/login.jsp";
+          }
+        }
+      },
+      error: function () {
+        alert("서버 오류 발생");
+      }
+    });
+  });
+});
+</script>
+<script>
+$(function () {
+	  $(".add-btn").click(function () {
+	    const button = $(this);
+	    const productId = button.data("product-id");
+	    const qty = 1; // 기본 수량 1
+
+	    $.ajax({
+	      url: "../cart/addMenuTocart.jsp",
+	      type: "POST",
+	      data: {
+	        productId: productId,
+	        qty: qty
+	      },
+	      dataType: "json",
+	      success: function (res) {
+	        if (res.success) {
+	         showToast("장바구니에 담겼습니다! 🛒");
+	        } else {
+	          if (res.message === "로그인이 필요합니다.") {
+	        	  alert("로그인이 필요");
+	            window.location.href = "../UserLogin/login.jsp";
+	          } else {
+	            alert("문제가 발생했습니다.");
+	          }
+	        }
+	      },
+	      error: function () {
+	        alert("서버 오류 발생");
+	      }
+	    });
+	  });
+	});
+
+</script>
+<script>
+function showToast(message) {
+	  let toast = document.getElementById("toast-msg");
+
+	  if (!toast) {
+	    toast = document.createElement("div");
+	    toast.id = "toast-msg";
+	    toast.style.position = "fixed";
+	    toast.style.top = "30px";
+	    toast.style.left = "50%";
+	    toast.style.transform = "translateX(-50%)";
+	    toast.style.backgroundColor = "#f8a6c9";
+	    toast.style.color = "white";
+	    toast.style.padding = "14px 24px";
+	    toast.style.borderRadius = "30px";
+	    toast.style.fontSize = "16px";
+	    toast.style.fontWeight = "bold";
+	    toast.style.zIndex = "9999";
+	    toast.style.opacity = "0";
+	    toast.style.transition = "opacity 0.5s ease-in-out";
+	    document.body.appendChild(toast);
+	  }
+
+	  toast.textContent = message;
+	  toast.style.opacity = "1";
+
+	  setTimeout(() => {
+	    toast.style.opacity = "0";
+	    setTimeout(() => {
+	      toast.remove();
+	    }, 500);
+	  }, 1500);
+	}
+	</script>
 </body>
 </html>

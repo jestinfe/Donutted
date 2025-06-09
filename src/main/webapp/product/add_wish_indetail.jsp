@@ -9,13 +9,8 @@
 <%
 Integer userId = (Integer)session.getAttribute("userId");
 if(userId == null){
-%>
-	<script>
-	alert("로그인 하세요.");
-	location.href="../UserLogin/login.jsp";
-	</script>
-<%	
-return;
+	out.print("{\"success\": false, \"message\": \"로그인이 필요합니다.\"}");
+	return;
 }
 int productId = Integer.parseInt(request.getParameter("productId"));
 
@@ -23,19 +18,17 @@ WishService ws = new WishService();
 WishListDTO wlDTO = new WishListDTO();
 wlDTO.setProductId(productId);
 wlDTO.setUserId(userId);
+try{
 if(ws.existWishes(userId, productId)){
 	ws.removeWishList(wlDTO, productId);
-	response.sendRedirect("product_detail.jsp?productId="+productId);
+	out.print("{\"success\": true, \"action\": \"removed\"}");
 }else{
 	ws.insertWish(wlDTO);
-	session.setAttribute("toast", "찜목록에 추가되었습니다.");
-	response.sendRedirect("product_detail.jsp?productId=" + productId);
-	
+	 out.print("{\"success\": true, \"action\": \"added\"}");
 }
-
-
-
-
-
+}catch(Exception e){
+	  e.printStackTrace();
+	    out.print("{\"success\": false, \"message\": \"서버 오류가 발생했습니다.\"}");
+}
 
 %>
