@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <style>
+
   .submenu {
     display: none;
     padding-left: 15px;

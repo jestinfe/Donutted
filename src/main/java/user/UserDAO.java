@@ -347,20 +347,19 @@ public class UserDAO {
         }
         return null;
     }
-    public boolean resetPassword(String username, String newPassword) throws SQLException {
+    
+    public boolean resetPassword(String username, String hashedPassword) throws SQLException {
         String sql = "UPDATE users SET password = ? WHERE username = ?";
         try (
             Connection con = db.getDbConn();
             PreparedStatement pstmt = con.prepareStatement(sql)
         ) {
-            // ✅ 비밀번호 암호화
-            String encryptedPassword = CryptoUtil.encrypt(newPassword);
-
-            pstmt.setString(1, encryptedPassword);
+            // 여기에서 hashSHA256 절대 다시 하지 말고 그대로 저장
+            pstmt.setString(1, hashedPassword);
             pstmt.setString(2, username);
             return pstmt.executeUpdate() == 1;
         } catch (Exception e) {
-            e.printStackTrace(); // AES 암호화 실패 예외 포함
+            e.printStackTrace();
             return false;
         }
     }

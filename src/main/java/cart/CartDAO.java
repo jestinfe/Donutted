@@ -319,5 +319,27 @@ public class CartDAO {
 		
 		return null;
 	}
-	
+	public void clearSelectedCartItems(Connection conn, int cartId, List<Integer> selectedProductIds) throws SQLException {
+	    if (selectedProductIds == null || selectedProductIds.isEmpty()) return;
+
+	    StringBuilder sql = new StringBuilder();
+	    sql.append("DELETE FROM cart_item WHERE cart_id = ? AND product_id IN (");
+
+	    for (int i = 0; i < selectedProductIds.size(); i++) {
+	        sql.append("?");
+	        if (i < selectedProductIds.size() - 1) {
+	            sql.append(", ");
+	        }
+	    }
+	    sql.append(")");
+
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+	        pstmt.setInt(1, cartId);
+	        for (int i = 0; i < selectedProductIds.size(); i++) {
+	            pstmt.setInt(i + 2, selectedProductIds.get(i));
+	        }
+	        pstmt.executeUpdate();
+	    }
+	}
+
 }

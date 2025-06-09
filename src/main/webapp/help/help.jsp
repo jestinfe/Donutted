@@ -17,7 +17,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>FAQ</title>
+  <title>FAQ | Donutted</title>
   <style>
     html, body {
       height: 100%;

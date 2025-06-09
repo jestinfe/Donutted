@@ -45,7 +45,7 @@ request.setAttribute("totalQuantity", totalQuantity);
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>장바구니</title>
+<title>장바구니 | Donutted</title>
 <c:if test="${not empty sessionScope.toast}">
 	<div id="toast-msg"
 		style="position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background-color: #f8a6c9; color: white; padding: 14px 24px; border-radius: 30px; font-size: 16px; font-weight: bold; z-index: 9999; opacity: 0; transition: opacity 0.5s ease-in-out;">

@@ -60,7 +60,7 @@
     }
 
     .profile-header {
-      background: var(--gradient-bg);
+      background: #EF84A5;
       border-radius: 20px;
       padding: 2rem;
       margin-bottom: 2rem;
@@ -705,6 +705,8 @@
 
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  
+  
   <script>
     $(function(){
       var original = {};
@@ -794,10 +796,19 @@
             success: function(response) {
             	  response = response.trim();
             	  if (response === 'success') {
-            	    alert('비밀번호가 성공적으로 변경되었습니다.');
-            	    $('#passwordModal').modal('hide');
-            	    $('#passwordForm')[0].reset();
-            	  } else if (response === 'invalid_password') {
+            		  alert('비밀번호가 성공적으로 변경되었습니다.');
+
+            		  // Bootstrap 5 네이티브 API 로 모달 인스턴스 가져오기 혹은 생성
+            		  const modalEl = document.getElementById('passwordModal');
+            		  const bsModal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+            		  bsModal.hide();
+
+            		  // 남아있는 backdrop(검은 레이어) 강제 제거
+            		  document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+
+            		  // 폼 초기화
+            		  document.getElementById('passwordForm').reset();
+            		} else if (response === 'invalid_password') {
             	    alert('현재 비밀번호가 올바르지 않습니다.');
             	  } else if (response === 'invalid_input') {
             	    alert('입력값이 잘못되었습니다.');
@@ -823,6 +834,5 @@
       });
     });
   </script>
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
