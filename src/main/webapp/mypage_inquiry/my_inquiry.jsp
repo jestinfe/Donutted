@@ -29,6 +29,7 @@ int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 request.setAttribute("inquiryList", inquiryList);
 request.setAttribute("currentPage", currentPage);
 request.setAttribute("totalPages", totalPages);
+//잉
 %>
 
 <!DOCTYPE html>
