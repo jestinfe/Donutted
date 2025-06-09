@@ -48,12 +48,22 @@ request.setAttribute("totalPages", totalPages);
       flex-direction: column;
     }
 
-   .main-container {
-    display: flex;
-    flex: 1;
-    margin-top: 60px;
-    min-width: 1000px;  /* ✅ 최소 넓이 설정 → 화면 줄여도 고정 효과 */
-}
+    .main-container {
+      display: flex;
+      flex: 1;
+      margin-top: 0px;
+      min-width: 1000px;
+      justify-content: center;
+    }
+
+    h3 {
+      font-weight: 700;
+      margin-bottom: 30px;
+      border-left: 5px solid #f18aa7;
+      padding-left: 10px;
+      color: #f18aa7;
+      position: relative;
+    }
 
     .mypage-sidebar {
       position: fixed;
@@ -85,13 +95,15 @@ request.setAttribute("totalPages", totalPages);
       font-weight: bold;
     }
 
-   .qna-wrapper {
-    flex: 1;
-    margin-left: 220px;
-    padding: 30px;
-    min-width: 780px;  /* ✅ 최소 넓이 설정 (적절히 조절 가능) */
-    box-sizing: border-box;  /* ✅ padding 포함해서 넓이 계산 */
-}
+    .qna-wrapper {
+      flex: 1;
+      max-width: 1200px;
+      margin-left: 220px;
+      margin-right: 20px;
+      padding: 30px;
+      min-width: 780px;
+      box-sizing: border-box;
+    }
 
     table {
       width: 100%;
@@ -122,6 +134,8 @@ request.setAttribute("totalPages", totalPages);
       border: none;
       padding: 10px 20px;
       font-weight: bold;
+      border-radius: 30px; /* 둥글둥글하게 */
+      transition: background-color 0.3s ease;
     }
 
     .qna-btn:hover {
@@ -131,12 +145,11 @@ request.setAttribute("totalPages", totalPages);
     .footer-fixed {
       margin-top: auto;
     }
+
     .table-responsive-wrapper {
-  overflow-x: auto;
-  width: 100%;
-}
-    
-    
+      overflow-x: auto;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -151,53 +164,58 @@ request.setAttribute("totalPages", totalPages);
 
     <!-- ✅ 본문 Q/A 내역 -->
     <div class="qna-wrapper">
-<h5>
-  <strong>나의 Q/A 내역 ( <%= totalCount %> 건 )</strong>
-</h5>
-	
-	
-<div style="overflow-x: auto;">
-      <table>
-        <thead>
-          <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성 날짜</th>
-            <th>답변 상태</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="notice" style="cursor: pointer;" onclick="location.href='Q&Adetail.jsp'">
-            <td>[공지]</td>
-            <td>※필독※ Q/A 게시글 등록시 참고사항</td>
-            <td></td>
-            <td></td>
-          </tr>
+      <h3>
+        나의 Q/A 내역 ( <%= totalCount %> 건 )
+      </h3>
 
-          <c:forEach var="dto" items="${inquiryList}" varStatus="status">
+      <div style="overflow-x: auto;">
+        <table>
+          <thead>
             <tr>
-              <td>${(currentPage - 1) * 10 + status.count}</td>
-              <td>${dto.title}</td>
-              <td><fmt:formatDate value="${dto.createdAt}" pattern="yyyy.MM.dd"/></td>
-              <td>
-                <c:choose>
-                  <c:when test="${dto.replyContent != null and fn:trim(dto.replyContent) != ''}">
-                    <button class="btn btn-success btn-sm" onclick="location.href='inquiry_detail.jsp?inquiry_id=${dto.inquiryId}'">답변완료</button>
-                  </c:when>
-                  <c:otherwise>
-                    <button class="btn btn-dark btn-sm" onclick="location.href='inquiry_detail.jsp?inquiry_id=${dto.inquiryId}'">답변대기</button>
-                  </c:otherwise>
-                </c:choose>
-              </td>
+              <th>번호</th>
+              <th>제목</th>
+              <th>작성 날짜</th>
+              <th>답변 상태</th>
             </tr>
-          </c:forEach>
-        </tbody>
-      </table>
-	</div>
-      <!-- ✅ 페이지네이션 -->
+          </thead>
+          <tbody>
+            <tr class="notice" style="cursor: pointer;" onclick="location.href='Q&Adetail.jsp'">
+              <td>[공지]</td>
+              <td>※필독※ Q/A 게시글 등록시 참고사항</td>
+              <td></td>
+              <td></td>
+            </tr>
+
+            <c:forEach var="dto" items="${inquiryList}" varStatus="status">
+              <tr>
+                <td>${(currentPage - 1) * 10 + status.count}</td>
+                <td>${dto.title}</td>
+                <td><fmt:formatDate value="${dto.createdAt}" pattern="yyyy.MM.dd"/></td>
+                <td>
+                  <c:choose>
+                    <c:when test="${dto.replyContent != null and fn:trim(dto.replyContent) != ''}">
+                      <button class="btn btn-success btn-sm" onclick="location.href='inquiry_detail.jsp?inquiry_id=${dto.inquiryId}'">답변완료</button>
+                    </c:when>
+                    <c:otherwise>
+                      <button class="btn btn-dark btn-sm" onclick="location.href='inquiry_detail.jsp?inquiry_id=${dto.inquiryId}'">답변대기</button>
+                    </c:otherwise>
+                  </c:choose>
+                </td>
+              </tr>
+            </c:forEach>
+          </tbody>
+        </table>
+
+        <!-- ✅ Q/A 작성하기 버튼 → 테이블 아래 위치 -->
+        <div class="text-center mt-3">
+          <button class="qna-btn" onclick="location.href='inquiry_add.jsp'">Q/A 작성하기</button>
+        </div>
+      </div>
+
+      <!-- ✅ 페이지네이션 → 테이블 밖에서 중앙 배치 -->
       <div class="text-center mt-4">
-        <nav>
-          <ul class="pagination justify-content-center">
+        <nav class="d-inline-block">
+          <ul class="pagination mb-2 justify-content-center">
             <c:forEach var="i" begin="1" end="${totalPages}">
               <li class="page-item ${i == currentPage ? 'active' : ''}">
                 <a class="page-link" href="?page=${i}">${i}</a>
@@ -205,7 +223,6 @@ request.setAttribute("totalPages", totalPages);
             </c:forEach>
           </ul>
         </nav>
-        <button class="qna-btn" onclick="location.href='inquiry_add.jsp'">Q/A 작성하기</button>
       </div>
     </div>
   </div>
