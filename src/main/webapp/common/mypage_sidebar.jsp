@@ -48,24 +48,24 @@
 .mypage-sidebar-fixed {
   position: fixed;
   top: 120px;
-  left: 0;
+  left: 20px; /* 살짝 띄움 */
   width: 240px;
-  background-color: #f9f9f9;
+  background-color: #fff;
   padding: 20px;
   border-right: 1px solid #eee;
   box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
   z-index: 1000;
+  border-radius: 16px;
 }
 
 .mypage-sidebar-fixed h4 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
-  color: #fff;
-  background-color: #ef84a5;
-  padding: 12px;
+  color: #2d3748;
   text-align: center;
-  border-radius: 10px;
+  padding-bottom: 10px;
   margin-bottom: 20px;
+   border-bottom: 1px solid #f5b5c5; /* 구분선 연핑크 */
 }
 
 .mypage-sidebar-fixed ul {
@@ -74,15 +74,30 @@
   margin: 0;
 }
 
+.mypage-sidebar-fixed > ul > li > a {
+  font-size: 12px;
+  font-weight: 700;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 0;
+  margin: 16px 0 8px 0;
+  display: block;
+  border-bottom: 1px solid #f8dbe5;
+  background: none;
+  cursor: default;
+  pointer-events: none;
+}
+
 .mypage-sidebar-fixed li {
-  background: #f4f4f4;
-  margin-bottom: 10px;
-  padding: 12px 16px;
-  font-size: 15px;
+  background: #fdf5f8;
+  margin-bottom: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
   font-weight: 500;
   border-radius: 8px;
   transition: background-color 0.2s;
-  word-break: keep-all;
+  color: #4a4a4a;
 }
 
 .mypage-sidebar-fixed li:hover {
@@ -97,29 +112,30 @@
 }
 
 .submenu {
-  padding-left: 10px;
-  margin-top: 8px;
+  padding-left: 0;
+  margin: 10px 0 20px 0;
 }
 
 .submenu li {
-  background: #fdf0f4;
+  background: #fff0f5;
   font-weight: normal;
   font-size: 14px;
   margin-bottom: 6px;
-  padding: 8px 12px;
-  border-radius: 6px;
+  padding: 10px 14px;
+  border-radius: 10px;
   transition: background-color 0.2s;
   color: #222;
 }
 
 .submenu li:hover {
-  background-color: #ffdce7;
+  background-color: #fcd6df;
   color: #000;
 }
 
 .submenu li.active {
-  background-color: #ef84a5;
+  background-color: #f9a8c2;
   color: #fff;
+  box-shadow: 0 4px 12px rgba(244, 114, 182, 0.4);
 }
 
 .submenu li.active a {
@@ -128,11 +144,9 @@
 
 .submenu a {
   padding: 0;
-  color: #222;
+  color: inherit;
   font-weight: 400;
 }
 
-.submenu a:hover {
-  text-decoration: underline;
-}
+
 </style>

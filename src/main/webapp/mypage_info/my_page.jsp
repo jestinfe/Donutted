@@ -60,7 +60,7 @@
     }
 
     .profile-header {
-      background: var(--gradient-bg);
+      background: #EF84A5;
       border-radius: 20px;
       padding: 2rem;
       margin-bottom: 2rem;
