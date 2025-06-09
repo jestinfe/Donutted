@@ -121,9 +121,9 @@
 
  .dropdown-content {
   width: 100%;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 30px 0;
+  padding: 10px 0;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -152,7 +152,7 @@
   .dropdown-section li a {
     font-size: 15px;
     color: #666;
-    padding: 8px 12px;
+    padding: 4px 12px;
     transition: all 0.3s ease;
     display: block;
     border-radius: 6px;
