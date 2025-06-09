@@ -376,7 +376,7 @@
       </div>
       <div class="dropdown-section">
         <ul>
-          <li><a href="<c:url value='/product/menu.jsp'/>">전체 메뉴</a></li>
+          <li><a href="<c:url value='/product/menu.jsp'/>">All Menu</a></li>
         </ul>
       </div>
       <div class="dropdown-section">
