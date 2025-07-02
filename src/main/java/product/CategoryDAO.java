@@ -33,7 +33,9 @@ public class CategoryDAO {
 			StringBuilder selectAllCategories = new StringBuilder();
 			selectAllCategories
 			.append("	select category_id, name	")
-			.append("	from category	");
+			.append("	from category	")
+			.append("	ORDER BY category_id ASC	");
+			
 
 			pstmt = con.prepareStatement(selectAllCategories.toString());
 			rs = pstmt.executeQuery();

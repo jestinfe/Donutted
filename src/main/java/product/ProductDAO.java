@@ -125,9 +125,12 @@ public class ProductDAO {
 
 	    try {
 	        con = db.getDbConn();
+	  
+	        
 	        StringBuilder sql = new StringBuilder("SELECT * FROM product WHERE 1=1 ");
-
-	        sql.append(" ORDER BY CASE WHEN stock_quantity = 0 THEN 1 ELSE 0 END, ");
+	        sql.append(" ORDER BY ");
+	        sql.append("CASE WHEN stock_quantity IS NULL OR stock_quantity = 0 THEN 1 ELSE 0 END ASC, ");  // 품절 제일 아래
+	        sql.append("category_id ASC, ");  // 그 다음 카테고리 정렬
 
 	        if (sort != null) {
 	            switch (sort) {
